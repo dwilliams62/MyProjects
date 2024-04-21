@@ -1,0 +1,61 @@
+{
+    "items": [
+      {
+        "title": "Plant 1",
+        "author": [
+          {
+            "family": "John Doe"
+          }
+        ],
+        "abstract": "This is a description of Plant 1.",
+        "custom": {
+          "common-name": "Sunflower",
+          "scientific-name": "Helianthus annuus",
+          "growth-habit": "Annual",
+          "bloom-color": "Yellow",
+          "hardiness-zone": "3-9",
+          "light-requirements": "Full sun",
+          "water-requirements": "Well-drained soil",
+          "interesting-facts": "The flower head of the sunflower is actually composed of hundreds of tiny flowers."
+        }
+      },
+      {
+        "title": "Plant 2",
+        "author": [
+          {
+            "family": "Jane Smith"
+          }
+        ],
+        "abstract": "This is a description of Plant 2.",
+        "custom": {
+          "common-name": "Oak Tree",
+          "scientific-name": "Quercus robur",
+          "growth-habit": "Deciduous tree",
+          "bloom-color": "Greenish-yellow",
+          "hardiness-zone": "4-8",
+          "light-requirements": "Full sun to partial shade",
+          "water-requirements": "Well-drained soil",
+          "interesting-facts": "The oak tree is considered sacred in many cultures and is often associated with strength and longevity."
+        }
+      },
+      {
+        "title": "Plant 3",
+        "author": [
+          {
+            "family": "Bob Johnson"
+          }
+        ],
+        "abstract": "This is a description of Plant 3.",
+        "custom": {
+          "common-name": "Tomato",
+          "scientific-name": "Solanum lycopersicum",
+          "growth-habit": "Perennial",
+          "bloom-color": "White",
+          "hardiness-zone": "5-10",
+          "light-requirements": "Full sun",
+          "water-requirements": "Well-drained soil",
+          "interesting-facts": "The tomato was once believed to be poisonous in Europe and was grown primarily for its ornamental value."
+        }
+      }
+    ]
+}

@@ -1,0 +1,1 @@
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" xmlns:dc="http://purl.org/dc/elements/1.1/"><rdf:Description rdf:about="http://www.example.com/books/harrypotter"><dc:title>title</dc:title><dc:creator>author</dc:creator><dc:type>genre</dc:type><dc:publisher>pubbbblisher</dc:publisher><dc:date>2002-04-09</dc:date></rdf:Description></rdf:RDF>

@@ -1,0 +1,97 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+nav {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    padding: 0;
+}
+
+nav li {
+    display: inline;
+    padding: 5px 10px;
+}
+
+nav .active {
+    background-color: #007bff;
+}
+
+nav a {
+    color: #fff;
+    text-decoration: none;
+}
+
+.content {
+    padding: 10px;
+}
+
+.post {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+.post img {
+    max-width: 100%;
+    border-radius: 5px;
+}
+
+.post h3 {
+    margin-top: 10px;
+}
+
+.post time {
+    color: #999;
+    display: block;
+    margin-top: 5px;
+}
+
+.likes {
+    display: flex;
+    align-items: center;
+}
+
+.likes button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    margin-right: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.likes span {
+    color: #999;
+}
+
+.comments {
+    display: flex;
+    align-items: center;
+}
+
+.comments textarea {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    flex-grow: 1;
+}
+
+.comments button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 5px 10px;
+    margin-left: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+}
