@@ -77,6 +77,7 @@ class Application(tk.Frame):
                 if len(self.initiative_tracker.characters) == 0:
                     messagebox.showinfo("Combat Status", "Combat is Over!")
                     self.master.protocol("WM_DELETE_WINDOW", self.on_closing)
+                    self.master.destroy()  # Close the program
                 popup.destroy()
             except ValueError:
                 pass

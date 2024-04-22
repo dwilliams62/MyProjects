@@ -1,4 +1,6 @@
 import os
+import random
+import re
 
 class Character:
     def __init__(self, name, initiative, ac, current_hp, max_hp, is_henchman = False,
@@ -119,3 +121,25 @@ class InitiativeTracker:
             input("Press Enter to continue...")
 
         self.current_turn = (self.current_turn + 1) % len(self.characters)
+
+    def perform_henchman_attack(self, index):
+        character = self.characters[index]
+
+        attack_roll = random.randint(1, 20) + character.attack_bonus
+        print(f"{character.name} attacks with a roll of {attack_roll}")
+
+        damage_dice_str = character.attack_damage
+        damage = self.roll_dice(damage_dice_str)
+        print(f"{character.name} deals {damage} {character.attack_type} damage!")
+        return attack_roll, damage
+
+    def roll_dice(self, dice_str):  
+        import random
+        try:
+            num_dice, die_type, modifier = map(int, re.findall(r"(\d+)d(\d+)([+-]\d+)?", dice_str)[0])
+            rolls = [random.randint(1, die_type) for _ in range(num_dice)]
+            total = sum(rolls) + modifier
+            return total
+        except:
+            print("Invalid dice format.")
+            return 0

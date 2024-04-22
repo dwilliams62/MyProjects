@@ -1,6 +1,7 @@
 from initiative_tracker import InitiativeTracker, Character
 import os
 import random
+import math
 
 def main():
     tracker = InitiativeTracker()
@@ -52,6 +53,8 @@ def main():
         print("\033[1;32m- Enter 'n' for next turn\033[0m")
         print("\033[1;33m- Enter 's' to add status condition\033[0m")
         print("\033[1;34m- Enter 'c' to remove status condition\033[0m")  
+        if tracker.characters[tracker.current_turn].is_henchman:
+            print("\033[1;34m- Enter 'x' to attack with a henchman attack\033[0m") 
         print("\033[1;36m- Enter 'h' to change character's HP\033[0m")  
         print("\033[1;34m- Enter 'quit' to quit\033[0m")
         choice = input("Choose an option: ")
@@ -99,6 +102,17 @@ def main():
             except (ValueError, IndexError):
                 print("\033[1;31mInvalid input. Please enter a valid character number.\033[0m")
                 input("Press Enter to continue...")
+        elif choice.lower() == "x" and tracker.characters[tracker.current_turn].is_henchman:
+            attack_roll, damage = tracker.perform_henchman_attack(tracker.current_turn)
+            print("Would you like to apply this damage to someone?")
+            num = input("Enter a number in the initative list, or anytihng else to discard the damage: ")
+            if num.isdigit():
+                num = int(num)
+                if 1 <= int(num) <= len(tracker.characters):
+                    if tracker.characters[num-1].ac == attack_roll:
+                        tracker.characters[num-1].change_hp(math.ceil(damage / 2 * -1))
+                    if tracker.characters[num-1].ac < attack_roll:
+                        tracker.characters[num-1].change_hp(math.ceil(damage * -1))
         elif choice.lower() == "n":
             tracker.next_turn()
         elif choice.lower() == "quit":
