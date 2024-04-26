@@ -1,0 +1,36 @@
+[
+  {
+    "name": "Maeve",
+    "ac": 16,
+    "current_hp": 24,
+    "max_hp": 40,
+    "is_henchman": false,
+    "attack_name": null,
+    "attack_bonus": null,
+    "attack_damage": null,
+    "attack_type": null
+  },
+  {
+    "name": "Kobold",
+    "ac": 12,
+    "current_hp": 5,
+    "max_hp": 5,
+    "is_henchman": true,
+    "attack_name": "Dagger",
+    "attack_bonus": 4,
+    "attack_damage": "1d6+2",
+    "attack_type": "Piercing"
+  },
+  {
+    "name": "Kobold",
+    "ac": 12,
+    "current_hp": 5,
+    "max_hp": 5,
+    "is_henchman": true,
+    "attack_name": "Dagger",
+    "attack_bonus": 4,
+    "attack_damage": "1d6+2",
+    "attack_type": "Piercing",
+    "initiative_modifier": 2
+  }
+]
