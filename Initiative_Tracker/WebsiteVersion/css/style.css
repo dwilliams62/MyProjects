@@ -1,0 +1,62 @@
+body {
+    font-family: sans-serif; 
+    margin: 0;
+    background-color: #222; /* Dark background */
+    color: #eee;  /* Light text */
+}
+
+.container {
+    display: flex; /* Create side-by-side layout */
+    height: 100vh; /* Make the container take full viewport height */
+}
+
+button {
+    background-color: #339933; /* Your accent green color */
+    color: white;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #206620; /* Slightly darker green on hover */
+}
+
+.initiative-display {
+    width: 80%;
+    padding: 20px;
+}
+
+.sidebar {
+    width: 20%; 
+    background-color: #111; /* Slightly darker than the body */
+    padding: 20px;
+    transition: width 0.3s; /* For smooth collapse */
+}
+
+.sidebar.collapsed { 
+    width: 50px; /* Width when collapsed */
+}
+
+.sidebar-content {
+    overflow: hidden; /* Hide content when collapsed */
+    max-height: calc(100vh - 70px); /* Adjust as needed */
+    transition: max-height 0.3s ease-in-out; /* Smoother transition */
+    display: flex; /* Add flex display */
+    flex-direction: column; /* Arrange buttons in a column */
+}
+
+.sidebar.collapsed .sidebar-content {
+    max-height: 0;
+}
+
+#toggleSidebar {
+    background: none;  /* Remove default button appearance */
+    border: none;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 8px; 
+    color: #339933; /* Match your green accent  */
+}

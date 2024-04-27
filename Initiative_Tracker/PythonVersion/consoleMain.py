@@ -6,7 +6,7 @@ import json
 
 def main():
     tracker = InitiativeTracker()
-    initiative_tracker_dir = os.path.join(os.getcwd(), "Initiative_Tracker")
+    initiative_tracker_dir = os.path.join(os.getcwd(), "Initiative_Tracker/PythonVersion")
     characters_file = os.path.join(initiative_tracker_dir, "characterInfo.json")
 
     while True:
@@ -81,7 +81,7 @@ def load_characters_from_json(characters_file, tracker):
 
         character_found = False
         for char in existing_characters:
-            if char['name'] == name:
+            if char['name'].lower() == name.lower():
                 character_found = True
                 if char['is_henchman']:
                     num_henchmen = int(input(f"How many {name}s would you like to add: "))
@@ -189,12 +189,20 @@ def remove_status_condition(tracker):
 #
 def change_characters_hp(tracker):
     try:
-        num = int(input("Enter character number: "))
+        nums_str = input("Enter character numbers separated by commas (e.g., 1,3,5): ")
+        character_nums = [int(x.strip()) - 1 for x in nums_str.split(',')]
         hp_change = int(input("Enter HP change (negative to subtract, positive to add): "))
-        tracker.characters[num - 1].change_hp(hp_change)
+
+        unconscious = False
+        for num in character_nums:
+            tracker.characters[num].change_hp(hp_change)
+            if tracker.characters[num].current_hp <= 0:
+                print(f"{tracker.characters[num].name} has fallen unconscious!")
+                unconscious = True
+        if unconscious:
+            input("Press Enter To Continue....")
     except (ValueError, IndexError):
-        print("\033[1;31mInvalid input. Please enter a valid character number and HP change.\033[0m")
-        input("Press Enter to continue...")
+        print("\033[1;31mInvalid input. Please enter valid character numbers and HP change.\033[0m")
 
 
 #
