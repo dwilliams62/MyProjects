@@ -32,5 +32,17 @@
     "attack_damage": "1d6+2",
     "attack_type": "Piercing",
     "initiative_modifier": 2
+  },
+  {
+    "name": "Lynn",
+    "ac": 12,
+    "current_hp": 13,
+    "max_hp": 14,
+    "is_henchman": false,
+    "attack_name": null,
+    "attack_bonus": null,
+    "attack_damage": null,
+    "attack_type": null,
+    "initiative_modifier": null
   }
 ]
