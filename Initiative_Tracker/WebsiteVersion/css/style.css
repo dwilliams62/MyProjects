@@ -1,8 +1,8 @@
 body {
     font-family: sans-serif; 
     margin: 0;
-    background-color: #222; /* Dark background */
-    color: #eee;  /* Light text */
+    background-color: #222;
+    color: #eee;
 }
 
 .container {
@@ -11,7 +11,7 @@ body {
 }
 
 button {
-    background-color: #339933; /* Your accent green color */
+    background-color: #339933;
     color: white;
     padding: 10px 20px;
     margin-bottom: 15px;
@@ -26,37 +26,66 @@ button:hover {
 
 .initiative-display {
     width: 80%;
-    padding: 20px;
+    padding: 60px 40px 20px; /* Add padding to the top */
 }
 
 .sidebar {
     width: 20%; 
     background-color: #111; /* Slightly darker than the body */
-    padding: 20px;
-    transition: width 0.3s; /* For smooth collapse */
-}
-
-.sidebar.collapsed { 
-    width: 50px; /* Width when collapsed */
+    padding: 40px 10px 10px; /* Add padding to the top */
+    transition: width 0.05s; /* Change transition to width */
+    position: relative; /* Necessary to position button */
 }
 
 .sidebar-content {
     overflow: hidden; /* Hide content when collapsed */
-    max-height: calc(100vh - 70px); /* Adjust as needed */
-    transition: max-height 0.3s ease-in-out; /* Smoother transition */
+    transition: margin-left 0.05s ease-in-out; /* Change transition to margin-left */
     display: flex; /* Add flex display */
     flex-direction: column; /* Arrange buttons in a column */
+    padding-top: 45px; /* Add padding to the top of the buttons */
 }
 
 .sidebar.collapsed .sidebar-content {
-    max-height: 0;
+    margin-left: -100%; /* Collapse sidebar to the left */
+}
+
+.sidebar.collapsed {
+    width: 0px; /* Adjust width for collapsed state */
 }
 
 #toggleSidebar {
-    background: none;  /* Remove default button appearance */
+    position: absolute;
+    right: -30px; /* Adjust position as needed */
+    top: 13.2%;
+    transform: translateY(-50%); /* Vertical centering */
+    background: none;
     border: none;
     font-size: 20px;
     cursor: pointer;
-    padding: 8px; 
-    color: #339933; /* Match your green accent  */
+    padding: 8px;
+    color: #339933;
+}
+
+.topbar {
+    background-color: #303030; /* Slightly lighter than sidebar */
+    color: white;
+    display: flex; /* Arrange elements horizontally */
+    align-items: center; /* Vertically align content */
+    justify-content: space-between; /* Distribute space between elements */
+    padding: 10px 10px; /* Reduced padding */
+    position: fixed; /* Keep top bar fixed */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 10; /* Ensure bar is above other elements */
+}
+
+.logo {
+    font-weight: bold;
+}
+
+.buttons button {
+    padding: 8px 15px; /* Reduce button padding */
+    font-size: 14px; /* Reduce button font size */
+    margin-right: 20px;
 }
