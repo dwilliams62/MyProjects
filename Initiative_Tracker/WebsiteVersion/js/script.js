@@ -12,6 +12,18 @@ let initiativeTracker = {
             statusConditions: []
         });
         this.sortInitiative();
+
+        // Update currentTurn if new character has higher initiative
+        if (this.characters.length > 1 && this.currentTurn < this.characters.length) {
+            if (initiative > this.characters[this.currentTurn+1].initiative) {
+                this.currentTurn++;
+                if (this.currentTurn >= this.characters.length) {
+                    this.currentTurn = 0; // Wrap around if needed
+                }
+            }
+        } 
+
+        displayInitiativeList(); // Update the display
     },
 
     sortInitiative() {
@@ -35,11 +47,11 @@ let initiativeTracker = {
                 if (String(duration).toLowerCase().includes('turn')) {
                     let turnsLeft = parseInt(String(duration).split(" ")[0]);
                     turnsLeft--;
-        
                     if (turnsLeft === 0) {
-                        alert(`${endingTurn.name}'s ${condition} is over!`);
+                        console.log(`${endingTurn.name}'s ${condition} is over!`);
                         return false; // Remove from array
                     } else {
+                        status[1] = `${turnsLeft} Turns (E)`;
                         return true; // Keep in array (update duration)
                     }
                 }
@@ -58,11 +70,11 @@ let initiativeTracker = {
                 if (String(duration).toLowerCase().includes('turn')) {
                     let turnsLeft = parseInt(String(duration).split(" ")[0]);
                     turnsLeft--;
-        
                     if (turnsLeft === 0) {
-                        alert(`${startingTurn.name}'s ${condition} is over!`);
+                        console.log(`${startingTurn.name}'s ${condition} is over!`);
                         return false; // Remove from array
                     } else {
+                        status[1] = `${turnsLeft} Turns (B)`; // Update duration
                         return true; // Keep in array (update duration)
                     }
                 }
@@ -87,6 +99,43 @@ let initiativeTracker = {
         const character = this.characters.find((char) => char.name === name);
         if (character) {
             character.statusConditions = character.statusConditions.filter(([c]) => c !== condition);
+        } else {
+            console.error(`Character '${name}' not found!`);
+        }
+    },
+
+    changeHP(name, hpChange) {
+        const character = this.characters.find((char) => char.name === name);
+        if (character) {
+            let newHP = character.currentHP + hpChange;
+
+            // Apply restrictions
+            if (newHP < 0) {
+                newHP = 0;
+            } else if (newHP > character.maxHP) {
+                newHP = character.maxHP;
+            }
+
+            character.currentHP = newHP;
+            displayInitiativeList(); // Update the display
+        } else {
+            console.error(`Character '${name}' not found!`);
+        }
+    },
+
+    removeCharacter(name) {
+        const index = this.characters.findIndex((char) => char.name === name);
+        if (index !== -1) {
+            // Adjust currentTurn if necessary 
+            if (index < this.currentTurn) {
+                this.currentTurn--; 
+            }
+            if (this.currentTurn >= this.characters.length-1) {
+                this.currentTurn = 0;
+            }
+
+            this.characters.splice(index, 1);  // Remove the character
+            displayInitiativeList(); // Update the display
         } else {
             console.error(`Character '${name}' not found!`);
         }
@@ -117,6 +166,22 @@ function displayInitiativeList() {
         }
         initiativeListDiv.appendChild(characterDisplay);  
     });
+
+    const statusEffectsDiv = document.getElementById('statusEffects');
+    statusEffectsDiv.innerHTML = ''; // Clear existing effects
+
+    const currentCharacter = initiativeTracker.characters[initiativeTracker.currentTurn];
+    if (currentCharacter.statusConditions.length > 0) {
+        currentCharacter.statusConditions.forEach((status) => {
+            const statusDisplay = document.createElement('div');
+            statusDisplay.textContent = `${status[0]}: ${status[1]}`; 
+            statusEffectsDiv.appendChild(statusDisplay); 
+        });
+    } else {
+        const noneDisplay = document.createElement('div');
+        noneDisplay.textContent = "No current status effects";
+        statusEffectsDiv.appendChild(noneDisplay);
+    }
 }
 
 function addStatusCondition() {
@@ -154,5 +219,16 @@ document.getElementById('removeStatus').addEventListener('click', removeStatusCo
 
 document.getElementById('toggleSidebar').addEventListener('click', function() {
     document.querySelector('.sidebar').classList.toggle('collapsed');
+});
+
+document.getElementById('changeHP').addEventListener('click', function() {
+    let name = prompt("Enter character name:");
+    let hpChange = parseInt(prompt("Enter HP change (positive or negative):"));
+    initiativeTracker.changeHP(name, hpChange); 
+});
+
+document.getElementById('removeCharacter').addEventListener('click', function() {
+    let name = prompt("Enter the character name to remove: ");
+    initiativeTracker.removeCharacter(name); 
 });
 
