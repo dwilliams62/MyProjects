@@ -1,48 +1,74 @@
 [
   {
-    "name": "Maeve",
+    "name": "Ashe",
     "ac": 16,
-    "current_hp": 24,
-    "max_hp": 40,
-    "is_henchman": false,
-    "attack_name": null,
-    "attack_bonus": null,
-    "attack_damage": null,
-    "attack_type": null
-  },
-  {
-    "name": "Kobold",
-    "ac": 12,
-    "current_hp": 5,
-    "max_hp": 5,
-    "is_henchman": true,
-    "attack_name": "Dagger",
-    "attack_bonus": 4,
-    "attack_damage": "1d6+2",
-    "attack_type": "Piercing"
-  },
-  {
-    "name": "Kobold",
-    "ac": 12,
-    "current_hp": 5,
-    "max_hp": 5,
-    "is_henchman": true,
-    "attack_name": "Dagger",
-    "attack_bonus": 4,
-    "attack_damage": "1d6+2",
-    "attack_type": "Piercing",
-    "initiative_modifier": 2
-  },
-  {
-    "name": "Lynn",
-    "ac": 12,
-    "current_hp": 13,
-    "max_hp": 14,
+    "current_hp": 30,
+    "max_hp": 30,
     "is_henchman": false,
     "attack_name": null,
     "attack_bonus": null,
     "attack_damage": null,
     "attack_type": null,
     "initiative_modifier": null
+  },
+  {
+    "name": "Alder",
+    "ac": 15,
+    "current_hp": 19,
+    "max_hp": 19,
+    "is_henchman": false,
+    "attack_name": null,
+    "attack_bonus": null,
+    "attack_damage": null,
+    "attack_type": null,
+    "initiative_modifier": null
+  },
+  {
+    "name": "Maeve",
+    "ac": 14,
+    "current_hp": 27,
+    "max_hp": 27,
+    "is_henchman": false,
+    "attack_name": null,
+    "attack_bonus": null,
+    "attack_damage": null,
+    "attack_type": null,
+    "initiative_modifier": null
+  },
+  {
+    "name": "Gabriel",
+    "ac": 18,
+    "current_hp": 21,
+    "max_hp": 21,
+    "is_henchman": false,
+    "attack_name": null,
+    "attack_bonus": null,
+    "attack_damage": null,
+    "attack_type": null,
+    "initiative_modifier": null
+  },
+  {
+    "name": "Kobold",
+    "ac": 12,
+    "current_hp": 5,
+    "max_hp": 5,
+    "is_henchman": true,
+    "attack_name": "Dagger",
+    "attack_bonus": 4,
+    "attack_damage": "1d6+2",
+    "attack_type": "Slashing",
+    "initiative_modifier": 2
+  },
+  {
+    "name": "Cultist",
+    "ac": 12,
+    "current_hp": 9,
+    "max_hp": 9,
+    "is_henchman": true,
+    "attack_name": "Scimitar",
+    "attack_bonus": 3,
+    "attack_damage": "1d6+1",
+    "attack_type": "slash",
+    "initiative_modifier": 1
   }
 ]

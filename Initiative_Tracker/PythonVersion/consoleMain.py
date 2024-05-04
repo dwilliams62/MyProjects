@@ -56,11 +56,21 @@ def main():
 #
 def add_character(tracker):
     name = input("Enter character name: ")
+    if name.lower() == "cancel":
+        return
     try:
         initiative = int(input("Enter character initiative: "))
+        if initiative == "cancel":
+            return
         ac = int(input("Enter character armor class: "))
+        if ac == "cancel":
+            return
         current_hp = int(input("Enter character current HP: "))
+        if current_hp == "cancel":
+            return
         max_hp = int(input("Enter character max HP: "))
+        if max_hp == "cancel":
+            return
         tracker.add_character(name, initiative, ac, current_hp, max_hp)
     except ValueError:
         print("\033[1;31mInvalid input. Please enter a valid number.\033[0m")
@@ -75,6 +85,8 @@ def add_character(tracker):
 def load_characters_from_json(characters_file, tracker):
     try:
         name = input("Enter the character name to load: ")
+        if name.lower() == "cancel":
+            return
 
         with open(characters_file, 'r') as file:
             existing_characters = json.load(file)
@@ -107,9 +119,17 @@ def load_characters_from_json(characters_file, tracker):
 #
 def write_character_to_json(characters_file, tracker):
     name = input("Enter the name of the character: ")
+    if name.lower() == "cancel":
+        return
     ac = int(input("Enter the AC of the character: "))
+    if ac == "cancel":
+        return
     current_hp = int(input("Enter the current HP of the character: "))
+    if current_hp == "cancel":
+        return
     max_hp = int(input("Enter the maximum HP of the character: "))
+    if max_hp == "cancel":
+        return
 
     is_henchman = input("Is this enemy a henchman? (y/n): ").lower()
     if is_henchman == 'y':
@@ -156,14 +176,21 @@ def write_character_to_json(characters_file, tracker):
 #
 def add_status_condition(tracker):
     try:
-        num = int(input("Enter character number: "))
+        num = input("Enter character number: ")
+        if num.lower() == "cancel":
+            return
+        num = int(num)
         condition = input("Enter status condition: ")
+        if condition.lower() == "cancel":
+            return
 
         print("Enter duration in the following format:")
-        print("  * For effects at the beginning of a turn: '<number> turns (B)'")
-        print("  * For effects at the end of a turn: '<number> turns (E)'")
+        print("  * For effects at the beginning of a turn: ' turns (B)'")
+        print("  * For effects at the end of a turn: ' turns (E)'")
         print("Example: '3 turns (E)' for an effect ending after 3 of the character's turns.")
         duration = input("Enter duration: ")
+        if duration.lower() == "cancel":
+            return
 
         tracker.characters[num - 1].add_status_condition(condition, duration)
     except (ValueError, IndexError):
@@ -176,8 +203,13 @@ def add_status_condition(tracker):
 #
 def remove_status_condition(tracker):
     try:
-        num = int(input("Enter character number: "))
+        num = input("Enter character number: ")
+        if num.lower() == "cancel":
+            return
+        num = int(num)
         condition = input("Enter status condition to remove: ")
+        if condition.lower() == "cancel":
+            return
         tracker.characters[num - 1].remove_status_condition(condition)
     except (ValueError, IndexError):
         print("\033[1;31mInvalid input. Please enter a valid character number.\033[0m")
@@ -190,8 +222,13 @@ def remove_status_condition(tracker):
 def change_characters_hp(tracker):
     try:
         nums_str = input("Enter character numbers separated by commas (e.g., 1,3,5): ")
+        if nums_str.lower() == "cancel":
+            return
         character_nums = [int(x.strip()) - 1 for x in nums_str.split(',')]
-        hp_change = int(input("Enter HP change (negative to subtract, positive to add): "))
+        hp_change = input("Enter HP change (negative to subtract, positive to add): ")
+        if hp_change.lower() == "cancel":
+            return
+        hp_change = int(hp_change)
 
         unconscious = False
         for num in character_nums:
@@ -210,7 +247,10 @@ def change_characters_hp(tracker):
 #
 def remove_character(tracker):
     try:
-        num = int(input("Enter character number to remove: "))
+        num = input("Enter character number to remove: ")
+        if num.lower() == "cancel":
+            return
+        num = int(num)
         tracker.remove_character(num)
     except (ValueError, IndexError):
         print("\033[1;31mInvalid input. Please enter a valid character number.\033[0m")
@@ -224,7 +264,9 @@ def remove_character(tracker):
 def perform_henchman_attack(tracker):
     attack_roll, damage = tracker.perform_henchman_attack(tracker.current_turn)
     print("Would you like to apply this damage to someone?")
-    num = input("Enter a number in the initative list, or anytihng else to discard the damage: ")
+    num = input("Enter a number in the initative list, or anything else to discard the damage: ")
+    if num.lower() == "cancel":
+        return
     if num.isdigit():
         num = int(num)
         if 1 <= int(num) <= len(tracker.characters):
