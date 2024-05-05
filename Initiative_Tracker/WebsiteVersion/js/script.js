@@ -86,58 +86,96 @@ let initiativeTracker = {
         displayInitiativeList(); // Update the display
     },
     
-    addStatusCondition(name, condition, duration) {
-        const character = this.characters.find((char) => char.name === name);
-        if (character) {
-            character.statusConditions.push([condition, duration]);
-        } else {
-            console.error(`Character '${name}' not found!`);
+    removeCharacter() {
+        var charactersRemoved = false;
+        // Iterate in reverse because removing from the array messes with the index
+        for (let i = initiativeTracker.characters.length-1; i >= 0; i--) {
+            const checkbox = document.getElementById(`checkbox_${i}`);
+            if (checkbox.checked) {
+                charactersRemoved = true;
+                // Adjust currentTurn if necessary (Do this at the end to not interfere with iteration)
+                if (i <= initiativeTracker.currentTurn) { 
+                    initiativeTracker.currentTurn--; 
+                    if (initiativeTracker.currentTurn < 0) {
+                        initiativeTracker.currentTurn = initiativeTracker.characters.length -1; // Wrap around
+                    }
+                }
+                initiativeTracker.characters.splice(i, 1);  // Remove the character
+            }
+        }
+        displayInitiativeList(); // Update the display
+        if (!charactersRemoved) {
+            alert(`No characters selected!`);
         }
     },
     
-    removeStatusCondition(name, condition) {
-        const character = this.characters.find((char) => char.name === name);
-        if (character) {
-            character.statusConditions = character.statusConditions.filter(([c]) => c !== condition);
+    addStatusCondition() {
+        let status = prompt("Enter status name: ");
+        let durationInput = prompt("Enter duration (Ex. 5 Turns(B) or 3 Turns (E)): ");
+        var someoneChecked = false;
+    
+        // Extract numeric duration and type (B or E)
+        let matches = durationInput.match(/(\d+)\s+Turns\s+\((B|E)\)/i);
+        if (matches && matches.length === 3) {
+            let duration = parseInt(matches[1]);
+            let type = matches[2];
+            let durationString = `${duration} Turns (${type})`;
+    
+            for (let i = 0; i < initiativeTracker.characters.length; i++) {
+                const checkbox = document.getElementById(`checkbox_${i}`);
+                if (checkbox.checked) {
+                    someoneChecked = true;
+                    initiativeTracker.characters[i].statusConditions.push([status, durationInput]); 
+                }
+            }
         } else {
-            console.error(`Character '${name}' not found!`);
+            console.error("Invalid duration format. Please use the format: '5 Turns(B)' or '3 Turns (E)'.");
+        }
+
+        if (!someoneChecked) {
+            alert("No characters selected!");
+        } else {
+            displayInitiativeList(); // Update the display
+        }
+    },
+    
+    removeStatusCondition() {
+        let status = prompt("Enter status to remove: ");
+        var someoneChecked = false;
+        for (let i = 0; i < initiativeTracker.characters.length; i++) {
+            const checkbox = document.getElementById(`checkbox_${i}`);
+            if (checkbox.checked) {
+                someoneChecked = true;
+                initiativeTracker.characters[i].statusConditions = initiativeTracker.characters[i].statusConditions.filter(([c]) => c !== status);
+            }
+        }
+        if (!someoneChecked) {
+            alert("No characters selected!");
+        } else {
+            displayInitiativeList(); // Update the display
         }
     },
 
-    changeHP(name, hpChange) {
-        const character = this.characters.find((char) => char.name === name);
-        if (character) {
-            let newHP = character.currentHP + hpChange;
-
-            // Apply restrictions
-            if (newHP < 0) {
-                newHP = 0;
-            } else if (newHP > character.maxHP) {
-                newHP = character.maxHP;
+    changeHP() {
+        const characters = initiativeTracker.characters;
+        let hpChange = parseInt(prompt("Enter HP change (positive or negative):"));
+        var hpChanged = false;
+        for (let i = 0; i < characters.length; i++) {
+            const checkbox = document.getElementById(`checkbox_${i}`);
+            if (checkbox.checked) {
+                hpChanged = true;
+                let newHP = characters[i].currentHP + hpChange; 
+                if (newHP < 0) {
+                    newHP = 0;
+                } else if (newHP > characters[i].maxHP) {
+                    newHP = characters[i].maxHP;
+                }
+                characters[i].currentHP = newHP;
             }
-
-            character.currentHP = newHP;
-            displayInitiativeList(); // Update the display
-        } else {
-            console.error(`Character '${name}' not found!`);
         }
-    },
-
-    removeCharacter(name) {
-        const index = this.characters.findIndex((char) => char.name === name);
-        if (index !== -1) {
-            // Adjust currentTurn if necessary 
-            if (index < this.currentTurn) {
-                this.currentTurn--; 
-            }
-            if (this.currentTurn >= this.characters.length-1) {
-                this.currentTurn = 0;
-            }
-
-            this.characters.splice(index, 1);  // Remove the character
-            displayInitiativeList(); // Update the display
-        } else {
-            console.error(`Character '${name}' not found!`);
+        displayInitiativeList(); 
+        if (!hpChanged) {
+            alert(`No characters selected!`);
         }
     }
 };
@@ -159,10 +197,13 @@ function displayInitiativeList() {
 
     initiativeTracker.characters.forEach((character, index) => {
         let characterDisplay = document.createElement('div');
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox_${index}`; // Set the checkbox ID
         if (index === initiativeTracker.currentTurn) {
-            characterDisplay.innerHTML = `==> ${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP} <==`;  
+            characterDisplay.innerHTML = `==> ${checkbox.outerHTML} ${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP} <==`;  
         } else {
-            characterDisplay.innerHTML = `${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP}`;
+            characterDisplay.innerHTML = `${checkbox.outerHTML} ${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP}`;
         }
         initiativeListDiv.appendChild(characterDisplay);  
     });
@@ -184,51 +225,14 @@ function displayInitiativeList() {
     }
 }
 
-function addStatusCondition() {
-    let name = prompt("Enter character name: ");
-    let status = prompt("Enter status name: ");
-    let durationInput = prompt("Enter duration (Ex. 5 Turns(B) or 3 Turns (E)): ");
-
-    // Extract numeric duration and type (B or E)
-    let matches = durationInput.match(/(\d+)\s+Turns\s+\((B|E)\)/i);
-    if (matches && matches.length === 3) {
-        let duration = parseInt(matches[1]);
-        let type = matches[2];
-        let durationString = `${duration} Turns (${type})`;
-
-        initiativeTracker.addStatusCondition(name, status, durationString);
-        displayInitiativeList(); // Update the display
-    } else {
-        console.error("Invalid duration format. Please use the format: '5 Turns(B)' or '3 Turns (E)'.");
-    }
-}
-
-
-function removeStatusCondition() {
-    let name = prompt("Enter character name: ");
-    let status = prompt("Enter status to remove: ");
-
-    initiativeTracker.removeStatusCondition(name, status); 
-    displayInitiativeList(); // Update the display
-}
-
 document.getElementById('addCharacter').addEventListener('click', addCharacter);
-document.getElementById('nextTurn').addEventListener('click', () => initiativeTracker.nextTurn());
-document.getElementById('addStatus').addEventListener('click', addStatusCondition);
-document.getElementById('removeStatus').addEventListener('click', removeStatusCondition);
+document.getElementById('nextTurn').addEventListener('click', function() {initiativeTracker.nextTurn();});
+document.getElementById('addStatus').addEventListener('click', function() {initiativeTracker.addStatusCondition();});
+document.getElementById('removeStatus').addEventListener('click', function() {initiativeTracker.removeStatusCondition();});
+document.getElementById('changeHP').addEventListener('click', function() {initiativeTracker.changeHP();});
+document.getElementById('removeCharacter').addEventListener('click', function() {initiativeTracker.removeCharacter();});
 
 document.getElementById('toggleSidebar').addEventListener('click', function() {
     document.querySelector('.sidebar').classList.toggle('collapsed');
-});
-
-document.getElementById('changeHP').addEventListener('click', function() {
-    let name = prompt("Enter character name:");
-    let hpChange = parseInt(prompt("Enter HP change (positive or negative):"));
-    initiativeTracker.changeHP(name, hpChange); 
-});
-
-document.getElementById('removeCharacter').addEventListener('click', function() {
-    let name = prompt("Enter the character name to remove: ");
-    initiativeTracker.removeCharacter(name); 
 });
 

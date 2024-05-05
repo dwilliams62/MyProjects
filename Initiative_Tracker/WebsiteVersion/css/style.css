@@ -11,13 +11,24 @@ body {
 }
 
 button {
+    position: relative;
     background-color: #339933;
     color: white;
     padding: 10px 20px;
     margin-bottom: 15px;
     border: none;
-    border-radius: 5px;
+    border-radius: 50px;
     cursor: pointer;
+    height: 40px;
+    line-height: 20px;
+}   
+
+button span {
+    position: absolute; /* Position the text absolutely */
+    top: 50%; /* Align the text vertically in the middle */
+    left: 50%; /* Align the text horizontally in the middle */
+    transform: translate(-50%, -50%); /* Center the text */
+    transition: visibility 3s; /* Smooth transition for visibility */
 }
 
 button:hover {
@@ -33,13 +44,13 @@ button:hover {
     width: 20%; 
     background-color: #111; /* Slightly darker than the body */
     padding: 40px 10px 10px; /* Add padding to the top */
-    transition: width 0.05s; /* Change transition to width */
+    transition: width 1s; /* Change transition to width */
     position: relative; /* Necessary to position button */
 }
 
 .sidebar-content {
     overflow: hidden; /* Hide content when collapsed */
-    transition: margin-left 0.05s ease-in-out; /* Change transition to margin-left */
+    transition: margin-left 1s ease-in-out; /* Change transition to margin-left */
     display: flex; /* Add flex display */
     flex-direction: column; /* Arrange buttons in a column */
     padding-top: 45px; /* Add padding to the top of the buttons */
@@ -56,7 +67,7 @@ button:hover {
 #toggleSidebar {
     position: absolute;
     right: -30px; /* Adjust position as needed */
-    top: 13.2%;
+    top: 102px;
     transform: translateY(-50%); /* Vertical centering */
     background: none;
     border: none;
@@ -88,4 +99,13 @@ button:hover {
     padding: 8px 15px; /* Reduce button padding */
     font-size: 14px; /* Reduce button font size */
     margin-right: 20px;
+}
+
+.status-box { 
+    margin-top: 60px; 
+    background-color: #363636; /* Slightly darker than the body */
+    padding: 5px 10px 10px; /* Add padding to the top */
+    transition: width 0.05s; /* Change transition to width */
+    position: relative; /* Necessary to position button */
+    width: 27.5%; /* 20% base + 25% increase */
 }

@@ -1,71 +1,43 @@
-import math
-import matplotlib.pyplot as plt
+import requests
+import json
 
-# Function to check if a number is prime
-def is_prime(n):
-    if n <= 1:
-        return False
-    elif n <= 3:
-        return True
-    elif n % 2 == 0 or n % 3 == 0:
-        return False
-    i = 5
-    while i * i <= n:
-        if n % i == 0 or n % (i + 2) == 0:
-            return False
-        i += 6
-    return True
+# Replace 'your_api_key' with your actual API key
+api_key = "1aa860c6e1a64bed98c2fa8f8797a014"
 
-# Function to calculate the first equation
-def calculate_equation(p):
-    result = math.log((p * (p + 1)) / 2) / math.log(p)
-    return result
+# Specify the base URL and the city you're interested in
+base_url = f'http://api.openweathermap.org/data/2.5/forecast'
+city = 'London'
 
-# Function to calculate the second equation
-def calculate_equation_2(p):
-    result = math.log((p * p * p * (p + 1)) / 2) / math.log(p)
-    return result
+# Construct the full URL with the API key and city
+url = f'{base_url}?q={city}&appid={api_key}'
 
-powers = [2, 3, 5, 7]
-primeList = []
-primeGrowthRateDimensions = []
-primeGrowthRateDimensions_2 = []
+try:
+    # Send a GET request to the API
+    response = requests.get(url)
 
-for i in range(2, 100):  # Limit is set to 100, but you can change this to any value
-    if is_prime(i):
-        primeList.append(i)
-        primeGrowthRateDimensions.append(calculate_equation(i))
-        primeGrowthRateDimensions_2.append(calculate_equation_2(i))
+    # Check if the request was successful
+    response.raise_for_status()
 
-plt.figure(figsize=(12, 12))
+    # Parse the JSON response
+    data = response.json()
 
-plt.subplot(221)
-for power in powers:
-    values = [power**i for i in range(1, 8)]
-    plt.plot(values, [calculate_equation(i) for i in values], label=f'Powers of {power}')
-plt.xlabel('Power of Prime')
-plt.ylabel('Growth-Rate Dimension')
-plt.legend()
+    # Print the 3-hour forecasts for the next 5 days
+    for forecast in data['list']:
+        print(f"Date: {forecast['dt_txt']}")
+        print(f"Temperature: {forecast['main']['temp']}°C")
+        print(f"Humidity: {forecast['main']['humidity']}%")
+        print(f"Weather: {forecast['weather'][0]['description']}")
+        print("")
 
-plt.subplot(222)
-plt.plot(primeList, primeGrowthRateDimensions, label='Prime Numbers')
-plt.xlabel('Prime Number')
-plt.ylabel('Growth-Rate Dimension')
-plt.legend()
-
-plt.subplot(223)
-plt.plot(primeList, primeGrowthRateDimensions_2, label='Prime Numbers')
-plt.xlabel('Prime Number')
-plt.ylabel('Growth-Rate Dimension (Equation 2)')
-plt.legend()
-
-plt.subplot(224)
-for power in powers:
-    values = [power**i for i in range(1, 8)]
-    plt.plot(values, [calculate_equation_2(i) for i in values], label=f'Powers of {power}')
-plt.xlabel('Power of Prime')
-plt.ylabel('Growth-Rate Dimension (Equation 2)')
-plt.legend()
-
-plt.tight_layout()
-plt.show()
+except requests.exceptions.HTTPError as http_err:
+    print(f'HTTP error occurred: {http_err}')
+except requests.exceptions.ConnectionError as conn_err:
+    print(f'Connection error occurred: {conn_err}')
+except requests.exceptions.Timeout as time_err:
+    print(f'Timeout error occurred: {time_err}')
+except requests.exceptions.RequestException as err:
+    print(f'Something went wrong: {err}')
+except json.JSONDecodeError as json_err:
+    print(f'Failed to parse JSON: {json_err}')
+except KeyError as key_err:
+    print(f'Missing key in JSON: {key_err}')
