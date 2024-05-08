@@ -10,6 +10,20 @@ body {
     height: 100vh; /* Make the container take full viewport height */
 }
 
+.header {
+    background-color: #666;
+    padding: 10px;
+    border-bottom: 1px solid #444;
+    margin-top: 20px;
+    border-radius: 10px 10px 0 0;
+    text-align: center; /* Add this property to center the text */
+}
+
+.header h2 {
+    margin: 0; /* Remove the default margin from the heading */
+    color: #fff; /* White text color */
+}
+
 button {
     position: relative;
     background-color: #339933;
@@ -66,9 +80,9 @@ button:hover {
 
 #toggleSidebar {
     position: absolute;
-    right: -30px; /* Adjust position as needed */
+    right: -36px; /* Adjust the right property to move the button to the right */
     top: 102px;
-    transform: translateY(-50%); /* Vertical centering */
+    transform: translateY(-50%);
     background: none;
     border: none;
     font-size: 20px;
@@ -101,11 +115,23 @@ button:hover {
     margin-right: 20px;
 }
 
-.status-box { 
-    margin-top: 60px; 
-    background-color: #363636; /* Slightly darker than the body */
-    padding: 5px 10px 10px; /* Add padding to the top */
-    transition: width 0.05s; /* Change transition to width */
-    position: relative; /* Necessary to position button */
-    width: 27.5%; /* 20% base + 25% increase */
+.status-box {
+    margin-top: 60px;
+    background-color: #363636;
+    padding: 10px 10px 10px; /* Add some padding to the top */
+    transition: width 0.05s;
+    position: relative;
+    width: 300px;
+    min-width: 300px;
+}
+
+.status-effect {
+    background-color: #444;
+    padding: 10px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.status-effect span {
+    color: #fff;
 }

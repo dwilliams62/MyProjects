@@ -1,0 +1,80 @@
+Absolutely! Here's a breakdown of the functionality in your provided HTML, CSS, and JavaScript code, along with notes on missing features and the checkbox implementation.
+
+Functionality Overview
+
+* Basic Structure: The HTML sets up a webpage for an initiative tracker with:
+    * Top Bar:  "LOGO", placeholder signup/login buttons.
+    * Sidebar: Collapsible, contains buttons for most actions.
+    * Initiative Display: Area to show the initiative order and character info.
+* CSS Styling: Provides basic styling for the layout, buttons, and content areas.
+* JavaScript (initiativeTracker Object): This is where the core logic of your initiative tracker application lives. Here's what it can currently do:
+    * Store Characters: Manages an array (characters) of character objects with name, initiative, AC, HP, etc.
+    * Add Characters: Takes input and adds new characters to the tracker.
+    * Sort Initiative: Sorts the character list by initiative.
+    * Next Turn: Cycles to the next character, handles status effect durations decrementing at turn start/end (with console logs for reminders).
+    * Add Status Condition: Adds a status effect (with duration) to a character.
+    * Remove Status Condition: Removes an existing status effect.
+    * Change HP:  Increases/decreases a character's HP.
+    * Remove Character: Deletes a character from the tracker.
+   
+Missing Features
+
+* Persistence: Currently, all the data is lost when you refresh the page. You need some form of saving and loading functionality (using features like Local Storage or a basic file system interaction with Node.js if you want to expand this).
+* Button Functionality:  Several buttons in the sidebar ("Load Character", "Write Character", "Henchman Attack", "Quit") don't have any corresponding code implementations. 
+* User Feedback: More informative messages or visual indicators for successful actions or errors would be helpful.
+
+Checkbox Implementation
+
+Here's a step-by-step approach to adding checkboxes for selecting characters to apply 'changeHP' actions:
+
+1. Modify the HTML: Inside the displayInitiativeList function, instead of just creating divs for each character, create a checkbox and a label along with the character display: 
+
+   ```javascript
+    // ... Inside displayInitiativeList() 
+    initiativeTracker.characters.forEach((character, index) => {
+        let characterDisplay = document.createElement('div');
+        let checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `checkbox_${index}`; // Set the checkbox ID
+        if (index === initiativeTracker.currentTurn) {
+            characterDisplay.innerHTML = `==> ${checkbox.outerHTML} ${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP} <==`;  
+        } else {
+            characterDisplay.innerHTML = `${checkbox.outerHTML} ${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP}`;
+        }
+        initiativeListDiv.appendChild(characterDisplay);  
+    });
+   ```
+
+2. Modify changeHP Logic:
+
+   ```javascript
+    changeHP() {
+        const characters = initiativeTracker.characters;
+        let hpChange = parseInt(prompt("Enter HP change (positive or negative):"));
+        var hpChanged = false;
+        for (let i = 0; i < characters.length; i++) {
+            const checkbox = document.getElementById(`checkbox_${i}`);
+            if (checkbox.checked) {
+                hpChanged = true;
+                let newHP = characters[i].currentHP + hpChange; 
+                if (newHP < 0) {
+                    newHP = 0;
+                } else if (newHP > characters[i].maxHP) {
+                    newHP = characters[i].maxHP;
+                }
+                characters[i].currentHP = newHP;
+            }
+        }
+        displayInitiativeList(); 
+        if (!hpChanged) {
+            alert(`No characters selected!`);
+        }
+    },
+   ```
+
+3. Modify the function assignment to the button
+
+   ```javascript
+document.getElementById('changeHP').addEventListener('click', function(){initiativeTracker.changeHP();});
+   ```
+Let me know if you'd like help with any of the missing features or want to refine the checkbox implementation further! 

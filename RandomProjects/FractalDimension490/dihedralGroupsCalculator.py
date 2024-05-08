@@ -4,12 +4,8 @@ import time
 def generate_rows_Zn(starting_row, num_rows, mod):
     start_time = time.time()
     rows = [[x % mod for x in starting_row]]
-    total_nonzero_count = sum(1 for x in starting_row if x % mod != 0) + 1
+    total_nonzero_count = sum(1 for x in starting_row if x % mod != 0)
     sub_triangle_nonzero_count = total_nonzero_count
-    for num in starting_row:
-        if num % mod != 0:
-            total_nonzero_count += 1
-            sub_triangle_nonzero_count += 1
     for i in range(num_rows - 1):
         new_row = []
         for j in range(len(starting_row)):
@@ -23,7 +19,7 @@ def generate_rows_Zn(starting_row, num_rows, mod):
         for num in new_row:
             if num != 0:
                 total_nonzero_count += 1
-                if i < num_rows // 2:
+                if i < (num_rows // 2) - 1:
                     sub_triangle_nonzero_count += 1
         print(f"\rCalculating row: {i+2:{7}}/{num_rows}", end="")
     print()
@@ -90,8 +86,14 @@ else:
     starting_row = [x for x in input("Enter the starting row (separated by spaces), using 'r' for rotations and 'f' for reflections: ").split()]
     num_rows = int(input("Enter the number of rows: "))
 
-rows, total_nonzero_count, sub_triangle_nonzero_count = generate_rows(starting_row, num_rows, n if alphabet.upper() == "DN" else mod)
+#for i in [4,8,16,32,64]: 
+ #   rows, total_nonzero_count, sub_triangle_nonzero_count = generate_rows(starting_row, 8191, i)
+  #  print("Total Nonzero Count", total_nonzero_count)
+   # print("Sub Triangle Nonzero Count", sub_triangle_nonzero_count)
+    #print("Result", math.log(total_nonzero_count / sub_triangle_nonzero_count) / math.log(2))
 
+
+rows, total_nonzero_count, sub_triangle_nonzero_count = generate_rows(starting_row, num_rows, n if alphabet.upper() == "DN" else mod)
 print("Total Nonzero Count", total_nonzero_count)
 print("Sub Triangle Nonzero Count", sub_triangle_nonzero_count)
 print("Result", math.log(total_nonzero_count / sub_triangle_nonzero_count) / math.log(2))
