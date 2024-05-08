@@ -4,44 +4,13 @@ class InitiativeTracker {
         this.currentTurn = 0;
     }
 
-    addCharacter() {
-        let name = prompt("Enter character name: ");
-        let initiative = parseInt(prompt("Enter character initiative: "));
-        let ac =  parseInt(prompt("Enter character armor class: "));
-        let currentHP =  parseInt(prompt("Enter character current HP: "));
-        let maxHP = parseInt(prompt("Enter character max HP: "));
-
-        let character = {
-            name: name,
-            initiative: initiative,
-            ac: ac,
-            currentHP: currentHP,
-            maxHP: maxHP,
-            statusConditions: []
-        };
-
-        let isHenchman = prompt("Is this character a henchman? (yes/no): ").toLowerCase();
-
-        if (isHenchman === 'yes') {
-            let attackName = prompt("Enter attack name: ");
-            let attackToHitBonus = parseInt(prompt("Enter attack to hit bonus: "));
-            let attackDamage = prompt("Enter attack damage (in the form of 1d6+3): ");
-            let attackDamageType = prompt("Enter attack damage type: ");
-
-            character.attack = {
-                name: attackName,
-                toHitBonus: attackToHitBonus,
-                damage: attackDamage,
-                damageType: attackDamageType
-            };
-        }
-
+    addCharacter(character) {
         this.characters.push(character);
         this.sortInitiative();
 
         // Update currentTurn if new character has higher initiative
         if (this.characters.length > 1 && this.currentTurn < this.characters.length) {
-            if (initiative > this.characters[this.currentTurn+1].initiative) {
+            if (character.initiative > this.characters[this.currentTurn+1].initiative) {
                 this.currentTurn++;
                 if (this.currentTurn >= this.characters.length) {
                     this.currentTurn = 0; // Wrap around if needed
@@ -330,3 +299,39 @@ class InitiativeTracker {
 }
 
 export default InitiativeTracker;
+
+export function addCharacterManual(initiativeTracker) {
+    let name = prompt("Enter character name: ");
+    let initiative = parseInt(prompt("Enter character initiative: "));
+    let ac =  parseInt(prompt("Enter character armor class: "));
+    let currentHP =  parseInt(prompt("Enter character current HP: "));
+    let maxHP = parseInt(prompt("Enter character max HP: "));
+
+    let isHenchman = prompt("Is this character a henchman? (yes/no): ").toLowerCase();
+
+    let attack;
+    if (isHenchman === 'yes') {
+        let attackName = prompt("Enter attack name: ");
+        let attackToHitBonus = parseInt(prompt("Enter attack to hit bonus: "));
+        let attackDamage = prompt("Enter attack damage (in the form of 1d6+3): ");
+        let attackDamageType = prompt("Enter attack damage type: ");
+
+        attack = {
+            name: attackName,
+            toHitBonus: attackToHitBonus,
+            damage: attackDamage,
+            damageType: attackDamageType
+        };
+    }
+
+    initiativeTracker.addCharacter({
+        name,
+        initiative,
+        ac,
+        currentHP,
+        maxHP,
+        statusConditions: [],
+        isHenchman,
+        attack
+    });
+}

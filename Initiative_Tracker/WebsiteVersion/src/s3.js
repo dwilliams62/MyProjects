@@ -13,7 +13,45 @@ const s3Client = new S3Client({
 const bucketName = "custom-character-info";
 const objectKey = "test-character/character.json";
 
-// Function to write data to S3 object
+// Function to collect data from user
+function collectData() {
+  const name = prompt("Enter a name:");
+  const initiativeModifier = parseInt(prompt("Enter initiative modifier:"));
+  const ac = parseInt(prompt("Enter AC:"));
+  const maxHp = parseInt(prompt("Enter max HP:"));
+  const isHenchman = prompt("Is this a henchman? (yes/no):").toLowerCase() === 'yes';
+
+  let attack;
+  if (isHenchman) {
+    const attackName = prompt("Enter attack name:");
+    const attackToHitBonus = parseInt(prompt("Enter attack to hit bonus:"));
+    const attackDamage = prompt("Enter attack damage (e.g. 3d6+4):");
+    const attackDamageType = prompt("Enter attack damage type:");
+
+    // Validate attack damage format
+    const damageRegex = /^\d+d\d+\+\d+$/;
+    if (!damageRegex.test(attackDamage)) {
+      throw new Error("Invalid attack damage format");
+    }
+
+    attack = {
+      name: attackName,
+      toHitBonus: attackToHitBonus,
+      damage: attackDamage,
+      damageType: attackDamageType,
+    };
+  }
+
+  return {
+    name,
+    initiativeModifier,
+    ac,
+    maxHp,
+    isHenchman,
+    attack,
+  };
+}
+
 async function writeDataToS3() {
   try {
     // Try to get the current data from the S3 object.
@@ -32,18 +70,27 @@ async function writeDataToS3() {
       jsonData = [];
     }
 
-    // Prompt the user for new data.
-    const newName = prompt("Enter a name:");
-    const newAge = prompt("Enter an age:");
-    const newCity = prompt("Enter a city:");
-
-    // Create new data object with user input.
-    const newData = {
-      "name": newName,
-      "age": parseInt(newAge), // Convert age to integer
-      "city": newCity,
+    // Collect new data from user
+    const newData = collectData();
+    const flattenedData = {
+      name: newData.name,
+      initiativeModifier: newData.initiativeModifier,
+      ac: newData.ac,
+      maxHp: newData.maxHp,
+      isHenchman: newData.isHenchman,
     };
-    jsonData.push(newData);
+
+    if (newData.isHenchman) {
+      flattenedData.attack = {
+        name: newData.attack.name,
+        toHitBonus: newData.attack.toHitBonus,
+        damage: newData.attack.damage,
+        damageType: newData.attack.damageType,
+      };
+    }
+
+    // Append the new data to the existing data
+    jsonData.push(flattenedData);
 
     // Convert the JSON back to string.
     const stringifiedJsonData = JSON.stringify(jsonData);
@@ -77,4 +124,63 @@ async function writeDataToS3() {
   }
 }
 
-export { writeDataToS3 };
+async function addCharacterFromJSON(initiativeTracker) {
+  const name = prompt("Enter character name: ");
+
+  try {
+    // Try to get the current data from the S3 object.
+    const getCurrentDataCommand = new GetObjectCommand({
+      Bucket: bucketName,
+      Key: objectKey,
+    });
+    const getCurrentDataResponse = await s3Client.send(getCurrentDataCommand);
+    const currentData = await getCurrentDataResponse.Body.transformToString();
+
+    // Parse the current data as JSON.
+    const jsonData = JSON.parse(currentData);
+
+    // Find the character with the given name
+    const characterData = jsonData.find(char => char.name === name);
+
+    if (characterData) {
+      let initiative;
+      if (characterData.isHenchman) {
+        const initiativeModifier = characterData.initiativeModifier;
+        const roll = Math.floor(Math.random() * 20) + 1; // Roll a d20
+        initiative = roll + initiativeModifier;
+      } else {
+        initiative = parseInt(prompt(`Enter initiative for ${name}: `));
+      }
+
+      const character = {
+        name: characterData.name,
+        initiative,
+        ac: characterData.ac,
+        currentHP: characterData.maxHp,
+        maxHP: characterData.maxHp,
+        statusConditions: [],
+      };
+
+      if (characterData.isHenchman) {
+        character.attack = {
+          name: characterData.attackName,
+          toHitBonus: characterData.attackToHitBonus,
+          damage: characterData.attackDamage,
+          damageType: characterData.attackDamageType,
+        };
+      }
+
+      if (characterData.isHenchman) {
+        initiativeTracker.addCharacter(character);
+      } else {
+        initiativeTracker.addCharacter(character);
+      }
+    } else {
+      console.log(`No character found with name ${name}`);
+    }
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+export { writeDataToS3, addCharacterFromJSON };
