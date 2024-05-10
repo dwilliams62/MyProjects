@@ -1,0 +1,55 @@
+<!-- new-page.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="css/style.css">
+    <title>Character Information</title>
+</head>
+<body>
+    <header class="topbar">
+        <div class="logo">LOGO</div>
+        <div class="buttons">
+            <button id="back-button">Back</button>
+        </div>
+    </header>
+    <main>
+        <h2>Character Information</h2>
+        <form id="character-form">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name"><br><br>
+            <label for="initiative-modifier">Initiative Modifier:</label>
+            <input type="number" id="initiative-modifier" name="initiative-modifier"><br><br>
+            <label for="ac">AC:</label>
+            <input type="number" id="ac" name="ac"><br><br>
+            <label for="max-hp">Max HP:</label>
+            <input type="number" id="max-hp" name="max-hp"><br><br>
+            <label for="is-henchman">Is Henchman:</label>
+            <input type="checkbox" id="is-henchman" name="is-henchman"><br><br>
+            <label for="is-main-character">Is Main Character:</label>
+            <div id="henchman-fields" style="display: none;">
+                <label for="attack-name">Attack Name:</label>
+                <input type="text" id="attack-name" name="attack-name"><br><br>
+                <label for="attack-to-hit-bonus">Attack To Hit Bonus:</label>
+                <input type="number" id="attack-to-hit-bonus" name="attack-to-hit-bonus"><br><br>
+                <label for="attack-damage">Attack Damage:</label>
+                <input type="text" id="attack-damage" name="attack-damage"><br><br>
+                <label for="attack-damage-type">Attack Damage Type:</label>
+                <input type="text" id="attack-damage-type" name="attack-damage-type"><br><br>
+            </div>
+            <div id="main-character-fields" style="display: none;">
+                <label for="spell-casting-modifier">Spell Casting Modifier:</label>
+                <input type="number" id="spell-casting-modifier" name="spell-casting-modifier"><br><br>
+                <label for="spell-save-dc">Spell Save DC:</label>
+                <input type="number" id="spell-save-dc" name="spell-save-dc"><br><br>
+                <label for="speed">Speed:</label>
+                <input type="number" id="speed" name="speed"><br><br>
+            </div>
+            <button id="submit-button">Submit</button>
+        </form>
+    </main>
+
+    <script src="dist/addCharacter.bundle.js"></script>
+</body>
+</html>
