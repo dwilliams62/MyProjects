@@ -15,7 +15,7 @@ document.getElementById("henchmanAttack").addEventListener("click", function() {
 document.getElementById('writeCharacter').addEventListener('click', function() {writeDataToS3();});
 document.getElementById('loadCharacter').addEventListener('click', function() {addCharacterFromJSON(initiativeTracker);});
 
-document.getElementById('toggleSidebar').addEventListener('click', function() {
+document.getElementById('collapseSidebar').addEventListener('click', function() {
     document.querySelector('.it-sidebar').classList.toggle('collapsed');
 });
 
