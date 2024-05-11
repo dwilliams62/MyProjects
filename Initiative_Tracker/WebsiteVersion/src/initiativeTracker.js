@@ -245,23 +245,23 @@ class InitiativeTracker {
         const currentCharacter = this.characters[this.currentTurn];
 
         const acDisplay = document.createElement('div');
-        acDisplay.classList.add('status-effect');
+        acDisplay.classList.add('it-status-effect');
         acDisplay.innerHTML = `<span>AC:</span> <span>${currentCharacter.ac}</span>`;
         statusEffectsDiv.appendChild(acDisplay);
 
         const healthDisplay = document.createElement('div');
-        healthDisplay.classList.add('status-effect');
+        healthDisplay.classList.add('it-status-effect');
         healthDisplay.innerHTML = `<span>Health:</span> <span>${currentCharacter.currentHP}/${currentCharacter.maxHP}</span>`;
         statusEffectsDiv.appendChild(healthDisplay);
 
         const beginningOfTurnDisplay = document.createElement('div');
-        beginningOfTurnDisplay.classList.add('status-effect');
+        beginningOfTurnDisplay.classList.add('it-status-effect');
         beginningOfTurnDisplay.innerHTML = '<span>Beginning of Turn:</span>';
         const beginningOfTurnList = document.createElement('ul');
         beginningOfTurnDisplay.appendChild(beginningOfTurnList);
 
         const endOfTurnDisplay = document.createElement('div');
-        endOfTurnDisplay.classList.add('status-effect');
+        endOfTurnDisplay.classList.add('it-status-effect');
         endOfTurnDisplay.innerHTML = '<span>End of Turn:</span>';
         const endOfTurnList = document.createElement('ul');
         endOfTurnDisplay.appendChild(endOfTurnList);
@@ -278,7 +278,7 @@ class InitiativeTracker {
                     endOfTurnList.appendChild(endOfTurnListItem);
                 } else {
                     const statusDisplay = document.createElement('div');
-                    statusDisplay.classList.add('status-effect');
+                    statusDisplay.classList.add('it-status-effect');
                     statusDisplay.innerHTML = `<span>${status[0]}:</span> <span>${status[1]}</span>`;
                     statusEffectsDiv.appendChild(statusDisplay);
                 }
@@ -291,7 +291,7 @@ class InitiativeTracker {
             }
         } else {
             const noneDisplay = document.createElement('div');
-            noneDisplay.classList.add('status-effect');
+            noneDisplay.classList.add('it-status-effect');
             noneDisplay.textContent = "No current status effects";
             statusEffectsDiv.appendChild(noneDisplay);
         }

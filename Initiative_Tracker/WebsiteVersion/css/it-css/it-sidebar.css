@@ -1,0 +1,41 @@
+.it-sidebar {
+  width: 20%;
+  background-color: #111;
+  padding: 40px 10px 10px;
+  transition: width 1s;
+  position: sticky; /* Make the sidebar stick to the side of the viewport */
+  top: 0; /* Stick to the top of the viewport */
+  height: 105vh;
+  height: 100%;
+  overflow-y: auto;
+
+}
+
+.it-sidebar-content {
+  overflow: hidden;
+  transition: margin-left 1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  padding-top: 45px;
+}
+
+.it-sidebar.collapsed .it-sidebar-content {
+  margin-left: -100%;
+}
+
+.it-sidebar.collapsed {
+  width: 0px;
+}
+
+#toggleSidebar {
+  position: absolute;
+  right: -36px;
+  top: 102px;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 8px;
+  color: #339933;
+}

@@ -1,32 +1,35 @@
-import time
-import random
-import json
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib import cm
 
-def roll_damage(num_sides):
-    roll_sum = sum(random.randint(1, num_sides) for _ in range(27))
-    return roll_sum + 6
+# Define a 2x2 matrix for demonstration
+A = np.array([[1, 2], [3, 5]])
 
-def main():
-    num_rolls = 10000
-    total_time = 0
-    averages = {}
-    
-    for num_sides in range(1, 51):
-        damage_sum = 0
-        start_time = time.time()
-        for _ in range(num_rolls):
-            damage = roll_damage(num_sides)
-            damage_sum += damage
-        total_time = time.time() - start_time
+# Calculate eigenvalues and eigenvectors using NumPy
+w, v = np.linalg.eig(A)
 
-        average_damage = damage_sum / num_rolls
-        averages[num_sides] = {
-            "average_damage": round(average_damage),
-            "execution_time": total_time
-        }
+print("Eigenvalues:", w)
+print("Eigenvectors:", v)
 
-    with open("averages.json", "w") as json_file:
-        json.dump(averages, json_file, indent=4)
+# Create a unit circle for visualization
+theta = np.linspace(0, 2*np.pi, 100)
+unit_circle = np.c_[np.cos(theta), np.sin(theta)]
 
-if __name__ == "__main__":
-    main()
+# Scale the eigenvectors to make them visible on the unit circle
+eigenvec_scaled = v * np.sqrt(np.abs(w))[:, np.newaxis]
+
+fig, ax = plt.subplots()
+
+# Plot the eigenvalues
+ax.scatter(w.real, w.imag, c='r', marker='o', label='Eigenvalues')
+
+# Plot the eigenvectors
+ax.plot(unit_circle[:, 0], unit_circle[:, 1], 'k--', label='Unit circle')
+ax.quiver(0, 0, eigenvec_scaled[0, 0], eigenvec_scaled[0, 1], color='b', angles='xy', scale_units='xy', scale=1, label='Eigenvector 1')
+ax.quiver(0, 0, eigenvec_scaled[1, 0], eigenvec_scaled[1, 1], color='g', angles='xy', scale_units='xy', scale=1, label='Eigenvector 2')
+
+ax.legend()
+ax.set_xlabel('Real part')
+ax.set_ylabel('Imaginary part')
+ax.grid()
+plt.show()

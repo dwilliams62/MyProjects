@@ -4,21 +4,25 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/it-css/it-display.css">
+    <link rel="stylesheet" href="css/it-css/it-sidebar.css">
+    <link rel="stylesheet" href="css/it-css/it-topbar.css">
+    <link rel="stylesheet" href="css/it-css/it-information.css">
     <title>Initiative Tracker</title>
 </head>
 <body>
-    <header class="topbar">
-        <div class="logo">LOGO</div>
-        <div class="buttons">
+    <header class="it-topbar">
+        <div class="it-logo">LOGO</div>
+        <div class="it-buttons">
             <button id="add-character-button" onclick="window.location.href='addCharacter.html';">Character Info</button>
             <button class="signup">Signup</button>
             <button class="login">Login</button>
         </div>
     </header>
     <div class="container">
-        <aside class="sidebar">
+        <aside class="it-sidebar">
             <button id="toggleSidebar">☰</button>
-            <div class="sidebar-content"> 
+            <div class="it-sidebar-content"> 
                 <button id="addCharacter">Add Custom Character</button>
                 <button id="loadCharacter">Load Character</button>
                 <button id="writeCharacter">Write Character</button>
@@ -30,29 +34,29 @@
                 <button id="nextTurn">Next Turn</button>
             </div>
         </aside>
-        <main class="initiative-display">
-            <div class="header">
+        <main class="it-initiative-display">
+            <div class="it-initiative-header">
                 <h2>Current Initiative Order</h2>
             </div>
             <p></p>
             <div id="initiativeList"></div>
         </main>
-        <aside class="status-box" style="margin-top: 50px;"> 
-            <div class="header">
+        <aside class="it-status-box" style="margin-top: 50px;"> 
+            <div class="it-initiative-header">
                 <h2>Current Character Info</h2>
             </div>
             <p></p>
             <div id="statusEffects">
-                <div class="status-effect">
+                <div class="it-status-effect">
                     <span>AC:</span>
                     <span id="acValue"></span>
                 </div>
-                <div class="status-effect">
+                <div class="it-status-effect">
                     <span>Health:</span>
                     <span id="healthValue"></span>
                 </div>
             </div>  
-            <div class="status-effect" id="attackLog" style="overflow-y: auto; height: 400px;"></div>
+            <div class="it-status-effect" id="attackLog" style="overflow-y: auto; height: 400px;"></div>
         </aside>
     </div>
 

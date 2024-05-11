@@ -1,0 +1,18 @@
+.it-initiative-display {
+  width: 80%;
+  padding: 60px 40px 20px;
+}
+
+.it-initiative-header {
+  background-color: #666;
+  padding: 10px;
+  border-bottom: 1px solid #444;
+  margin-top: 20px;
+  border-radius: 10px 10px 0 0;
+  text-align: center;
+}
+
+.it-initiative-header h2 {
+  margin: 0;
+  color: #fff;
+}

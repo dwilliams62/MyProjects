@@ -1,13 +1,18 @@
 body {
     font-family: sans-serif; 
-    margin: 0;
     background-color: #222;
     color: #eee;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    height: 100vh;
+    width: 100vw;
 }
 
 .container {
     display: flex; /* Create side-by-side layout */
-    height: 100vh; /* Make the container take full viewport height */
+    height: calc(100vh - 50px); /* adjust for topbar height */
+    width: 100vw;
 }
 
 .header {
@@ -47,91 +52,4 @@ button span {
 
 button:hover {
     background-color: #206620; /* Slightly darker green on hover */
-}
-
-.initiative-display {
-    width: 80%;
-    padding: 60px 40px 20px; /* Add padding to the top */
-}
-
-.sidebar {
-    width: 20%; 
-    background-color: #111; /* Slightly darker than the body */
-    padding: 40px 10px 10px; /* Add padding to the top */
-    transition: width 1s; /* Change transition to width */
-    position: relative; /* Necessary to position button */
-}
-
-.sidebar-content {
-    overflow: hidden; /* Hide content when collapsed */
-    transition: margin-left 1s ease-in-out; /* Change transition to margin-left */
-    display: flex; /* Add flex display */
-    flex-direction: column; /* Arrange buttons in a column */
-    padding-top: 45px; /* Add padding to the top of the buttons */
-}
-
-.sidebar.collapsed .sidebar-content {
-    margin-left: -100%; /* Collapse sidebar to the left */
-}
-
-.sidebar.collapsed {
-    width: 0px; /* Adjust width for collapsed state */
-}
-
-#toggleSidebar {
-    position: absolute;
-    right: -36px; /* Adjust the right property to move the button to the right */
-    top: 102px;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 8px;
-    color: #339933;
-}
-
-.topbar {
-    background-color: #303030; /* Slightly lighter than sidebar */
-    color: white;
-    display: flex; /* Arrange elements horizontally */
-    align-items: center; /* Vertically align content */
-    justify-content: space-between; /* Distribute space between elements */
-    padding: 10px 10px; /* Reduced padding */
-    position: fixed; /* Keep top bar fixed */
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 10; /* Ensure bar is above other elements */
-}
-
-.logo {
-    font-weight: bold;
-}
-
-.buttons button {
-    padding: 8px 15px; /* Reduce button padding */
-    font-size: 14px; /* Reduce button font size */
-    margin-right: 20px;
-}
-
-.status-box {
-    margin-top: 60px;
-    background-color: #363636;
-    padding: 10px 10px 10px; /* Add some padding to the top */
-    transition: width 0.05s;
-    position: relative;
-    width: 300px;
-    min-width: 300px;
-}
-
-.status-effect {
-    background-color: #444;
-    padding: 10px;
-    border-radius: 10px;
-    margin-bottom: 10px;
-}
-
-.status-effect span {
-    color: #fff;
 }

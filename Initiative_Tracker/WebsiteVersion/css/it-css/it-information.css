@@ -1,0 +1,23 @@
+.it-status-box {
+  margin-top: 60px;
+  background-color: #363636;
+  padding: 10px 10px 10px; /* Add some padding to the top */
+  transition: width 0.05s;
+  position: relative;
+  width: 20%;
+  min-width: 20%;
+  height: 100%;
+  overflow-y: auto;
+  box-sizing: border-box;
+}
+
+.it-status-effect {
+  background-color: #444;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.it-status-effect span {
+  color: #fff;
+}

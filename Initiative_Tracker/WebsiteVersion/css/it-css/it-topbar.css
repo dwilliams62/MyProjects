@@ -1,0 +1,24 @@
+.it-topbar {
+  background-color: #303030;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 10;
+  height:5%;
+}
+
+.it-logo {
+  font-weight: bold;
+}
+
+.it-buttons button {
+  padding: 8px 15px;
+  font-size: 14px;
+  margin-right: 20px;
+}

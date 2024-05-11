@@ -16,6 +16,6 @@ document.getElementById('writeCharacter').addEventListener('click', function() {
 document.getElementById('loadCharacter').addEventListener('click', function() {addCharacterFromJSON(initiativeTracker);});
 
 document.getElementById('toggleSidebar').addEventListener('click', function() {
-    document.querySelector('.sidebar').classList.toggle('collapsed');
+    document.querySelector('.it-sidebar').classList.toggle('collapsed');
 });
 
