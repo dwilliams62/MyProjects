@@ -1,0 +1,45 @@
+.uo-display {
+    margin-left: 20%;
+    text-align: left;
+    background-color: #222;
+    color: #eee;
+    margin-top: 70px;
+}
+
+.uo-display form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.uo-display span {
+    display: block;
+    margin-bottom: 10px;
+}
+
+.uo-display label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.uo-display input[type="text"], .uo-display input[type="number"] {
+    width: 200px; /* make the input boxes smaller */
+    height: 25px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.uo-display button[type="submit"] {
+    width: 100%;
+    height: 40px;
+    background-color: #339933; /* green buttons */
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.uo-display button[type="submit"]:hover {
+    background-color: #206620; /* slightly darker green on hover */
+}

@@ -53,3 +53,15 @@ button span {
 button:hover {
     background-color: #206620; /* Slightly darker green on hover */
 }
+
+.character-card {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #222;
+    border: 1px solid #333;
+    border-radius: 5px;
+    color: #eee;
+    padding: 20px;
+}

@@ -1,34 +1,63 @@
-<!-- new-page.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/topbar.css">
+    <link rel="stylesheet" href="css/uo-css/uo-sidebar.css">
+    <link rel="stylesheet" href="css/uo-css/uo-display.css">
+    <style>
+        body {
+            font-family: sans-serif; 
+            background-color: #222;
+            color: #eee;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
     <title>Character Information</title>
 </head>
 <body>
     <header class="topbar">
         <div class="logo">LOGO</div>
         <div class="buttons">
-            <button id="back-button">Back</button>
+            <button id="back-button" onclick="location.href='index.html'">Back</button>
         </div>
     </header>
     <main>
-        <h2>Character Information</h2>
-        <form id="character-form">
-            <label for="name">Name:</label>
-            <input type="text" id="name" name="name"><br><br>
-            <label for="initiative-modifier">Initiative Modifier:</label>
-            <input type="number" id="initiative-modifier" name="initiative-modifier"><br><br>
-            <label for="ac">AC:</label>
-            <input type="number" id="ac" name="ac"><br><br>
-            <label for="max-hp">Max HP:</label>
-            <input type="number" id="max-hp" name="max-hp"><br><br>
-            <label for="is-henchman">Is Henchman:</label>
-            <input type="checkbox" id="is-henchman" name="is-henchman"><br><br>
-            <label for="is-main-character">Is Main Character:</label>
-            <div id="henchman-fields" style="display: none;">
+        <aside class="uo-sidebar">
+            <button id="add-character-button">Add Character</button>
+            <button id="add-attack-button">Add Attack to Character</button>
+            <button id="view-characters-button">View Characters</button>
+        </aside>
+        <div class="uo-display" id="character-form-container" style="display: none;">
+            <h2>Character Information</h2>
+            <form id="character-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name"><br><br>
+                <label for="initiative-modifier">Initiative Modifier:</label>
+                <input type="number" id="initiative-modifier" name="initiative-modifier"><br><br>
+                <label for="ac">AC:</label>
+                <input type="number" id="ac" name="ac"><br><br>
+                <label for="max-hp">Max HP:</label>
+                <input type="number" id="max-hp" name="max-hp"><br><br>
+                <label for="spell-casting-modifier">Spell Casting Modifier:</label>
+                <input type="number" id="spell-casting-modifier" name="spell-casting-modifier"><br><br>
+                <label for="spell-save-dc">Spell Save DC:</label>
+                <input type="number" id="spell-save-dc" name="spell-save-dc"><br><br>
+                <label for="speed">Speed:</label>
+                <input type="number" id="speed" name="speed"><br><br>
+                <button id="submit-button">Submit</button>
+            </form>
+        </div>
+        <div class="uo-display" id="attack-form-container" style="display: none;">
+            <h2>Attack Information</h2>
+            <form id="attack-form">
+                <label for="character-name">Character Name:</label>
+                <input type="text" id="character-name" name="character-name"><br><br>
                 <label for="attack-name">Attack Name:</label>
                 <input type="text" id="attack-name" name="attack-name"><br><br>
                 <label for="attack-to-hit-bonus">Attack To Hit Bonus:</label>
@@ -37,19 +66,45 @@
                 <input type="text" id="attack-damage" name="attack-damage"><br><br>
                 <label for="attack-damage-type">Attack Damage Type:</label>
                 <input type="text" id="attack-damage-type" name="attack-damage-type"><br><br>
+                <button id="submit-attack-button">Submit</button>
+            </form>
+        </div>
+        <div class="uo-display" id="character-card-container" style="display: none;">
+            <button id="edit-button">Edit</button>
+            <button id="save-button">Save</button>
+            <div class="character-card">
+                <div class="character-info">
+                    <h3>Name: <span id="character-name"></span></h3>
+                    <p>Initiative Modifier: <span id="initiative-modifier"></span></p>
+                    <p>AC: <span id="ac"></span></p>
+                    <p>Max HP: <span id="max-hp"></span></p>
+                    <p>Spell Casting Modifier: <span id="spell-casting-modifier"></span></p>
+                    <p>Spell Save DC: <span id="spell-save-dc"></span></p>
+                    <p>Speed: <span id="speed"></span></p>
+                </div>
             </div>
-            <div id="main-character-fields" style="display: none;">
-                <label for="spell-casting-modifier">Spell Casting Modifier:</label>
-                <input type="number" id="spell-casting-modifier" name="spell-casting-modifier"><br><br>
-                <label for="spell-save-dc">Spell Save DC:</label>
-                <input type="number" id="spell-save-dc" name="spell-save-dc"><br><br>
-                <label for="speed">Speed:</label>
-                <input type="number" id="speed" name="speed"><br><br>
-            </div>
-            <button id="submit-button">Submit</button>
-        </form>
+        </div>
     </main>
 
     <script src="dist/addCharacter.bundle.js"></script>
+    <script>
+        document.getElementById("add-character-button").addEventListener("click", function() {
+            document.getElementById("character-form-container").style.display = "block";
+            document.getElementById("attack-form-container").style.display = "none";
+            document.getElementById("character-card-container").style.display = "none";
+        });
+
+        document.getElementById("add-attack-button").addEventListener("click", function() {
+            document.getElementById("character-form-container").style.display = "none";
+            document.getElementById("attack-form-container").style.display = "block";
+            document.getElementById("character-card-container").style.display = "none";
+        });
+
+        document.getElementById("view-characters-button").addEventListener("click", function() {
+            document.getElementById("character-form-container").style.display = "none";
+            document.getElementById("attack-form-container").style.display = "none";
+            document.getElementById("character-card-container").style.display = "block";
+        });
+    </script>
 </body>
 </html>

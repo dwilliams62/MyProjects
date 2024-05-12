@@ -1,4 +1,4 @@
-.it-topbar {
+.topbar {
   background-color: #303030;
   color: white;
   display: flex;
@@ -13,11 +13,11 @@
   height:5%;
 }
 
-.it-logo {
+.logo {
   font-weight: bold;
 }
 
-.it-buttons button {
+.buttons button {
   padding: 8px 15px;
   font-size: 14px;
   margin-right: 20px;
