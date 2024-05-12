@@ -1,0 +1,306 @@
+/* Global Styles */
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Light gray background */
+    margin: 0;
+}
+
+/* Header Styles */
+
+header {
+    background-color: #4CAF50; /* Green header */
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header button {
+    background-color: #3e8e41; /* Darker green background for better visibility */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 5px;
+}
+
+header button:hover {
+    background-color: #4a934c; /* Slightly lighter green on hover */
+}
+
+header a {
+    text-decoration: none; /* Remove underline from link */
+}
+
+header a:visited {
+    color: #fff; /* Keep text color white after visit */
+}
+
+#store-name {
+    font-size: 24px;
+    margin: 0;
+}
+
+#store-name a {
+    color: #fff; /* Set text color to white for GardenCo link */
+}
+
+.buttons {
+    display: flex; /* Use flexbox to layout the buttons */
+    align-items: center; /* Center the buttons vertically */
+}
+
+.buttons a {
+    margin-right: 10px; /* Add some space between the buttons */
+}
+
+header a button {
+    background-color: #3e8e41; /* Darker green background for better visibility */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    color: #fff;
+    border-radius: 5px;
+    width: 100%; /* Make the button take full width of the link */
+    height: 100%; /* Make the button take full height of the link */
+}
+
+header a:hover button {
+    background-color: #4a934c; /* Slightly lighter green on hover */
+}
+
+/* Container Styles */
+
+.container {
+    display: flex;
+    height: calc(100% - 80px); /* Calculate height of container */
+    margin-top: 20px;
+    width: 100%; /* Set the width to 90% of the viewport width */
+}   
+
+/* Aside Styles */
+
+aside {
+    width: 35%;
+    background-color: #f0f0f0; /* Light gray aside background */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+    height: 100%; /* Make aside take full height */
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside li {
+    margin-bottom: 10px;
+}
+
+aside a {
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+/* Main Styles */
+
+main {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    min-width: 80%; /* Add a minimum width to hold three 300px cards with 20px gaps */
+}
+
+.card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0; /* Light gray card background */
+    width: 80%; /* Set a fixed width */
+    height: auto; /* Let the height adjust automatically */
+    overflow-wrap: break-word; /* Add this to prevent long words from overflowing */
+    display: flex; /* Use flexbox to layout the contents */
+    flex-direction: column; /* Layout the contents vertically */
+}
+
+.card .price {
+    margin-top: auto; /* Push the price to the bottom of the card */
+    margin-bottom: 1px; /* Add a small margin to move it down further */
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    background-color: #ccc; /* Placeholder for image */
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card .price {
+    font-weight: bold;
+    font-size: 18px;
+    color: #4CAF50;
+}
+
+/* Footer Styles */
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #4CAF50; /* Green footer */
+    padding: 10px;
+    text-align: right;
+    color: #fff;
+}
+
+#copyright {
+    margin: 0;
+    padding-right: 20px; /* Add some padding to move copyright text to the left */
+}
+/* Styles for screens with a maximum width of 480px */
+@media (max-width: 480px) {
+    .cards {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .card {
+        padding: 10px;
+        margin: 10px;
+    }
+}
+
+/* Styles for screens with a maximum width of 768px */
+@media (max-width: 768px) {
+    .cards {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    .card {
+        padding: 15px;
+        margin: 15px;
+    }
+}
+
+/* Styles for screens with a minimum width of 1024px */
+@media (min-width: 1024px) {
+    .cards {
+        grid-template-columns: repeat(4, 1fr);
+    }
+    .card {
+        padding: 20px;
+        margin: 20px;
+    }
+}
+
+
+.welcome-message {
+    text-align: center;
+    font-weight: bold;
+    font-size: 36px; /* Increased font size */
+    color: #4CAF50; /* Changed color to green */
+    margin-bottom: 10px; /* Added some space between the welcome message and the text under it */
+}
+
+.website-description {
+    text-align: center;
+    color: #000; /* Changed color to black */
+}
+
+.contact-us {
+    background-color: #f0f0f0; /* Light gray background */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center;
+}
+
+.contact-us h2 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.about-us {
+    background-color: #f7f7f7; /* Light gray background */
+    padding: 20px;
+    border: 5px solid #4CAF50; /* Green border */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+}
+
+.services {
+    background-color: #f7f7f7; /* Light gray background */
+    padding: 20px;
+    border: 5px solid #4CAF50; /* Green border */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center; /* Center the text horizontally */
+}
+
+.testimonials {
+    background-color: #f7f7f7; /* Light gray background */
+    padding: 20px;
+    border: 5px solid #4CAF50; /* Green border */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    text-align: center; /* Center the text horizontally */
+}
+
+.gradient-divider {
+    height: 20px;
+    background-image: repeating-linear-gradient(
+        -45deg,
+        #964B00,
+        #964B00 20px,
+        #F2C464 20px,
+        #F2C464 40px
+    );
+    margin: 20px 0;
+}
+
+.services ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.services li {
+    margin-bottom: 10px;
+}
+
+.testimonials blockquote {
+    font-style: italic;
+    font-size: 18px;
+    color: #666;
+    margin-bottom: 20px;
+}

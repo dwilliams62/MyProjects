@@ -1,12 +1,63 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f5f5f5; /* Light gray background */
+    margin: 0;
+}
+
+header {
+    background-color: #4CAF50; /* Green header */
+    padding: 20px;
+    text-align: center;
+    color: #fff;
+}
+
+#store-name {
+    font-size: 24px;
+    margin: 0;
+}
+
 .container {
-    max-width: 800px;
-    margin: 40px auto;
+    display: flex;
+    height: calc(100% - 80px); /* Calculate height of container */
+    margin-top: 20px;
+}
+
+aside {
+    width: 35%;
+    background-color: #f0f0f0; /* Light gray aside background */
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-right: 20px;
+    height: 100%; /* Make aside take full height */
+}
+
+aside ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+aside li {
+    margin-bottom: 10px;
+}
+
+aside a {
+    text-decoration: none;
+    color: #4CAF50;
+}
+
+main {
+    flex-grow: 1;
+    padding: 20px;
 }
 
 .cards {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 20px;
+    min-width: 1100px; /* Add a minimum width to hold three 300px cards with 20px gaps */
 }
 
 .card {
@@ -14,6 +65,17 @@
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    background-color: #f0f0f0; /* Light gray card background */
+    width: 300px; /* Set a fixed width */
+    height: auto; /* Let the height adjust automatically */
+    overflow-wrap: break-word; /* Add this to prevent long words from overflowing */
+    display: flex; /* Use flexbox to layout the contents */
+    flex-direction: column; /* Layout the contents vertically */
+}
+
+.card .price {
+    margin-top: auto; /* Push the price to the bottom of the card */
+    margin-bottom: 1px; /* Add a small margin to move it down further */
 }
 
 .card img {
@@ -39,4 +101,19 @@
     font-weight: bold;
     font-size: 18px;
     color: #4CAF50;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background-color: #4CAF50; /* Green footer */
+    padding: 10px;
+    text-align: right;
+    color: #fff;
+}
+
+#copyright {
+    margin: 0;
+    padding-right: 20px; /* Add some padding to move copyright text to the left */
 }
