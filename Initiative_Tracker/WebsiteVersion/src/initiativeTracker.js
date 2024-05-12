@@ -225,19 +225,32 @@ class InitiativeTracker {
     displayInitiativeList() {
         const initiativeListDiv = document.getElementById("initiativeList");
         initiativeListDiv.innerHTML = ''; // Clear existing list
-
-        this.characters.forEach((character, index) => {
-            let characterDisplay = document.createElement('div');
-            let checkbox = document.createElement('input');
-            checkbox.type = 'checkbox';
-            checkbox.id = `checkbox_${index}`; // Set the checkbox ID
-            if (index === this.currentTurn) {
-                characterDisplay.innerHTML = `==> ${checkbox.outerHTML} ${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP} <==`;  
-            } else {
-                characterDisplay.innerHTML = `${checkbox.outerHTML} ${character.name} - Initiative: ${character.initiative} - AC: ${character.ac} - Current HP: ${character.currentHP}/${character.maxHP}`;
-            }
-            initiativeListDiv.appendChild(characterDisplay);  
-        });
+    
+        if (this.currentTurn === 0) {
+            let newRoundSeparator = document.createElement('div');
+            newRoundSeparator.textContent = 'NEW ROUND';
+            newRoundSeparator.style.textAlign = 'center';
+            newRoundSeparator.style.fontWeight = 'bold';
+            newRoundSeparator.style.border = '1px solid green'; // add a green border
+            initiativeListDiv.appendChild(newRoundSeparator);
+        }
+    
+        for (let i = this.currentTurn; i < this.characters.length; i++) {
+            initiativeListDiv.appendChild(this.createCharacterCard(i));
+        }
+    
+        if (this.currentTurn !== 0) {
+            let newRoundSeparator = document.createElement('div');
+            newRoundSeparator.textContent = 'NEW ROUND';
+            newRoundSeparator.style.textAlign = 'center';
+            newRoundSeparator.style.fontWeight = 'bold';
+            newRoundSeparator.style.border = '1px solid grey'; // add a grey border
+            initiativeListDiv.appendChild(newRoundSeparator);
+        }
+    
+        for (let i = 0; i < this.currentTurn; i++) {
+            initiativeListDiv.appendChild(this.createCharacterCard(i));
+        }
 
         const statusEffectsDiv = document.getElementById('statusEffects');
         statusEffectsDiv.innerHTML = ''; // Clear existing effects
@@ -295,6 +308,27 @@ class InitiativeTracker {
             noneDisplay.textContent = "No current status effects";
             statusEffectsDiv.appendChild(noneDisplay);
         }
+    }
+
+    createCharacterCard(index) {
+        let characterCard = document.createElement('div');
+        characterCard.classList.add('it-initiative-card');
+        if (index === this.currentTurn) {
+            characterCard.classList.add('current-turn'); // add the current-turn class
+        }
+    
+        let characterName = document.createElement('div');
+        characterName.classList.add('character-name');
+        characterName.textContent = this.characters[index].name;
+    
+        let characterInfo = document.createElement('div');
+        characterInfo.classList.add('character-info');
+        characterInfo.innerHTML = `Initiative: ${this.characters[index].initiative} - AC: ${this.characters[index].ac} - Current HP: ${this.characters[index].currentHP}/${this.characters[index].maxHP}`;
+    
+        characterCard.appendChild(characterName);
+        characterCard.appendChild(characterInfo);
+    
+        return characterCard;
     }
 }
 

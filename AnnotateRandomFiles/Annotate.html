@@ -1,41 +1,31 @@
-<!DOCTYPE html>
 <html>
-<head>
-  <title>Hello World</title>
-  <style>
-    .rainbow-text {
-      font-size: 3rem;
-      font-weight: bold;
-    }
-    .rainbow-text span {
-      display: inline-block;
-      animation: rainbow 2s linear infinite;
-    }
-    @keyframes rainbow {
-      0%, 100% {
-        color: #ff0000;
-      }
-      17% {
-        color: #ff8c00;
-      }
-      33% {
-        color: #ffff00;
-      }
-      50% {
-        color: #00ff00;
-      }
-      66% {
-        color: #0000ff;
-      }
-      83% {
-        color: #8c00ff;
-      }
-    }
-  </style>
-</head>
-<body>
-  <div class="rainbow-text">
-    <span>H</span><span>e</span><span>l</span><span>l</span><span>o</span> <span>W</span><span>o</span><span>r</span><span>l</span><span>d</span>
-  </div>
-</body>
+  <body>
+    <div id="word-container">
+      <button>Apple</button>
+      <button>Banana</button>
+      <button>Cherry</button>
+      <!-- ... -->
+    </div>
+
+    <script>
+      const wordContainer = document.getElementById('word-container');
+      const words = [...wordContainer.children];
+
+      words.forEach((word) => {
+        word.addEventListener('click', (e) => {
+          const originalWord = e.target.textContent;
+          const lastLetter = originalWord.charAt(originalWord.length - 1);
+
+          fetch(`https://api.datamuse.com/words?sp=${lastLetter}*`)
+            .then(response => response.json())
+            .then(data => {
+              const replacementWords = data.map(word => word.word);
+              const newWord = replacementWords[Math.floor(Math.random() * replacementWords.length)];
+              e.target.textContent = newWord;
+            })
+            .catch(error => console.error(error));
+        });
+      });
+    </script>
+  </body>
 </html>

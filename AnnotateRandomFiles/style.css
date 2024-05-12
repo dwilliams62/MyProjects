@@ -1,0 +1,42 @@
+.container {
+    max-width: 800px;
+    margin: 40px auto;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+}
+
+.card {
+    border: 1px solid #ddd;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.card img {
+    width: 100%;
+    height: 150px;
+    background-color: #ccc; /* Placeholder for image */
+    margin-bottom: 10px;
+}
+
+.card h2 {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.card p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.card .price {
+    font-weight: bold;
+    font-size: 18px;
+    color: #4CAF50;
+}

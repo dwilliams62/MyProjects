@@ -16,3 +16,31 @@
   margin: 0;
   color: #fff;
 }
+
+#initiativeList {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column; /* add this to make cards take up full width */
+}
+
+.it-initiative-card {
+  background-color: #666; /* swap background and text colors */
+  color: #fff; /* swap background and text colors */
+  border: 5px solid #444; /* increase border size to 5px */
+  padding: 10px;
+  margin: 10px;
+  border-radius: 10px;
+}
+
+.it-initiative-card.current-turn {
+  border-color: green; /* change border color to green for current turn */
+}
+
+.it-initiative-card .character-name {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.it-initiative-card .character-info {
+  font-size: 14px;
+}
