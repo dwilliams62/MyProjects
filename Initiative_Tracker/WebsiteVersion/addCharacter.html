@@ -14,8 +14,6 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            height: 100vh;
-            width: 100vw;
         }
     </style>
     <title>Character Information</title>
@@ -71,16 +69,23 @@
         </div>
         <div class="uo-display" id="character-card-container" style="display: none;">
             <button id="edit-button">Edit</button>
-            <button id="save-button">Save</button>
+            <button id="save-button" style="display: none;">Save</button>
+            <button id="cancel-button" style="display: none;">Cancel</button>
             <div class="character-card">
+                <div class="character-image">
+                    <!-- Image goes here -->
+                </div>
+                <div class="character-header">
+                    <h3><b>Name:</b> <i id="character-name">Eilif Stonefist</i></h3>
+                    <p><b>HP:</b> <i id="current-hp">100</i>/<i id="max-hp">150</i></p>
+                </div>
+                <hr>
                 <div class="character-info">
-                    <h3>Name: <span id="character-name"></span></h3>
-                    <p>Initiative Modifier: <span id="initiative-modifier"></span></p>
-                    <p>AC: <span id="ac"></span></p>
-                    <p>Max HP: <span id="max-hp"></span></p>
-                    <p>Spell Casting Modifier: <span id="spell-casting-modifier"></span></p>
-                    <p>Spell Save DC: <span id="spell-save-dc"></span></p>
-                    <p>Speed: <span id="speed"></span></p>
+                    <p><b>AC:</b> <i id="ac">18</i></p>
+                    <p><b>Speed:</b> <i id="speed">30 ft.</i></p>
+                    <p><b>Initiative Modifier:</b> <i id="initiative-modifier">+2</i></p>
+                    <p><b>Spell Casting Modifier:</b> <i id="spell-casting-modifier">+5</i></p>
+                    <p><b>Spell Save DC:</b> <i id="spell-save-dc">15</i></p>
                 </div>
             </div>
         </div>
@@ -104,6 +109,24 @@
             document.getElementById("character-form-container").style.display = "none";
             document.getElementById("attack-form-container").style.display = "none";
             document.getElementById("character-card-container").style.display = "block";
+        });
+
+        document.getElementById("edit-button").addEventListener("click", function() {
+            document.getElementById("edit-button").style.display = "none";
+            document.getElementById("save-button").style.display = "inline-block";
+            document.getElementById("cancel-button").style.display = "inline-block";
+        });
+
+        document.getElementById("save-button").addEventListener("click", function() {
+            document.getElementById("save-button").style.display = "none";
+            document.getElementById("cancel-button").style.display = "none";
+            document.getElementById("edit-button").style.display = "inline-block";
+        });
+
+        document.getElementById("cancel-button").addEventListener("click", function() {
+            document.getElementById("save-button").style.display = "none";
+            document.getElementById("cancel-button").style.display = "none";
+            document.getElementById("edit-button").style.display = "inline-block";
         });
     </script>
 </body>
