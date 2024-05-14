@@ -52,24 +52,42 @@ export function createCard(characterInfo) {
 
     card.appendChild(info);
 
+    const viewAttacksButton = document.createElement('button');
+    viewAttacksButton.innerHTML = 'View Attacks';
+    viewAttacksButton.onclick = () => {
+        const popup = document.createElement('div');
+        popup.className = 'popup';
+        popup.innerHTML = `
+            <div class="popup-header">
+                <button class="close-button">×</button>
+            </div>
+            <h2>${characterInfo.name}'s attacks</h2>
+            <div class="search-container">
+                <input type="search" id="search-bar" placeholder="Search...">
+                <button id="search-button">Search</button>
+            </div>
+            <div class="attacks-container">
+                <div class="attack-card">
+                    <div class="attack-header">
+                        <h3>Attack Name</h3>
+                    </div>
+                    <hr>
+                    <div class="attack-info">
+                        <p><b>To Hit Bonus:</b> +5</p>
+                        <p><b>Attack Damage:</b> 1d6+2 <span>Fire</span></p>
+                        <p><b>Description:</b> This is a description of the attack. It can be really long and detailed.</p>
+                    </div>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(popup);
+
+        const closeButton = popup.querySelector('.close-button');
+        closeButton.addEventListener('click', () => {
+            popup.remove();
+        });
+    };
+    card.appendChild(viewAttacksButton);
+
     cardContainer.appendChild(card);
 }
-/*
-function generateRandomCards() {
-    for (let i = 0; i < 10; i++) {
-        const characterInfo = {
-            name: `Character ${i}`,
-            currentHp: Math.floor(Math.random() * 100),
-            maxHp: Math.floor(Math.random() * 100),
-            ac: Math.floor(Math.random() * 20),
-            speed: `${Math.floor(Math.random() * 30)} ft.`,
-            initiativeModifier: Math.floor(Math.random() * 5),
-            spellCastingModifier: Math.floor(Math.random() * 5),
-            spellSaveDc: Math.floor(Math.random() * 15)
-        };
-
-        createCard(characterInfo);
-    }
-}
-
-generateRandomCards();*/

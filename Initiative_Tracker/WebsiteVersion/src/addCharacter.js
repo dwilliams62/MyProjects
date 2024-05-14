@@ -1,5 +1,5 @@
-import config from './config';
-import { S3Client, PutObjectCommand, GetObjectCommand } from "@aws-sdk/client-s3";
+import { getCurrentData, writeDataToS3 } from "./s3";
+import { createCard } from './characterCard.js';
 
 // Define the bucket and object key.
 const bucketName = "custom-character-info";
@@ -26,108 +26,89 @@ function collectData() {
   };
 }
 
-async function writeDataToS3() {
-  try {
-    const s3Client = new S3Client({
-      region: 'us-east-1',
-      credentials: {
-        accessKeyId: config.accessKeyId,
-        secretAccessKey: config.secretAccessKey,
-      },
-      cache: false,
-    });
+// Function to collect attack data from user
+function collectAttackData() {
+  const characterName = document.getElementById('character-name').value;
+  const attackName = document.getElementById('attack-name').value;
+  const attackToHitBonus = parseInt(document.getElementById('attack-to-hit-bonus').value);
+  const attackDamage = document.getElementById('attack-damage').value;
+  const attackDamageType = document.getElementById('attack-damage-type').value;
 
+  return {
+    characterName,
+    attackName,
+    attackToHitBonus,
+    attackDamage,
+    attackDamageType,
+  };
+}
+
+
+// Function to add character to S3
+async function addCharacterToS3() {
+  try {
     // Collect new data from user
     const newData = collectData();
 
-    // Try to get the current data from the S3 object.
-    const getCurrentDataCommand = new GetObjectCommand({
-      Bucket: bucketName,
-      Key: objectKey,
-    });
-    const getCurrentDataResponse = await s3Client.send(getCurrentDataCommand);
-    const currentData = await getCurrentDataResponse.Body.transformToString();
-
-    // Parse the current data as JSON.
-    let jsonData = JSON.parse(currentData);
+    // Get the current data from S3
+    let jsonData = await getCurrentData();
 
     // Append the new data to the existing data
     jsonData.push(newData);
 
-    // Check if the JSON is still valid after adding the new data
-    try {
-      JSON.stringify(jsonData);
-    } catch (error) {
-      console.error("Error parsing JSON after adding new data:", error);
-      return;
-    }
-
-    // Convert the JSON back to string.
-    const stringifiedJsonData = JSON.stringify(jsonData);
-
-    // Write the new data to the S3 object.
-    console.log("Preparing to write data to S3...");
-    const putObjectCommand = new PutObjectCommand({
-      Bucket: bucketName,
-      Key: objectKey,
-      Body: stringifiedJsonData,
-    });
-    console.log("putObjectCommand:", putObjectCommand);
-
-    await s3Client.send(putObjectCommand);
-    console.log("Data written to S3 successfully!");
-
-    // Print the full JSON after writing to it.
-    console.log(stringifiedJsonData);
+    // Write the new data to S3
+    await writeDataToS3(jsonData);
   } catch (error) {
-    // If the NoSuchKey error is thrown, it means the object doesn't exist.
-    if (error.name === "NoSuchKey") {
-      // Create the S3 object with an empty array.
-      const putObjectCommand = new PutObjectCommand({
-        Bucket: bucketName,
-        Key: objectKey,
-        Body: JSON.stringify([collectData()]),
-      });
-      await s3Client.send(putObjectCommand);
-    } else {
-      console.error(error);
-    }
+    console.error(error);
   }
 }
 
-const submitButton = document.getElementById('submit-button');
+// Function to add attack to character
+async function addAttackToCharacter() {
+  try {
+    // Collect new attack data from user
+    const newAttackData = collectAttackData();
 
-submitButton.addEventListener('click', async (event) => {
-  event.preventDefault();
-  await writeDataToS3();
-});
+    // Get the current data from S3
+    let jsonData = await getCurrentData();
 
+    // Find the character with the matching name
+    const characterIndex = jsonData.findIndex((character) => character.name === newAttackData.characterName);
 
+    if (characterIndex !== -1) {
+      // If the character exists, add the new attack to their attacks array
+      if (!jsonData[characterIndex].attacks) {
+        jsonData[characterIndex].attacks = [];
+      }
+      jsonData[characterIndex].attacks.push({
+        name: newAttackData.attackName,
+        toHitBonus: newAttackData.attackToHitBonus,
+        damage: newAttackData.attackDamage,
+        damageType: newAttackData.attackDamageType,
+      });
+    } else {
+      console.error(`Character not found: ${newAttackData.characterName}`);
+      return;
+    }
 
+    // Write the new data to S3
+    await writeDataToS3(jsonData);
+  } catch (error) {
+    console.error(error);
+  }
+}
 
-
-import { createCard } from './characterCard.js';
 
 export async function displayCharactersFromJSON() {
   try {
-    const s3Client = new S3Client({
-      region: 'us-east-1',
-      credentials: {
-        accessKeyId: config.accessKeyId,
-        secretAccessKey: config.secretAccessKey,
-      },
-      cache: false,
-    });
-    // Try to get the current data from the S3 object.
-    const getCurrentDataCommand = new GetObjectCommand({
-      Bucket: bucketName,
-      Key: objectKey,
-    });
-    const getCurrentDataResponse = await s3Client.send(getCurrentDataCommand);
-    const currentData = await getCurrentDataResponse.Body.transformToString();
+    // Get the current data from S3
+    const jsonData = await getCurrentData();
 
-    // Parse the current data as JSON.
-    const jsonData = JSON.parse(currentData);
+    // Get the card container element
+    const cardContainer = document.getElementById('character-card-container');
+
+    // Clear out all the existing cards
+    cardContainer.innerHTML = '';
 
     // Create a card for each character in the JSON data
     jsonData.forEach(characterData => {
@@ -150,4 +131,51 @@ export async function displayCharactersFromJSON() {
   }
 }
 
-displayCharactersFromJSON();
+
+document.getElementById('submit-button').addEventListener('click', async (event) => {
+  event.preventDefault();
+  await addCharacterToS3();
+});
+
+document.getElementById('submit-attack-button').addEventListener('click', async (event) => {
+  event.preventDefault();
+  await addAttackToCharacter();
+});
+
+document.getElementById("add-character-button").addEventListener("click", function() {
+  document.getElementById("character-form-container").style.display = "block";
+  document.getElementById("attack-form-container").style.display = "none";
+  document.getElementById("character-card-container").style.display = "none";
+});
+
+document.getElementById("add-attack-button").addEventListener("click", function() {
+  document.getElementById("character-form-container").style.display = "none";
+  document.getElementById("attack-form-container").style.display = "block";
+  document.getElementById("character-card-container").style.display = "none";
+});
+
+document.getElementById("view-characters-button").addEventListener("click", function() {
+  document.getElementById("character-form-container").style.display = "none";
+  document.getElementById("attack-form-container").style.display = "none";
+  document.getElementById("character-card-container").style.display = "block";
+
+  displayCharactersFromJSON();
+});
+
+document.getElementById("edit-button").addEventListener("click", function() {
+  document.getElementById("edit-button").style.display = "none";
+  document.getElementById("save-button").style.display = "inline-block";
+  document.getElementById("cancel-button").style.display = "inline-block";
+});
+
+document.getElementById("save-button").addEventListener("click", function() {
+  document.getElementById("save-button").style.display = "none";
+  document.getElementById("cancel-button").style.display = "none";
+  document.getElementById("edit-button").style.display = "inline-block";
+});
+
+document.getElementById("cancel-button").addEventListener("click", function() {
+  document.getElementById("save-button").style.display = "none";
+  document.getElementById("cancel-button").style.display = "none";
+  document.getElementById("edit-button").style.display = "inline-block";
+});

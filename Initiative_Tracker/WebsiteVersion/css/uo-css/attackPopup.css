@@ -1,0 +1,128 @@
+.popup {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #333;
+    padding: 2% 4%;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    width: 50%;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.popup .popup-header {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+.popup .close-button {
+    font-size: 18px;
+    cursor: pointer;
+    margin-left: 10px;
+    background-color: #ff0000; /* Red color */
+    color: #fff; /* White text */
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.popup .close-button:hover {
+    background-color: #cc0000; /* Darker red on hover */
+}
+
+.popup .search-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    width: 80%;
+}
+
+.popup input[type="search"] {
+    width: calc(100% - 120px);
+    height: 30px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.popup button[id="search-button"] {
+    width: 100px;
+    height: 30px;
+    padding: 10px;
+    border: none;
+    border-radius: 10px;
+    box-sizing: border-box;
+    background-color: #33cc33;
+    color: #fff;
+    cursor: pointer;
+    margin-left: 20px;
+}
+
+#cards-container {
+    margin-top: 20px;
+}
+
+
+
+
+.popup h2 {
+    margin-top: 0;
+    padding-bottom: 0px; /* Reduce padding on header */
+}
+
+.search-container {
+    margin-bottom: 20px; /* Add space between search bar and cards */
+}
+
+.attacks-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%; /* Increase width of attacks container */
+}
+
+.attack-card {
+    width: 100%; /* Make attack card full width of attacks container */
+    background-color: #333;
+    border-radius: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    margin-bottom: 20px; /* Add space between cards */
+    border: 2px solid #33cc33;
+}
+
+.attack-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.attack-header h3 {
+    margin: 0;
+}
+
+.attack-info {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.attack-info p {
+    width: 100%; /* Make each piece of attack info full width */
+    margin: 0;
+}
+
+.attack-info span {
+    font-size: 14px;
+    color: #666;
+}

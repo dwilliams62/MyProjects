@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="css/topbar.css">
     <link rel="stylesheet" href="css/uo-css/uo-sidebar.css">
     <link rel="stylesheet" href="css/uo-css/uo-display.css">
+    <link rel="stylesheet" href="css/uo-css/attackPopup.css">
     <style>
         body {
             font-family: sans-serif; 
@@ -92,42 +93,5 @@
     </main>
 
     <script src="dist/addCharacter.bundle.js"></script>
-    <script>
-        document.getElementById("add-character-button").addEventListener("click", function() {
-            document.getElementById("character-form-container").style.display = "block";
-            document.getElementById("attack-form-container").style.display = "none";
-            document.getElementById("character-card-container").style.display = "none";
-        });
-
-        document.getElementById("add-attack-button").addEventListener("click", function() {
-            document.getElementById("character-form-container").style.display = "none";
-            document.getElementById("attack-form-container").style.display = "block";
-            document.getElementById("character-card-container").style.display = "none";
-        });
-
-        document.getElementById("view-characters-button").addEventListener("click", function() {
-            document.getElementById("character-form-container").style.display = "none";
-            document.getElementById("attack-form-container").style.display = "none";
-            document.getElementById("character-card-container").style.display = "block";
-        });
-
-        document.getElementById("edit-button").addEventListener("click", function() {
-            document.getElementById("edit-button").style.display = "none";
-            document.getElementById("save-button").style.display = "inline-block";
-            document.getElementById("cancel-button").style.display = "inline-block";
-        });
-
-        document.getElementById("save-button").addEventListener("click", function() {
-            document.getElementById("save-button").style.display = "none";
-            document.getElementById("cancel-button").style.display = "none";
-            document.getElementById("edit-button").style.display = "inline-block";
-        });
-
-        document.getElementById("cancel-button").addEventListener("click", function() {
-            document.getElementById("save-button").style.display = "none";
-            document.getElementById("cancel-button").style.display = "none";
-            document.getElementById("edit-button").style.display = "inline-block";
-        });
-    </script>
 </body>
 </html>
