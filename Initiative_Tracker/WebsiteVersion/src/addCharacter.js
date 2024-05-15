@@ -105,7 +105,7 @@ export async function displayCharactersFromJSON() {
     const jsonData = await getCurrentData();
 
     // Get the card container element
-    const cardContainer = document.getElementById('character-card-container');
+    const cardContainer = document.getElementById('cards');
 
     // Clear out all the existing cards
     cardContainer.innerHTML = '';
@@ -178,4 +178,19 @@ document.getElementById("cancel-button").addEventListener("click", function() {
   document.getElementById("save-button").style.display = "none";
   document.getElementById("cancel-button").style.display = "none";
   document.getElementById("edit-button").style.display = "inline-block";
+});
+
+const editButton = document.getElementById('edit-button');
+const cancelButton = document.getElementById('cancel-button');
+const cardContainer = document.getElementById('cards');
+
+editButton.addEventListener('click', () => {
+  const textElements = cardContainer.querySelectorAll('h3, p');
+  textElements.forEach(element => {
+    element.contentEditable = true;
+  });
+});
+
+cancelButton.addEventListener('click', () => {
+  displayCharactersFromJSON();
 });

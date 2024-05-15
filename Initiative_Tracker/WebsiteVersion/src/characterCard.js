@@ -1,5 +1,7 @@
+import { getCurrentData } from './s3.js';
+
 export function createCard(characterInfo) {
-    const cardContainer = document.getElementById('character-card-container');
+    const cardContainer = document.getElementById('cards');
     const card = document.createElement('div');
     card.className = 'character-card';
 
@@ -55,39 +57,58 @@ export function createCard(characterInfo) {
     const viewAttacksButton = document.createElement('button');
     viewAttacksButton.innerHTML = 'View Attacks';
     viewAttacksButton.onclick = () => {
-        const popup = document.createElement('div');
-        popup.className = 'popup';
-        popup.innerHTML = `
-            <div class="popup-header">
-                <button class="close-button">×</button>
-            </div>
-            <h2>${characterInfo.name}'s attacks</h2>
-            <div class="search-container">
-                <input type="search" id="search-bar" placeholder="Search...">
-                <button id="search-button">Search</button>
-            </div>
-            <div class="attacks-container">
-                <div class="attack-card">
-                    <div class="attack-header">
-                        <h3>Attack Name</h3>
-                    </div>
-                    <hr>
-                    <div class="attack-info">
-                        <p><b>To Hit Bonus:</b> +5</p>
-                        <p><b>Attack Damage:</b> 1d6+2 <span>Fire</span></p>
-                        <p><b>Description:</b> This is a description of the attack. It can be really long and detailed.</p>
-                    </div>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(popup);
-
-        const closeButton = popup.querySelector('.close-button');
-        closeButton.addEventListener('click', () => {
-            popup.remove();
-        });
+        createAttackPopup(characterInfo);
     };
     card.appendChild(viewAttacksButton);
 
     cardContainer.appendChild(card);
+}
+
+async function createAttackPopup(characterInfo) {
+    const popup = document.createElement('div');
+    popup.className = 'popup';
+    popup.innerHTML = `
+        <div class="popup-header">
+            <button class="close-button">×</button>
+        </div>
+        <h2>${characterInfo.name}'s attacks</h2>
+        <div class="search-container">
+            <input type="search" id="search-bar" placeholder="Search...">
+            <button id="search-button">Search</button>
+        </div>
+        <div class="attacks-container">
+        </div>
+    `;
+    document.body.appendChild(popup);
+
+    const closeButton = popup.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+        popup.remove();
+    });
+
+    const data = await getCurrentData();
+    const character = data.find(char => char.name === characterInfo.name);
+    const attacksContainer = popup.querySelector('.attacks-container');
+
+    if (character && character.attacks && character.attacks.length > 0) {
+        character.attacks.forEach(attack => {
+            const attackCard = document.createElement('div');
+            attackCard.className = 'attack-card';
+            attackCard.innerHTML = `
+                <div class="attack-header">
+                    <h3>${attack.name}</h3>
+                </div>
+                <hr>
+                <div class="attack-info">
+                    <p><b>To Hit Bonus:</b> +${attack.toHitBonus}</p>
+                    <p><b>Attack Damage:</b> ${attack.damage} <span>${attack.damageType}</span></p>
+                </div>
+            `;
+            attacksContainer.appendChild(attackCard);
+        });
+    } else {
+        const noAttacksMessage = document.createElement('p');
+        noAttacksMessage.textContent = 'No attacks listed!';
+        attacksContainer.appendChild(noAttacksMessage);
+    }
 }

@@ -61,8 +61,7 @@ def generate_rows_Dn(starting_row, num_rows, n):
         new_row.append(starting_row[-1])
         rows.append(new_row)
         starting_row = new_row
-        # print(f"\rCalculating row: {i+2:{7}}/{num_rows}", end="")
-        print(new_row)
+        print(f"\rCalculating row: {i+2:{7}}/{num_rows}", end="")
     print()
     print(f"Time taken: {time.time() - start_time:.2f} seconds")
     print()

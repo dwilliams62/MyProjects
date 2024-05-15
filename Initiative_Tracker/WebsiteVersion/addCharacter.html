@@ -69,26 +69,12 @@
             </form>
         </div>
         <div class="uo-display" id="character-card-container" style="display: none;">
-            <button id="edit-button">Edit</button>
-            <button id="save-button" style="display: none;">Save</button>
-            <button id="cancel-button" style="display: none;">Cancel</button>
-            <div class="character-card">
-                <div class="character-image">
-                    <!-- Image goes here -->
-                </div>
-                <div class="character-header">
-                    <h3><b>Name:</b> <i id="character-name">Eilif Stonefist</i></h3>
-                    <p><b>HP:</b> <i id="current-hp">100</i>/<i id="max-hp">150</i></p>
-                </div>
-                <hr>
-                <div class="character-info">
-                    <p><b>AC:</b> <i id="ac">18</i></p>
-                    <p><b>Speed:</b> <i id="speed">30 ft.</i></p>
-                    <p><b>Initiative Modifier:</b> <i id="initiative-modifier">+2</i></p>
-                    <p><b>Spell Casting Modifier:</b> <i id="spell-casting-modifier">+5</i></p>
-                    <p><b>Spell Save DC:</b> <i id="spell-save-dc">15</i></p>
-                </div>
+            <div id="card-buttons">
+                <button id="edit-button">Edit</button>
+                <button id="save-button" style="display: none;">Save</button>
+                <button id="cancel-button" style="display: none;">Cancel</button>
             </div>
+            <div id="cards"></div>
         </div>
     </main>
 
