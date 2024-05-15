@@ -57,9 +57,9 @@ export function createCard(characterInfo) {
     const viewAttacksButton = document.createElement('button');
     viewAttacksButton.innerHTML = 'View Attacks';
     viewAttacksButton.onclick = () => {
-        createAttackPopup(characterInfo);
+      createAttackPopup(characterInfo);
     };
-    card.appendChild(viewAttacksButton);
+    info.appendChild(viewAttacksButton);
 
     cardContainer.appendChild(card);
 }
@@ -98,10 +98,10 @@ async function createAttackPopup(characterInfo) {
                 <div class="attack-header">
                     <h3>${attack.name}</h3>
                 </div>
+                <p>${attack.description}</p>
                 <hr>
                 <div class="attack-info">
-                    <p><b>To Hit Bonus:</b> +${attack.toHitBonus}</p>
-                    <p><b>Attack Damage:</b> ${attack.damage} <span>${attack.damageType}</span></p>
+                    <p><b>To Hit Bonus:</b> +${attack.toHitBonus} | <b>Attack Damage:</b> ${attack.damage} <span>${attack.damageType}</span></p>
                 </div>
             `;
             attacksContainer.appendChild(attackCard);

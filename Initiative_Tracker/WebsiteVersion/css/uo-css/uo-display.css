@@ -129,3 +129,23 @@
     float: left;
     margin-right: 20px;
 }
+
+
+[contenteditable] {
+  border: 1px solid #444; /* a dark grey border */
+  padding: 2px;
+}
+
+[contenteditable]:focus {
+  background-color: #333; /* a dark grey background */
+  color: #587d2d; /* a muted green text color */
+  outline: none; /* remove the default focus outline */
+  box-shadow: 0 0 2px #8bc34a; /* add a subtle green glow */
+}
+
+.edited {
+  background-color: #333; /* a dark grey background */
+  color: #8bc34a; /* a muted green text color */
+  outline: none; /* remove the default focus outline */
+  box-shadow: 0 0 2px #8bc34a; /* add a subtle green glow */
+}

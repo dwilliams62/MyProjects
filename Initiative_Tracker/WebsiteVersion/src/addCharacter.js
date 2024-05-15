@@ -30,6 +30,7 @@ function collectData() {
 function collectAttackData() {
   const characterName = document.getElementById('character-name').value;
   const attackName = document.getElementById('attack-name').value;
+  const attackDescription = document.getElementById('attack-description').value;
   const attackToHitBonus = parseInt(document.getElementById('attack-to-hit-bonus').value);
   const attackDamage = document.getElementById('attack-damage').value;
   const attackDamageType = document.getElementById('attack-damage-type').value;
@@ -37,6 +38,7 @@ function collectAttackData() {
   return {
     characterName,
     attackName,
+    attackDescription,
     attackToHitBonus,
     attackDamage,
     attackDamageType,
@@ -82,6 +84,7 @@ async function addAttackToCharacter() {
       }
       jsonData[characterIndex].attacks.push({
         name: newAttackData.attackName,
+        description: newAttackData.attackDescription,
         toHitBonus: newAttackData.attackToHitBonus,
         damage: newAttackData.attackDamage,
         damageType: newAttackData.attackDamageType,
@@ -185,9 +188,12 @@ const cancelButton = document.getElementById('cancel-button');
 const cardContainer = document.getElementById('cards');
 
 editButton.addEventListener('click', () => {
-  const textElements = cardContainer.querySelectorAll('h3, p');
+  const textElements = cardContainer.querySelectorAll('h3 i, p i');
   textElements.forEach(element => {
     element.contentEditable = true;
+    element.addEventListener('input', () => {
+      element.classList.add('edited');
+    });
   });
 });
 
