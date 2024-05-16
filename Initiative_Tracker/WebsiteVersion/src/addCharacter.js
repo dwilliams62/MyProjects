@@ -283,8 +283,19 @@ editButton.addEventListener('click', () => {
       confirmationPopup.style.display = 'block';
     
       const confirmDeleteButton = document.getElementById('confirm-delete-button');
-      confirmDeleteButton.onclick = () => {
+      confirmDeleteButton.onclick = async () => {
+        // Get the current data from S3
+        const currentData = await getCurrentData();
+        
+        // Remove the character from the data
+        const updatedData = currentData.filter(character => character.name !== characterName);
+        
+        // Write the updated data back to S3
+        await writeDataToS3(updatedData);
+        
+        // Remove the card from the UI
         card.remove();
+        
         confirmationPopup.style.display = 'none';
       };
     

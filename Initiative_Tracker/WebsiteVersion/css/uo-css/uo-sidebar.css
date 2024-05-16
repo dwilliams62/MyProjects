@@ -2,7 +2,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 200px;
+    width: 12%; /* set the width to 20% of the screen width */
     height: 100vh; /* make the sidebar full-height */
     background-color: #333; /* dark grey background */
     padding-top: 5%; /* add a top margin to the contents */

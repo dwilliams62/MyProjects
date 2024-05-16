@@ -53,14 +53,14 @@
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    width: 100px;
+    width: 6%; /* set width to 20% of the parent element's width */
     height: 40px;
     font-size: 16px;
 }
 
 #save-button, #cancel-button {
     display: none; /* hide save and cancel buttons initially */
-    width: 100px;
+    width: 6%; /* set width to 20% of the parent element's width */
     height: 40px;
     font-size: 16px;
     border: none;
@@ -160,11 +160,11 @@
 .delete-button {
     position: absolute;
     top: 10px;
-    right: -70px; /* Move the button to the right of the card */
+    right: -40px; /* Move the button to the left */
     background-color: red;
     color: white;
     border: 2px solid black; /* Reduce the border width */
-    padding: 10px; /* Reduce the padding */
+    padding: 10px; /* set padding to 10 pixels */
     font-size: 20px; /* Reduce the font size */
     cursor: pointer;
 }
@@ -179,6 +179,11 @@
   border: 2px solid #33cc33; /* Update the border */
   border-radius: 10px; /* Add a border radius */
   box-sizing: border-box;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
 }
 
 #confirmation-popup p {
