@@ -5,6 +5,17 @@ export function createCard(characterInfo) {
     const card = document.createElement('div');
     card.className = 'character-card';
 
+    // Create image
+    const image = document.createElement('img');
+    image.src = 'placeholder.png'; // Replace with the URL of your placeholder image
+    image.style.border = '1px solid red'; // Add red border
+    image.style.float = 'left'; // Move image to the left
+    image.style.marginRight = '10px'; // Add some space between image and text
+    image.style.width = '50px'; // Set width to 50px
+    image.style.height = '50px'; // Set height to 50px
+    image.style.objectFit = 'cover'; // Scale down the image while maintaining aspect ratio
+    card.appendChild(image);
+
     const header = document.createElement('div');
     header.className = 'character-header';
 

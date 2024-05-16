@@ -102,10 +102,17 @@ async function addAttackToCharacter() {
 }
 
 
-export async function displayCharactersFromJSON() {
+export async function displayCharactersFromJSON(data) {
   try {
-    // Get the current data from S3
-    const jsonData = await getCurrentData();
+    let jsonData;
+
+    // If data is passed, use it. Otherwise, get the current data from S3
+    if (data) {
+      jsonData = data;
+      console.log(data);
+    } else {
+      jsonData = await getCurrentData();
+    }
 
     // Get the card container element
     const cardContainer = document.getElementById('cards');
@@ -132,6 +139,58 @@ export async function displayCharactersFromJSON() {
   } catch (error) {
     console.error(error);
   }
+}
+
+async function updateJSONData() {
+  const currentData = await getCurrentData();
+  const cardContainer = document.getElementById('cards');
+  const characterCards = cardContainer.querySelectorAll('.character-card');
+
+  // Loop through each character card
+  characterCards.forEach((card, index) => {
+    const textElements = card.querySelectorAll('h3 i, p i');
+    const characterData = currentData[index];
+
+    // Loop through each editable field in the card
+    textElements.forEach((element) => {
+      if (element.classList.contains('edited')) {
+        const key = element.parentNode.childNodes[0].textContent.replace(':', '').trim().toLowerCase();
+
+        // Update the corresponding field in the character data
+        switch(key) {
+          case 'name':
+            characterData.name = element.textContent;
+            break;
+          case 'hp':
+            const hpValues = element.textContent.split('/');
+            characterData.currentHp = hpValues[0];
+            characterData.maxHp = hpValues[1];
+            break;
+          case 'ac':
+            characterData.ac = element.textContent;
+            break;
+          case 'speed':
+            characterData.speed = element.textContent;
+            break;
+          case 'initiative modifier':
+            characterData.initiativeModifier = element.textContent;
+            break;
+          case 'spell casting modifier':
+            characterData.spellCastingModifier = element.textContent;
+            break;
+          case 'spell save dc':
+            characterData.spellSaveDc = element.textContent;
+            break;
+        }
+
+        // Remove the 'edited' class
+        element.classList.remove('edited');
+      }
+    });
+  });
+
+  // Write the updated data back to S3
+  writeDataToS3(currentData);
 }
 
 
@@ -172,6 +231,8 @@ document.getElementById("edit-button").addEventListener("click", function() {
 });
 
 document.getElementById("save-button").addEventListener("click", function() {
+  updateJSONData();
+  displayCharactersFromJSON();
   document.getElementById("save-button").style.display = "none";
   document.getElementById("cancel-button").style.display = "none";
   document.getElementById("edit-button").style.display = "inline-block";
