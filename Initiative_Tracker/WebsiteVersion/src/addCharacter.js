@@ -45,6 +45,13 @@ function collectAttackData() {
   };
 }
 
+function clearForm(form) {
+  const inputs = form.querySelectorAll('input');
+  inputs.forEach(input => {
+    input.value = '';
+  });
+}
+
 
 // Function to add character to S3
 async function addCharacterToS3() {
@@ -196,7 +203,11 @@ async function updateJSONData() {
 
 document.getElementById('submit-button').addEventListener('click', async (event) => {
   event.preventDefault();
+  const loadingIndicator = document.getElementById('loading-indicator');
+  loadingIndicator.textContent = 'Loading...';
   await addCharacterToS3();
+  clearForm(document.getElementById('character-form'));
+  loadingIndicator.textContent = 'Successfully Uploaded!';
 });
 
 document.getElementById('submit-attack-button').addEventListener('click', async (event) => {
@@ -256,7 +267,36 @@ editButton.addEventListener('click', () => {
       element.classList.add('edited');
     });
   });
+
+  // Add delete buttons to all cards
+  const cards = cardContainer.querySelectorAll('.character-card');
+  cards.forEach(card => {
+    const deleteButton = document.createElement('button');
+    deleteButton.innerHTML = 'X';
+    deleteButton.className = 'delete-button';
+    deleteButton.onclick = () => {
+      const characterName = card.querySelector('h3 i').textContent;
+      const confirmationMessage = document.getElementById('confirmation-message');
+      confirmationMessage.textContent = `Are you sure you'd like to delete ${characterName}? This cannot be reversed!`;
+    
+      const confirmationPopup = document.getElementById('confirmation-popup');
+      confirmationPopup.style.display = 'block';
+    
+      const confirmDeleteButton = document.getElementById('confirm-delete-button');
+      confirmDeleteButton.onclick = () => {
+        card.remove();
+        confirmationPopup.style.display = 'none';
+      };
+    
+      const cancelButton = document.getElementById('cancel-delete-button');
+      cancelButton.onclick = () => {
+        confirmationPopup.style.display = 'none';
+      };
+    };
+    card.appendChild(deleteButton);
+  });
 });
+
 
 cancelButton.addEventListener('click', () => {
   displayCharactersFromJSON();

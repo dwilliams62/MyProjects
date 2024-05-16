@@ -30,17 +30,18 @@
     border-radius: 5px;
 }
 
-.uo-display button[type="submit"] {
-    width: 100%;
+.submit-button {
+    width: 8%; /* updated width */
     height: 40px;
     background-color: #339933; /* green buttons */
     color: #fff;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    margin-top: 5px; /* add some space above the submit button */
 }
 
-.uo-display button[type="submit"]:hover {
+.submit-button:hover {
     background-color: #206620; /* slightly darker green on hover */
 }
 
@@ -85,6 +86,7 @@
     box-sizing: border-box;
     margin-bottom: 20px; /* Add this line to add spacing between cards */
     border: 2px solid #33cc33; /* Add this line to add a light green border */
+    position: relative;
 }   
 
 .uo-display .character-header {
@@ -130,6 +132,11 @@
     margin-right: 20px;
 }
 
+#loading-indicator {
+  font-size: 14px;
+  color: #666;
+  margin-left: 10px;
+}
 
 [contenteditable] {
   border: 1px solid #444; /* a dark grey border */
@@ -148,4 +155,53 @@
   color: #8bc34a; /* a muted green text color */
   outline: none; /* remove the default focus outline */
   box-shadow: 0 0 2px #8bc34a; /* add a subtle green glow */
+}
+
+.delete-button {
+    position: absolute;
+    top: 10px;
+    right: -70px; /* Move the button to the right of the card */
+    background-color: red;
+    color: white;
+    border: 2px solid black; /* Reduce the border width */
+    padding: 10px; /* Reduce the padding */
+    font-size: 20px; /* Reduce the font size */
+    cursor: pointer;
+}
+
+#confirmation-popup {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #333; /* Update the background color */
+  padding: 20px;
+  border: 2px solid #33cc33; /* Update the border */
+  border-radius: 10px; /* Add a border radius */
+  box-sizing: border-box;
+}
+
+#confirmation-popup p {
+  margin-bottom: 10px;
+  color: #eee; /* Update the text color */
+}
+
+#confirmation-popup button {
+  width: 100px;
+  height: 40px;
+  font-size: 16px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin: 10px;
+}
+
+#confirm-delete-button {
+  background-color: #ff0000; /* Red button */
+  color: #fff;
+}
+
+#cancel-delete-button {
+  background-color: #339933; /* Green button */
+  color: #fff;
 }
