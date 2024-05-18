@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="css/it-css/it-sidebar.css">
     <link rel="stylesheet" href="css/topbar.css">
     <link rel="stylesheet" href="css/it-css/it-information.css">
+    <link rel="stylesheet" href="css/it-css/it-popup.css">
     <title>Initiative Tracker</title>
 </head>
 <body>
@@ -26,7 +27,6 @@
                 <div class="sidebar-buttons">
                     <button id="addCharacter">Add Custom Character</button>
                     <button id="loadCharacter">Load Character</button>
-                    <button id="writeCharacter">Write Character</button>
                     <button id="changeHP">Change HP</button>
                     <button id="addStatus">Add Status</button>
                     <button id="removeStatus">Remove Status</button>
@@ -60,6 +60,13 @@
             </div>  
             <div class="it-status-effect" id="attackLog" style="overflow-y: auto; height: 400px;"></div>
         </aside>
+    </div>
+
+    <div class="it-popup" id="popup" style="display: none;">
+        <div class="it-popup-content">
+          <span class="it-popup-close" id="popupClose">&times;</span>
+          <div id="popupContent"></div>
+        </div>
     </div>
 
     <script src="dist/main.bundle.js"></script>

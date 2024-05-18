@@ -1,7 +1,7 @@
 import { getCurrentData } from './s3.js';
 
-export function createCard(characterInfo) {
-    const cardContainer = document.getElementById('cards');
+export function createCard(characterInfo, cardContainerId = 'cards') {
+    const cardContainer = document.getElementById(cardContainerId);
     const card = document.createElement('div');
     card.className = 'character-card';
 
