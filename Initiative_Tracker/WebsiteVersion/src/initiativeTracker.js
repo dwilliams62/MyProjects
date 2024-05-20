@@ -1,3 +1,6 @@
+import { confirmRemoveCharacter, addStatusCondition,
+    removeStatusCondition, changeHP, closePopup } from './it-functions.js';
+
 class InitiativeTracker {
     constructor() {
         this.characters = [];
@@ -82,96 +85,77 @@ class InitiativeTracker {
     }
     
     removeCharacter() {
-        var charactersRemoved = false;
-        // Iterate in reverse because removing from the array messes with the index
-        for (let i = this.characters.length-1; i >= 0; i--) {
-            const checkbox = document.getElementById(`checkbox_${i}`);
-            if (checkbox.checked) {
-                charactersRemoved = true;
-                // Adjust currentTurn if necessary (Do this at the end to not interfere with iteration)
-                if (i <= this.currentTurn) { 
-                    this.currentTurn--; 
-                    if (this.currentTurn < 0) {
-                        this.currentTurn = this.characters.length -1; // Wrap around
-                    }
-                }
-                this.characters.splice(i, 1);  // Remove the character
-            }
-        }
-        this.displayInitiativeList(); // Update the display
-        if (!charactersRemoved) {
-            alert(`No characters selected!`);
-        }
-    }
-    
-    addStatusCondition() {
-        let status = prompt("Enter status name: ");
-        let durationInput = prompt("Enter duration (Ex. 5 Turns(B) or 3 Turns (E)): ");
-        var someoneChecked = false;
-    
-        // Extract numeric duration and type (B or E)
-        let matches = durationInput.match(/(\d+)\s+Turns\s+\((B|E)\)/i);
-        if (matches && matches.length === 3) {
-            let duration = parseInt(matches[1]);
-            let type = matches[2];
-            let durationString = `${duration} Turns (${type})`;
-    
-            for (let i = 0; i < this.characters.length; i++) {
-                const checkbox = document.getElementById(`checkbox_${i}`);
-                if (checkbox.checked) {
-                    someoneChecked = true;
-                    this.characters[i].statusConditions.push([status, durationString]); 
-                }
-            }
-        } else {
-            console.error("Invalid duration format. Please use the format: '5 Turns(B)' or '3 Turns (E)'.");
-        }
-
-        if (!someoneChecked) {
-            alert("No characters selected!");
-        } else {
-            this.displayInitiativeList(); // Update the display
-        }
-    }
-    
-    removeStatusCondition() {
-        let status = prompt("Enter status to remove: ");
-        var someoneChecked = false;
-        for (let i = 0; i < this.characters.length; i++) {
-            const checkbox = document.getElementById(`checkbox_${i}`);
-            if (checkbox.checked) {
-                someoneChecked = true;
-                this.characters[i].statusConditions = this.characters[i].statusConditions.filter(([c]) => c !== status);
-            }
-        }
-        if (!someoneChecked) {
-            alert("No characters selected!");
-        } else {
-            this.displayInitiativeList(); // Update the display
-        }
-    }
-
-    changeHP() {
-        const characters = this.characters;
-        let hpChange = parseInt(prompt("Enter HP change (positive or negative):"));
-        var hpChanged = false;
-        for (let i = 0; i < characters.length; i++) {
-            const checkbox = document.getElementById(`checkbox_${i}`);
-            if (checkbox.checked) {
-                hpChanged = true;
-                let newHP = characters[i].currentHP + hpChange; 
-                if (newHP < 0) {
-                    newHP = 0;
-                } else if (newHP > characters[i].maxHP) {
-                    newHP = characters[i].maxHP;
-                }
-                characters[i].currentHP = newHP;
-            }
-        }
-        this.displayInitiativeList(); 
-        if (!hpChanged) {
-            alert(`No characters selected!`);
-        }
+        populatePopup('Remove Character', `
+          <p>Are you sure you'd like to delete the selected characters?</p>
+          <button id="confirmRemove-removeCharacter">Confirm</button>
+          <button id="cancelRemove-removeCharacter">Cancel</button>
+        `);
+      
+        const confirmRemove = document.getElementById('confirmRemove-removeCharacter');
+        const cancelRemove = document.getElementById('cancelRemove-removeCharacter');
+      
+        confirmRemove.addEventListener('click', confirmRemoveCharacter.bind(this));
+        cancelRemove.addEventListener('click', closePopup);
+      }
+      
+      addStatusCondition() {
+        populatePopup('Add Status Condition', `
+          <label for="statusName-addStatusCondition">Enter status name:</label>
+          <input type="text" id="statusName-addStatusCondition"><br><br>
+          <label for="duration-addStatusCondition">Enter duration (Ex. 5 Turns(B) or 3 Turns (E)):</label>
+          <input type="text" id="duration-addStatusCondition"><br><br>
+          <button id="addStatus-addStatusCondition">Add Status</button>
+          <button id="cancelStatus-addStatusCondition">Cancel</button>
+        `);
+      
+        const addStatus = document.getElementById('addStatus-addStatusCondition');
+        const cancelStatus = document.getElementById('cancelStatus-addStatusCondition');
+      
+        addStatus.addEventListener('click', () => {
+          const status = document.getElementById('statusName-addStatusCondition').value;
+          const durationInput = document.getElementById('duration-addStatusCondition').value;
+          addStatusCondition.call(this, status, durationInput);
+        });
+      
+        cancelStatus.addEventListener('click', closePopup);
+      }
+      
+      removeStatusCondition() {
+        populatePopup('Remove Status Condition', `
+          <label for="statusToRemove-removeStatusCondition">Enter status to remove:</label>
+          <input type="text" id="statusToRemove-removeStatusCondition"><br><br>
+          <button id="removeStatus-removeStatusCondition">Remove Status</button>
+          <button id="cancelRemoveStatus-removeStatusCondition">Cancel</button>
+        `);
+      
+        const removeStatus = document.getElementById('removeStatus-removeStatusCondition');
+        const cancelRemoveStatus = document.getElementById('cancelRemoveStatus-removeStatusCondition');
+      
+        removeStatus.addEventListener('click', () => {
+          const status = document.getElementById('statusToRemove-removeStatusCondition').value;
+          removeStatusCondition.call(this, status);
+        });
+      
+        cancelRemoveStatus.addEventListener('click', closePopup);
+      }
+      
+      changeHP() {
+        populatePopup('Change HP', `
+          <label for="hpChange-changeHP">Enter HP change (positive or negative):</label>
+          <input type="number" id="hpChange-changeHP"><br><br>
+          <button id="changeHPButton-changeHP">Change HP</button>
+          <button id="cancelHP-changeHP">Cancel</button>
+        `);
+      
+        const changeHPButton = document.getElementById('changeHPButton-changeHP');
+        const cancelHPButton = document.getElementById('cancelHP-changeHP');
+      
+        changeHPButton.addEventListener('click', () => {
+          const hpChange = parseInt(document.getElementById('hpChange-changeHP').value);
+          changeHP.call(this, hpChange);
+        });
+      
+        cancelHPButton.addEventListener('click', closePopup);
     }
 
     rollAttack() {
@@ -455,4 +439,21 @@ export async function addCharacterFromJSON(initiativeTracker) {
   } catch (error) {
     console.error(error);
   }
+}
+
+// Function to populate the popup
+function populatePopup(title, content) {
+  const popup = document.getElementById('popup');
+  const popupContent = document.getElementById('popupContent');
+  const popupClose = document.getElementById('popupClose');
+
+  popup.style.display = 'block';
+  popupContent.innerHTML = `
+    <h2>${title}</h2>
+    ${content}
+  `;
+
+  popupClose.onclick = () => {
+    popup.style.display = 'none';
+  };
 }
