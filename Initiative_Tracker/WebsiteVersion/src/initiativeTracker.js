@@ -1,5 +1,5 @@
 import { confirmRemoveCharacter, addStatusCondition,
-    removeStatusCondition, changeHP, closePopup } from './it-functions.js';
+    removeStatusCondition, changeHP, rollAttack as rollAttackIT, closePopup } from './it-functions.js';
 
 class InitiativeTracker {
     constructor() {
@@ -85,134 +85,166 @@ class InitiativeTracker {
     }
     
     removeCharacter() {
-        populatePopup('Remove Character', `
-          <p>Are you sure you'd like to delete the selected characters?</p>
-          <button id="confirmRemove-removeCharacter">Confirm</button>
-          <button id="cancelRemove-removeCharacter">Cancel</button>
-        `);
-      
-        const confirmRemove = document.getElementById('confirmRemove-removeCharacter');
-        const cancelRemove = document.getElementById('cancelRemove-removeCharacter');
-      
-        confirmRemove.addEventListener('click', confirmRemoveCharacter.bind(this));
-        cancelRemove.addEventListener('click', closePopup);
-      }
-      
-      addStatusCondition() {
-        populatePopup('Add Status Condition', `
-          <label for="statusName-addStatusCondition">Enter status name:</label>
-          <input type="text" id="statusName-addStatusCondition"><br><br>
-          <label for="duration-addStatusCondition">Enter duration (Ex. 5 Turns(B) or 3 Turns (E)):</label>
-          <input type="text" id="duration-addStatusCondition"><br><br>
-          <button id="addStatus-addStatusCondition">Add Status</button>
-          <button id="cancelStatus-addStatusCondition">Cancel</button>
-        `);
-      
-        const addStatus = document.getElementById('addStatus-addStatusCondition');
-        const cancelStatus = document.getElementById('cancelStatus-addStatusCondition');
-      
-        addStatus.addEventListener('click', () => {
-          const status = document.getElementById('statusName-addStatusCondition').value;
-          const durationInput = document.getElementById('duration-addStatusCondition').value;
-          addStatusCondition.call(this, status, durationInput);
-        });
-      
-        cancelStatus.addEventListener('click', closePopup);
-      }
-      
-      removeStatusCondition() {
-        populatePopup('Remove Status Condition', `
-          <label for="statusToRemove-removeStatusCondition">Enter status to remove:</label>
-          <input type="text" id="statusToRemove-removeStatusCondition"><br><br>
-          <button id="removeStatus-removeStatusCondition">Remove Status</button>
-          <button id="cancelRemoveStatus-removeStatusCondition">Cancel</button>
-        `);
-      
-        const removeStatus = document.getElementById('removeStatus-removeStatusCondition');
-        const cancelRemoveStatus = document.getElementById('cancelRemoveStatus-removeStatusCondition');
-      
-        removeStatus.addEventListener('click', () => {
-          const status = document.getElementById('statusToRemove-removeStatusCondition').value;
-          removeStatusCondition.call(this, status);
-        });
-      
-        cancelRemoveStatus.addEventListener('click', closePopup);
-      }
-      
-      changeHP() {
-        populatePopup('Change HP', `
-          <label for="hpChange-changeHP">Enter HP change (positive or negative):</label>
-          <input type="number" id="hpChange-changeHP"><br><br>
-          <button id="changeHPButton-changeHP">Change HP</button>
-          <button id="cancelHP-changeHP">Cancel</button>
-        `);
-      
-        const changeHPButton = document.getElementById('changeHPButton-changeHP');
-        const cancelHPButton = document.getElementById('cancelHP-changeHP');
-      
-        changeHPButton.addEventListener('click', () => {
-          const hpChange = parseInt(document.getElementById('hpChange-changeHP').value);
-          changeHP.call(this, hpChange);
-        });
-      
-        cancelHPButton.addEventListener('click', closePopup);
+      populatePopup('Remove Character', `
+        <p>Are you sure you'd like to delete the selected characters?</p>
+        <button id="confirmRemove-removeCharacter">Confirm</button>
+        <button id="cancelRemove-removeCharacter">Cancel</button>
+      `);
+    
+      const confirmRemove = document.getElementById('confirmRemove-removeCharacter');
+      const cancelRemove = document.getElementById('cancelRemove-removeCharacter');
+    
+      confirmRemove.addEventListener('click', confirmRemoveCharacter.bind(this));
+      cancelRemove.addEventListener('click', closePopup);
+    }
+    
+    addStatusCondition() {
+      populatePopup('Add Status Condition', `
+        <label for="statusName-addStatusCondition">Enter status name:</label>
+        <input type="text" id="statusName-addStatusCondition"><br><br>
+        <label for="duration-addStatusCondition">Enter duration (Ex. 5 Turns(B) or 3 Turns (E)):</label>
+        <input type="text" id="duration-addStatusCondition"><br><br>
+        <button id="addStatus-addStatusCondition">Add Status</button>
+        <button id="cancelStatus-addStatusCondition">Cancel</button>
+      `);
+    
+      const addStatus = document.getElementById('addStatus-addStatusCondition');
+      const cancelStatus = document.getElementById('cancelStatus-addStatusCondition');
+    
+      addStatus.addEventListener('click', () => {
+        const status = document.getElementById('statusName-addStatusCondition').value;
+        const durationInput = document.getElementById('duration-addStatusCondition').value;
+        addStatusCondition.call(this, status, durationInput);
+      });
+    
+      cancelStatus.addEventListener('click', closePopup);
+    }
+    
+    removeStatusCondition() {
+      populatePopup('Remove Status Condition', `
+        <label for="statusToRemove-removeStatusCondition">Enter status to remove:</label>
+        <input type="text" id="statusToRemove-removeStatusCondition"><br><br>
+        <button id="removeStatus-removeStatusCondition">Remove Status</button>
+        <button id="cancelRemoveStatus-removeStatusCondition">Cancel</button>
+      `);
+    
+      const removeStatus = document.getElementById('removeStatus-removeStatusCondition');
+      const cancelRemoveStatus = document.getElementById('cancelRemoveStatus-removeStatusCondition');
+    
+      removeStatus.addEventListener('click', () => {
+        const status = document.getElementById('statusToRemove-removeStatusCondition').value;
+        removeStatusCondition.call(this, status);
+      });
+    
+      cancelRemoveStatus.addEventListener('click', closePopup);
+    }
+    
+    changeHP() {
+      populatePopup('Change HP', `
+        <label for="hpChange-changeHP">Enter HP change (positive or negative):</label>
+        <input type="number" id="hpChange-changeHP"><br><br>
+        <button id="changeHPButton-changeHP">Change HP</button>
+        <button id="cancelHP-changeHP">Cancel</button>
+      `);
+    
+      const changeHPButton = document.getElementById('changeHPButton-changeHP');
+      const cancelHPButton = document.getElementById('cancelHP-changeHP');
+    
+      changeHPButton.addEventListener('click', () => {
+        const hpChange = parseInt(document.getElementById('hpChange-changeHP').value);
+        changeHP.call(this, hpChange);
+      });
+    
+      cancelHPButton.addEventListener('click', closePopup);
     }
 
     rollAttack() {
-        let attackLog = document.getElementById("attackLog");
-        let attackText = "--------\n";
+      const selectedCharacters = this.characters.filter((character, index) => {
+        const checkbox = document.getElementById(`checkbox_${index}`);
+        return checkbox.checked;
+      });
     
-        for (let i = 0; i < this.characters.length; i++) {
-            const checkbox = document.getElementById(`checkbox_${i}`);
-            if (checkbox.checked) {
-                let character = this.characters[i];
-                if (!character.attacks || character.attacks.length === 0) {
-                    alert(`Character ${character.name} does not have any attacks.`);
-                    continue;
-                }
+      if (selectedCharacters.length === 0) {
+        alert("No characters selected!");
+        return;
+      }
+
+      selectedCharacters.sort((a, b) => {
+        const aIndex = (this.characters.indexOf(a) - this.currentTurn + this.characters.length) % this.characters.length;
+        const bIndex = (this.characters.indexOf(b) - this.currentTurn + this.characters.length) % this.characters.length;
+        return aIndex - bIndex;
+      });
     
-                let attack;
-                if (character.attacks.length === 1) {
-                    attack = character.attacks[0];
-                } else {
-                    let attackOptions = character.attacks.map((attack, index) => `${index + 1}. ${attack.name}`).join('\n');
-                    let attackChoice = prompt(`Which attack would you like to perform for character ${character.name}?\n${attackOptions}`);
-                    attack = character.attacks[parseInt(attackChoice) - 1];
-                }
+      let attackLog = document.getElementById("attackLog");
+      let currentIndex = 0;
     
-                let toHitRoll = Math.floor(Math.random() * 20) + 1; // Roll a d20
-                let toHitTotal = toHitRoll + attack.toHitBonus;
-    
-                let damageMatch = attack.damage.match(/^(\d+)d(\d+)\+(\d+)$/);
-                if (!damageMatch) {
-                    alert(`Invalid damage format for character ${character.name}. Should be of the form '2d6+8'.`);
-                    continue;
-                }
-    
-                let numDice = parseInt(damageMatch[1]);
-                let diceSize = parseInt(damageMatch[2]);
-                let damageBonus = parseInt(damageMatch[3]);
-    
-                let damageRoll = 0;
-                for (let j = 0; j < numDice; j++) {
-                    damageRoll += Math.floor(Math.random() * diceSize) + 1; // Roll a dice of size diceSize
-                }
-                let damageTotal = damageRoll + damageBonus;
-    
-                attackText += `Character ${character.name} rolls an attack:` +
-                              `\nTo Hit: ${toHitTotal} (${toHitRoll} + ${attack.toHitBonus})` +
-                              `\nDamage: ${damageTotal} (${damageRoll} + ${damageBonus}) ${attack.damageType}\n--------\n`;
-            }
+      function showNextCharacter() {
+        if (currentIndex >= selectedCharacters.length) {
+          closePopup();
+          return;
         }
     
-        attackText += "\n";
+        const character = selectedCharacters[currentIndex];
+        const popupContent = document.getElementById('popupContent');
+        popupContent.innerHTML = `
+          <h2>${character.name}'s attacks</h2>
+          <div class="it-popup-attacks-container">
+          </div>
+          <button id="cancel-button">Cancel</button>
+          <button id="next-button">Next</button>
+        `;
     
-        attackLog.innerText = attackText + attackLog.innerText;
-        let attackLines = attackLog.innerText.split("\n-------------\n");
-        if (attackLines.length > 50) {
-            attackLines.splice(50, attackLines.length - 50);
-            attackLog.innerText = attackLines.join("\n-------------\n");
+        const cancelButton = document.getElementById('cancel-button');
+        cancelButton.addEventListener('click', closePopup);
+    
+        const nextButton = document.getElementById('next-button');
+        nextButton.addEventListener('click', () => {
+          currentIndex++;
+          showNextCharacter();
+        });
+    
+        const attacksContainer = popupContent.querySelector('.it-popup-attacks-container');
+    
+        if (character.attacks && character.attacks.length > 0) {
+          character.attacks.forEach((attack, index) => {
+            const attackCard = document.createElement('div');
+            attackCard.className = 'it-popup-attack-card';
+            attackCard.innerHTML = `
+              <div class="it-popup-attack-header">
+                <h3>${attack.name}</h3>
+              </div>
+              <p>${attack.description || 'No description provided'}</p>
+              <hr>
+              <div class="it-popup-attack-info">
+                <p><b>To Hit Bonus:</b> +${attack.toHitBonus} | <b>Attack Damage:</b> ${attack.damage} <span>${attack.damageType}</span></p>
+              </div>
+            `;
+            attackCard.addEventListener('click', () => {
+              const attackResult = rollAttackIT(character, index);
+              const attackText = `Character ${character.name} rolls an attack:` +
+                                 `\nTo Hit: ${attackResult.toHitTotal}` +
+                                 `\nDamage: ${attackResult.damageTotal} ${attackResult.damageType}\n--------\n`;
+              attackLog.innerText = attackText + attackLog.innerText;
+              const attackLines = attackLog.innerText.split("\n-------------\n");
+              if (attackLines.length > 50) {
+                attackLines.splice(50, attackLines.length - 50);
+                attackLog.innerText = attackLines.join("\n-------------\n");
+              }
+              currentIndex++;
+              showNextCharacter();
+            });
+            attacksContainer.appendChild(attackCard);
+          });
+        } else {
+          const noAttacksMessage = document.createElement('p');
+          noAttacksMessage.textContent = 'No attacks listed!';
+          attacksContainer.appendChild(noAttacksMessage);
         }
+    
+        document.getElementById('popup').style.display = 'block';
+      }
+    
+      showNextCharacter();
     }
 
     displayInitiativeList() {

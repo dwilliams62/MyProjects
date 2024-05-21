@@ -97,3 +97,31 @@ export function changeHP(hpChange) {
   }
   document.getElementById('popup').style.display = 'none';
 }
+
+export function rollAttack(character, attackIndex) {
+  // Roll a d20
+  const toHitRoll = Math.floor(Math.random() * 20) + 1;
+  const toHitTotal = toHitRoll + character.attacks[attackIndex].toHitBonus;
+
+  // Roll damage
+  const damageMatch = character.attacks[attackIndex].damage.match(/^(\d+)d(\d+)\+(\d+)$/);
+  if (!damageMatch) {
+    throw new Error(`Invalid damage format for character ${character.name}. Should be of the form '2d6+8'.`);
+  }
+
+  const numDice = parseInt(damageMatch[1]);
+  const diceSize = parseInt(damageMatch[2]);
+  const damageBonus = parseInt(damageMatch[3]);
+
+  let damageRoll = 0;
+  for (let j = 0; j < numDice; j++) {
+    damageRoll += Math.floor(Math.random() * diceSize) + 1; // Roll a dice of size diceSize
+  }
+  const damageTotal = damageRoll + damageBonus;
+
+  return {
+    toHitTotal,
+    damageTotal,
+    damageType: character.attacks[attackIndex].damageType,
+  };
+}
