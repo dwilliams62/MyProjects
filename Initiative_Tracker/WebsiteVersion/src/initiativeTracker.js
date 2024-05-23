@@ -1,5 +1,7 @@
-import { confirmRemoveCharacter, addStatusCondition,
+import { confirmRemoveCharacter, addStatusCondition, processStatusEffects, updateCurrentTurn,
     removeStatusCondition, changeHP, rollAttack as rollAttackIT, closePopup } from './it-functions.js';
+import { createNewRoundSeparator, createAcDisplay, createHealthDisplay, createStatusDisplay,
+      createBeginningOfTurnDisplay, createEndOfTurnDisplay } from './it-html.js';
 
 class InitiativeTracker {
     constructor() {
@@ -10,16 +12,8 @@ class InitiativeTracker {
     addCharacter(character) {
         this.characters.push(character);
         this.sortInitiative();
-
-        // Update currentTurn if new character has higher initiative
-        if (this.characters.length > 1 && this.currentTurn < this.characters.length) {
-            if (character.initiative > this.characters[this.currentTurn+1].initiative) {
-                this.currentTurn++;
-                if (this.currentTurn >= this.characters.length) {
-                    this.currentTurn = 0; // Wrap around if needed
-                }
-            }
-        } 
+                // Update currentTurn if new character has higher initiative
+        this.currentTurn = updateCurrentTurn(this.characters, this.currentTurn, character.initiative);
 
         this.displayInitiativeList(); // Update the display
     }
@@ -31,55 +25,10 @@ class InitiativeTracker {
     nextTurn() {
         const endingTurn = this.characters[this.currentTurn];
         const startingTurn = this.characters[(this.currentTurn + 1) % this.characters.length];
-        
-        let foundStatus = false;
-        
-        // Check ending turn
-        endingTurn.statusConditions = endingTurn.statusConditions.filter((status) => {
-            const [condition, duration] = status;
-        
-            if (String(duration).endsWith("(E)")) { // Convert duration to a string
-                foundStatus = true;
-                console.log(`Don't forget, ${endingTurn.name} is ${condition}!`);
-        
-                if (String(duration).toLowerCase().includes('turn')) {
-                    let turnsLeft = parseInt(String(duration).split(" ")[0]);
-                    turnsLeft--;
-                    if (turnsLeft === 0) {
-                        console.log(`${endingTurn.name}'s ${condition} is over!`);
-                        return false; // Remove from array
-                    } else {
-                        status[1] = `${turnsLeft} Turns (E)`;
-                        return true; // Keep in array (update duration)
-                    }
-                }
-            }
-            return true; // Keep all other statuses
-        });
-        
-        // Check starting turn
-        startingTurn.statusConditions = startingTurn.statusConditions.filter((status) => {
-            const [condition, duration] = status;
-        
-            if (String(duration).endsWith("(B)")) { // Convert duration to a string
-                foundStatus = true;
-                console.log(`Don't forget, ${startingTurn.name} is ${condition}!`);
-        
-                if (String(duration).toLowerCase().includes('turn')) {
-                    let turnsLeft = parseInt(String(duration).split(" ")[0]);
-                    turnsLeft--;
-                    if (turnsLeft === 0) {
-                        console.log(`${startingTurn.name}'s ${condition} is over!`);
-                        return false; // Remove from array
-                    } else {
-                        status[1] = `${turnsLeft} Turns (B)`; // Update duration
-                        return true; // Keep in array (update duration)
-                    }
-                }
-            }
-            return true; // Keep all other statuses
-        });
-        
+
+        processStatusEffects(endingTurn, 'E');
+        processStatusEffects(startingTurn, 'B');
+
         this.currentTurn = (this.currentTurn + 1) % this.characters.length;
         this.displayInitiativeList(); // Update the display
     }
@@ -259,29 +208,19 @@ class InitiativeTracker {
         }
     
         if (this.currentTurn === 0) {
-            let newRoundSeparator = document.createElement('div');
-            newRoundSeparator.textContent = 'NEW ROUND';
-            newRoundSeparator.style.textAlign = 'center';
-            newRoundSeparator.style.fontWeight = 'bold';
-            newRoundSeparator.style.border = '1px solid green'; // add a green border
-            initiativeListDiv.appendChild(newRoundSeparator);
+          initiativeListDiv.appendChild(createNewRoundSeparator('green'));
         }
     
         for (let i = this.currentTurn; i < this.characters.length; i++) {
-            initiativeListDiv.appendChild(this.createCharacterCard(i));
+          initiativeListDiv.appendChild(this.createCharacterCard(i));
         }
     
         if (this.currentTurn !== 0) {
-            let newRoundSeparator = document.createElement('div');
-            newRoundSeparator.textContent = 'NEW ROUND';
-            newRoundSeparator.style.textAlign = 'center';
-            newRoundSeparator.style.fontWeight = 'bold';
-            newRoundSeparator.style.border = '1px solid grey'; // add a grey border
-            initiativeListDiv.appendChild(newRoundSeparator);
+          initiativeListDiv.appendChild(createNewRoundSeparator('grey'));
         }
     
         for (let i = 0; i < this.currentTurn; i++) {
-            initiativeListDiv.appendChild(this.createCharacterCard(i));
+          initiativeListDiv.appendChild(this.createCharacterCard(i));
         }
 
         const statusEffectsDiv = document.getElementById('statusEffects');
@@ -289,28 +228,15 @@ class InitiativeTracker {
 
         const currentCharacter = this.characters[this.currentTurn];
 
-        const acDisplay = document.createElement('div');
-        acDisplay.classList.add('it-status-effect');
-        acDisplay.innerHTML = `<span>AC:</span> <span>${currentCharacter.ac}</span>`;
+        const acDisplay = createAcDisplay(currentCharacter.ac);
         statusEffectsDiv.appendChild(acDisplay);
-
-        const healthDisplay = document.createElement('div');
-        healthDisplay.classList.add('it-status-effect');
-        healthDisplay.innerHTML = `<span>Health:</span> <span>${currentCharacter.currentHP}/${currentCharacter.maxHP}</span>`;
+    
+        const healthDisplay = createHealthDisplay(currentCharacter.currentHP, currentCharacter.maxHP);
         statusEffectsDiv.appendChild(healthDisplay);
-
-        const beginningOfTurnDisplay = document.createElement('div');
-        beginningOfTurnDisplay.classList.add('it-status-effect');
-        beginningOfTurnDisplay.innerHTML = '<span>Beginning of Turn:</span>';
-        const beginningOfTurnList = document.createElement('ul');
-        beginningOfTurnDisplay.appendChild(beginningOfTurnList);
-
-        const endOfTurnDisplay = document.createElement('div');
-        endOfTurnDisplay.classList.add('it-status-effect');
-        endOfTurnDisplay.innerHTML = '<span>End of Turn:</span>';
-        const endOfTurnList = document.createElement('ul');
-        endOfTurnDisplay.appendChild(endOfTurnList);
-
+    
+        const { beginningOfTurnDisplay, beginningOfTurnList } = createBeginningOfTurnDisplay();
+        const { endOfTurnDisplay, endOfTurnList } = createEndOfTurnDisplay();
+    
         if (currentCharacter.statusConditions.length > 0) {
             currentCharacter.statusConditions.forEach((status) => {
                 if (status[1].includes('(B)')) {
@@ -322,9 +248,7 @@ class InitiativeTracker {
                     endOfTurnListItem.textContent = status[0];
                     endOfTurnList.appendChild(endOfTurnListItem);
                 } else {
-                    const statusDisplay = document.createElement('div');
-                    statusDisplay.classList.add('it-status-effect');
-                    statusDisplay.innerHTML = `<span>${status[0]}:</span> <span>${status[1]}</span>`;
+                    const statusDisplay = createStatusDisplay(status);
                     statusEffectsDiv.appendChild(statusDisplay);
                 }
             });

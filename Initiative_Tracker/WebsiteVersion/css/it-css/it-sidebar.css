@@ -53,3 +53,13 @@
   padding: 8px;
   color: #339933;
 }
+
+
+
+.text-wrapper {
+  display: inline-block;
+}
+
+.it-sidebar.collapsed .text-wrapper {
+  visibility: hidden;
+}

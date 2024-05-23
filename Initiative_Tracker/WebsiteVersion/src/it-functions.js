@@ -1,3 +1,43 @@
+export function processStatusEffects(character, timing) {
+  let foundStatus = false;
+
+  character.statusConditions = character.statusConditions.filter((status) => {
+      const [condition, duration] = status;
+
+      if (String(duration).endsWith(`(${timing})`)) { 
+          foundStatus = true;
+          console.log(`Don't forget, ${character.name} is ${condition}!`);
+
+          if (String(duration).toLowerCase().includes('turn')) {
+              let turnsLeft = parseInt(String(duration).split(" ")[0]);
+              turnsLeft--;
+              if (turnsLeft === 0) {
+                  console.log(`${character.name}'s ${condition} is over!`);
+                  return false; 
+              } else {
+                  status[1] = `${turnsLeft} Turns (${timing})`;
+                  return true; 
+              }
+          }
+      }
+      return true; 
+  });
+
+  return foundStatus;
+}
+
+export function updateCurrentTurn(characters, currentTurn, newCharacterInitiative) {
+  if (characters.length > 1 && currentTurn < characters.length) {
+      if (newCharacterInitiative > characters[currentTurn+1].initiative) {
+          currentTurn++;
+          if (currentTurn >= characters.length) {
+              currentTurn = 0; // Wrap around if needed
+          }
+      }
+  }
+  return currentTurn;
+}
+
 export function closePopup() {
   document.getElementById('popup').style.display = 'none';
   // Clear the popup content
