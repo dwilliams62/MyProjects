@@ -1,7 +1,8 @@
 module.exports = {
     entry: {
         main: './src/index.js',
-        addCharacter: './src/addCharacter.js'
+        userOptions: './src/user-options.js',
+        login: './src/login.js'
     },
     output: {
         filename: '[name].bundle.js',

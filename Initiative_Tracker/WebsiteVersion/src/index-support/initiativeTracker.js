@@ -2,6 +2,7 @@ import { confirmRemoveCharacter, addStatusCondition, processStatusEffects, updat
     removeStatusCondition, changeHP, rollAttack as rollAttackIT, closePopup } from './it-functions.js';
 import { createNewRoundSeparator, createAcDisplay, createHealthDisplay, createStatusDisplay,
       createBeginningOfTurnDisplay, createEndOfTurnDisplay } from './it-html.js';
+import { getCurrentData } from "../aws-services/s3.js";
 
 class InitiativeTracker {
     constructor() {
@@ -333,8 +334,6 @@ export function addCharacterManual(initiativeTracker) {
         attack
     });
 }
-
-import { getCurrentData } from "./s3";
 
 export async function addCharacterFromJSON(initiativeTracker) {
   const name = prompt("Enter character name: ");

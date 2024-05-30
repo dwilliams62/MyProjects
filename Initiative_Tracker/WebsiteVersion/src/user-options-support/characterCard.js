@@ -1,4 +1,4 @@
-import { getCurrentData } from './s3.js';
+import { getCurrentData } from '../aws-services/s3.js';
 
 export function createCard(characterInfo, cardContainerId = 'cards') {
     const cardContainer = document.getElementById(cardContainerId);

@@ -1,5 +1,5 @@
-import InitiativeTracker from './initiativeTracker.js';
-import { addCharacterManual, addCharacterFromJSON } from './initiativeTracker.js';
+import InitiativeTracker from './index-support/initiativeTracker.js';
+import { addCharacterManual, addCharacterFromJSON } from './index-support/initiativeTracker.js';
 
 let initiativeTracker = new InitiativeTracker();
 initiativeTracker.displayInitiativeList();
