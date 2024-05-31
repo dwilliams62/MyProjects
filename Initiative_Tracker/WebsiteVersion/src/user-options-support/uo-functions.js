@@ -12,6 +12,9 @@ export async function addCharacterToS3() {
     // Append the new data to the existing data
     jsonData.push(newData);
 
+    //sort the data
+    jsonData.sort((a, b) => a.name.localeCompare(b.name));
+
     // Write the new data to S3
     await writeDataToS3(jsonData);
   } catch (error) {
@@ -42,6 +45,7 @@ export async function addAttackToCharacter() {
         damage: newAttackData.attackDamage,
         damageType: newAttackData.attackDamageType,
       });
+      jsonData[characterIndex].attacks.sort((a, b) => a.name.localeCompare(b.name));
     } else {
       console.error(`Character not found: ${newAttackData.characterName}`);
       return;
@@ -104,4 +108,13 @@ export async function updateJSONData() {
 
   // Write the updated data back to S3
   writeDataToS3(currentData);
+}
+
+export async function isCharacterListEmpty() {
+    try {
+      const jsonData = await getCurrentData();
+      return jsonData.length === 0;
+    } catch (error) {
+      console.error(error);
+    }
 }

@@ -29,9 +29,14 @@ export async function getCurrentData() {
     const getObjectResponse = await s3Client.send(getObjectCommand);
     const currentData = await getObjectResponse.Body.transformToString();
 
-    return JSON.parse(currentData);
+    if (currentData.trim() === '') { // Check if the currentData is empty
+      return []; // Return an empty array if it's empty
+    } else {
+      return JSON.parse(currentData);
+    }
   } catch (error) {
     console.error(error);
+    return []; // Return an empty array if there's an error
   }
 }
 

@@ -39,6 +39,22 @@ export function collectAttackData() {
   };
 }
 
+export async function displayCharactersInDropdown() {
+    try {
+      const jsonData = await getCurrentData();
+      const characterSelect = document.getElementById('character-name');
+      characterSelect.innerHTML = '';
+      jsonData.sort((a, b) => a.name.localeCompare(b.name)).forEach((character) => {
+        const option = document.createElement('option');
+        option.value = character.name;
+        option.textContent = character.name;
+        characterSelect.appendChild(option);
+      });
+    } catch (error) {
+      console.error(error);
+    }
+}
+
 export async function displayCharactersFromJSON() {
   try {
     let jsonData = await getCurrentData();
@@ -68,6 +84,22 @@ export async function displayCharactersFromJSON() {
   } catch (error) {
     console.error(error);
   }
+}
+
+export function displayPopup(message) {
+    const popup = document.createElement('div');
+    popup.className = 'popup';
+    popup.innerHTML = `
+      <div class="popup-header">
+        <button class="close-button">Close</button>
+      </div>
+      <h2>${message}</h2>
+    `;
+    document.body.appendChild(popup);
+    const closeButton = popup.querySelector('.close-button');
+    closeButton.addEventListener('click', () => {
+      popup.remove();
+    });
 }
 
 export function clearForm(form) {

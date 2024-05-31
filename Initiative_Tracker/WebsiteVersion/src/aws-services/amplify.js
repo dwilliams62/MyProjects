@@ -45,6 +45,7 @@ export async function signOutUser() {
   try {
     await signOut();
     console.log('Signed out successfully');
+    window.location.href = 'index.html';
   } catch (error) {
     console.error('Error signing out:', error);
   }
