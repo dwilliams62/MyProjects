@@ -118,3 +118,14 @@ export async function isCharacterListEmpty() {
       console.error(error);
     }
 }
+
+export async function deleteData() {
+    try {
+      const jsonData = await getCurrentData();
+      const emptyJson = {};
+      await writeDataToS3(emptyJson);
+      console.log('Data deleted successfully');
+    } catch (error) {
+      console.error('Error deleting data:', error);
+    }
+}

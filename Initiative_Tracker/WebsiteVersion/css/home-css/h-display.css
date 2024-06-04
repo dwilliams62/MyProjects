@@ -1,0 +1,86 @@
+body {
+    background-color: #333;
+}
+
+.home-main {
+    padding-top: 60px; /* adjust this value based on the height of your topbar */
+    font-family: Arial, sans-serif;
+}
+
+.home-welcome-message {
+    text-align: center;
+    font-size: 36px;
+    color: #fff;
+}
+
+.call-to-action {
+    background-image: linear-gradient(to bottom, #ff9900, #ff6600);
+    background-size: 100% 200px;
+    background-position: 0% 100%;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: #fff;
+    font-size: 24px;
+    margin: 20px 0;
+}
+
+.home-contact {
+    clear: both;
+    text-align: center;
+    background-color: #444;
+    padding: 20px;
+    border: 1px solid #555;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 60%;
+    margin: 20px auto;
+}
+
+.home-contact h2 {
+    font-size: 24px;
+    color: #fff;
+}
+
+.home-contact form {
+    margin-top: 20px;
+}
+
+.home-contact label {
+    display: block;
+    margin-bottom: 10px;
+    color: #fff;
+}
+
+.home-contact input[type="text"],
+.home-contact input[type="email"],
+.home-contact textarea {
+    width: 100%;
+    padding: 10px;
+    margin: 0;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+
+.home-contact input[type="submit"] {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.home-contact input[type="submit"]:hover {
+    background-color: #3e8e41;
+}
+
+.home-copyright {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+    text-align: left;
+    clear: both;
+}

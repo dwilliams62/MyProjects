@@ -1,0 +1,57 @@
+.home-about {
+    position: relative;
+    padding: 20px;
+    width: 60%;
+    margin: 20px 0;
+}
+
+.home-about::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 150%;
+    height: 150%;
+    background-image: url('green-blob.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+.home-updates {
+    float: right;
+    position: relative;
+    padding: 20px;
+    width: 60%;
+    margin: 20px 0;
+}
+
+.home-updates::before {
+    content: "";
+    position: absolute;
+    top: -50px;
+    left: -50px;
+    width: 150%;
+    height: 150%;
+    background-image: url('green-blob.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
+}
+
+.home-about h2, .home-updates h2 {
+    font-size: 30px; /* increased font size */
+    color: #fff;
+    font-weight: bold;
+}
+
+.home-about p, .home-updates p {
+    font-size: 18px;
+    color: #fff;
+}
+
+.home-updates h2, .home-updates p {
+    text-align: right;
+}

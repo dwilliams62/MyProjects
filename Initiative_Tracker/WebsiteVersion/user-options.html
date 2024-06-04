@@ -29,10 +29,43 @@
     </header>
     <main>
         <aside class="uo-sidebar">
+            <button id="account-settings-button">Account Settings</button>
             <button id="add-character-button">Add Character</button>
             <button id="add-attack-button">Add Attack to Character</button>
             <button id="view-characters-button">View Characters</button>
         </aside>
+        <div class="uo-display" id="account-settings-container" style="display: block;">
+            <h2>Account Settings</h2>
+            <div class="button-container">
+              <button id="change-password-button">Change Password</button>
+              <button id="change-email-button">Change Email</button>
+              <button id="delete-data-button">Delete Data</button>
+            </div>
+            <div id="change-password-form" style="display: none;">
+              <form>
+                <label for="old-password">Old Password:</label>
+                <input type="password" id="old-password" name="old-password"><br><br>
+                <label for="new-password">New Password:</label>
+                <input type="password" id="new-password" name="new-password"><br><br>
+                <label for="confirm-new-password">Confirm New Password:</label>
+                <input type="password" id="confirm-new-password" name="confirm-new-password"><br><br>
+                <button id="submit-password-button">Submit</button>
+              </form>
+            </div>
+            <div id="change-email-form" style="display: none;">
+              <form>
+                <label for="new-email">New Email:</label>
+                <input type="email" id="new-email" name="new-email"><br><br>
+                <button id="submit-email-button">Submit</button>
+              </form>
+            </div>
+            <div id="delete-data-form" style="display: none;">
+              <form>
+                <p>Are you sure you want to delete all your data?</p>
+                <button id="submit-delete-button">Delete</button>
+              </form>
+            </div>
+          </div>
         <div class="uo-display" id="character-form-container" style="display: none;">
             <h2>Character Information</h2>
             <form id="character-form">

@@ -1,5 +1,6 @@
 import InitiativeTracker from './index-support/initiativeTracker.js';
 import { addCharacterManual, addCharacterFromJSON } from './index-support/initiativeTracker.js';
+import { collapseText, checkUserLogin } from './index-support/index-functions.js';
 
 let initiativeTracker = new InitiativeTracker();
 initiativeTracker.displayInitiativeList();
@@ -18,67 +19,19 @@ document.getElementById('collapseSidebar').addEventListener('click', function() 
     document.querySelector('.it-sidebar').classList.toggle('collapsed');
 });
 
-const sidebar = document.querySelector('.it-sidebar');
-const textWrapper = document.querySelector('.text-wrapper');
-const text = textWrapper.textContent;
-let isCollapsed = false;
-let animationId;
-
-// Assume this is the button that triggers the collapse
 const collapseButton = document.querySelector('#collapseSidebar');
+const sidebarButtons = document.querySelector('.sidebar-buttons');
+const textWrappers = sidebarButtons.querySelectorAll('.text-wrapper');
+let isCollapsed = false;
+let originalTexts = [];
+
+for (let i = 0; i < textWrappers.length; i++) {
+  originalTexts.push(textWrappers[i].textContent);
+}
 
 collapseButton.addEventListener('click', () => {
-  // Add a small delay to ensure the transition has started before starting the animation
-  setTimeout(() => {
-    if (!isCollapsed) {
-      // Start collapsing animation
-      let i = 0;
-      const animateCollapse = (timestamp) => {
-        if (i >= text.length) {
-          cancelAnimationFrame(animationId);
-        } else {
-          textWrapper.textContent = text.substring(0, text.length - i);
-          i++;
-          animationId = requestAnimationFrame((timestamp) => {
-            setTimeout(() => {
-              animateCollapse(timestamp);
-            }, 50); // adjust this value to change the speed of the animation
-          });
-        }
-      };
-      animationId = requestAnimationFrame(animateCollapse);
-    } else {
-      // Start expanding animation
-      let i = 0;
-      const animateExpand = (timestamp) => {
-        if (i >= text.length) {
-          cancelAnimationFrame(animationId);
-        } else {
-          textWrapper.textContent = text.substring(0, i + 1);
-          i++;
-          animationId = requestAnimationFrame((timestamp) => {
-            setTimeout(() => {
-              animateExpand(timestamp);
-            }, 50); // adjust this value to change the speed of the animation
-          });
-        }
-      };
-      animationId = requestAnimationFrame(animateExpand);
-    }
-
-    // Toggle the collapsed state
-    isCollapsed = !isCollapsed;
-  }, 10); // add a small delay to ensure the transition has started
+  collapseText(textWrappers, originalTexts, isCollapsed);
+  isCollapsed = !isCollapsed;
 });
 
-sidebar.addEventListener('transitionend', (event) => {
-  if (event.propertyName === 'width') {
-    cancelAnimationFrame(animationId);
-    // Ensure the final state of the text animation matches the collapsed state
-    if (isCollapsed) {
-      textWrapper.textContent = ''; // Fully collapsed
-    } else {
-      textWrapper.textContent = text; // Fully expanded
-    }
-  }
-});
+checkUserLogin();

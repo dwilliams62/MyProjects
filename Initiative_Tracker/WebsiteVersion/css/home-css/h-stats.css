@@ -1,0 +1,21 @@
+.home-stats {
+    display: flex;
+    justify-content: space-between;
+    margin: 20px 0;
+    background-color: #444;
+    padding: 20px; /* increased padding */
+    border: 2px solid red; /* changed border color and width */
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.home-stat {
+    width: 33.33%;
+    text-align: center;
+    color: #fff;
+}
+
+.home-stat h2 {
+    font-size: 24px; /* increased font size */
+    margin: 0;
+}
