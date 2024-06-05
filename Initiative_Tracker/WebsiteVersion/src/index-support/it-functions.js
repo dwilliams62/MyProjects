@@ -165,3 +165,30 @@ export function rollAttack(character, attackIndex) {
     damageType: character.attacks[attackIndex].damageType,
   };
 }
+
+export async function addCharacterFromJSON(character, initiativeTracker) {
+  try {
+    const initiativeInput = prompt("Enter initiative roll or type 'roll' to roll for you: ");
+    let initiative;
+    if (!isNaN(parseInt(initiativeInput))) {
+      initiative = parseInt(initiativeInput);
+    } else {
+      const initiativeModifier = character.initiativeModifier;
+      const roll = Math.floor(Math.random() * 20) + 1; // Roll a d20
+      initiative = roll + initiativeModifier;
+    }
+
+    const characterToAdd = {
+      name: character.name,
+      initiative,
+      ac: character.ac,
+      currentHP: character.maxHp,
+      maxHP: character.maxHp,
+      statusConditions: [],
+    };
+
+    initiativeTracker.addCharacter(characterToAdd);
+  } catch (error) {
+    console.error(error);
+  }
+}

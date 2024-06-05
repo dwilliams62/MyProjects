@@ -1,6 +1,8 @@
 import InitiativeTracker from './index-support/initiativeTracker.js';
-import { addCharacterManual, addCharacterFromJSON } from './index-support/initiativeTracker.js';
+import { addCharacterManual } from './index-support/initiativeTracker.js';
+import { populateCharacterPopup } from './index-support/it-html';
 import { collapseText, checkUserLogin } from './index-support/index-functions.js';
+import { getCurrentData } from './aws-services/s3.js';
 
 let initiativeTracker = new InitiativeTracker();
 initiativeTracker.displayInitiativeList();
@@ -13,7 +15,10 @@ document.getElementById('changeHP').addEventListener('click', function() {initia
 document.getElementById('removeCharacter').addEventListener('click', function() {initiativeTracker.removeCharacter();});
 document.getElementById("henchmanAttack").addEventListener("click", function() {initiativeTracker.rollAttack()});
 
-document.getElementById('loadCharacter').addEventListener('click', function() {addCharacterFromJSON(initiativeTracker);});
+document.getElementById('loadCharacter').addEventListener('click', async () => {
+  const characters = await getCurrentData();
+  populateCharacterPopup(characters, initiativeTracker);
+});
 
 document.getElementById('collapseSidebar').addEventListener('click', function() {
     document.querySelector('.it-sidebar').classList.toggle('collapsed');
