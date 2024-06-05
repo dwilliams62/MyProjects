@@ -1,4 +1,4 @@
-import { getCurrentUsername, getThisUser, signOutUser as amplifySignOutUser } from '../aws-services/amplify.js';
+import { getCurrentUsername, getThisUser, signOutUser } from '../aws-services/amplify.js';
 
 export function collapseText(textWrappers, originalTexts, isCollapsed, speed = 50) {
   let animationId;
@@ -6,14 +6,18 @@ export function collapseText(textWrappers, originalTexts, isCollapsed, speed = 5
     let i = 0;
     if (isCollapsed) {
       const animate = (timestamp) => {
-        if (i >= originalTexts[0].length) {
+        let allDone = true;
+        for (let j = 0; j < textWrappers.length; j++) {
+          const textWrapper = textWrappers[j];
+          if (i < originalTexts[j].length) {
+            textWrapper.textContent = originalTexts[j].substring(0, i + 1);
+            allDone = false;
+          }
+        }
+        i++;
+        if (allDone) {
           cancelAnimationFrame(animationId);
         } else {
-          for (let j = 0; j < textWrappers.length; j++) {
-            const textWrapper = textWrappers[j];
-            textWrapper.textContent = originalTexts[j].substring(0, i + 1);
-          }
-          i++;
           animationId = requestAnimationFrame((timestamp) => {
             setTimeout(() => {
               animate(timestamp);
@@ -23,16 +27,21 @@ export function collapseText(textWrappers, originalTexts, isCollapsed, speed = 5
       };
       animate(timestamp);
     } else {
-      i = originalTexts[0].length;
+      let maxLength = Math.max(...originalTexts.map(text => text.length));
+      i = maxLength;
       const animate = (timestamp) => {
-        if (i <= 0) {
+        let allDone = true;
+        for (let j = 0; j < textWrappers.length; j++) {
+          const textWrapper = textWrappers[j];
+          if (i > 0) {
+            textWrapper.textContent = originalTexts[j].substring(0, i);
+            allDone = false;
+          }
+        }
+        i--;
+        if (allDone) {
           cancelAnimationFrame(animationId);
         } else {
-          for (let j = 0; j < textWrappers.length; j++) {
-            const textWrapper = textWrappers[j];
-            textWrapper.textContent = originalTexts[j].substring(0, i);
-          }
-          i--;
           animationId = requestAnimationFrame((timestamp) => {
             setTimeout(() => {
               animate(timestamp);
@@ -57,6 +66,9 @@ export function toggleTopBarButtons(username) {
     buttons.appendChild(welcomeMessage);
     const viewUserInfoButton = document.createElement('button');
     viewUserInfoButton.textContent = 'View User Info';
+    viewUserInfoButton.addEventListener('click', () => {
+      window.location.href = 'user-options.html';
+    });
     buttons.appendChild(viewUserInfoButton);
     const signOutButton = document.createElement('button');
     signOutButton.textContent = 'Sign-out';
@@ -73,7 +85,7 @@ export function toggleTopBarButtons(username) {
 }
 
 function localSignOutUser() {
-  amplifySignOutUser().then(() => {
+  signOutUser().then(() => {
     toggleTopBarButtons(null);
   });
 }
@@ -83,9 +95,27 @@ export function checkUserLogin() {
     if (user) {
       getCurrentUsername().then((username) => {
         toggleTopBarButtons(username);
+        toggleSidebarButtons(true);
       });
     } else {
       toggleTopBarButtons(null);
+      toggleSidebarButtons(false);
     }
   });
+}
+
+export function toggleSidebarButtons(isLoggedIn) {
+  const loadCharacterButton = document.getElementById('loadCharacter');
+  const saveBattleButton = document.getElementById('saveBattle');
+  const loadBattleButton = document.getElementById('loadBattle');
+  
+  if (isLoggedIn) {
+    loadCharacterButton.style.display = 'block';
+    saveBattleButton.style.display = 'block';
+    loadBattleButton.style.display = 'block';
+  } else {
+    loadCharacterButton.style.display = 'none';
+    saveBattleButton.style.display = 'none';
+    loadBattleButton.style.display = 'none';
+  }
 }

@@ -412,3 +412,51 @@ function populatePopup(title, content) {
     popup.style.display = 'none';
   };
 }
+
+
+export function createCharacterPopup() {
+  const popup = document.createElement('div');
+  popup.className = 'popup';
+  popup.innerHTML = `
+    <div class="popup-header">
+      <button class="close-button">×</button>
+    </div>
+    <h2>Characters</h2>
+    <div class="search-container">
+      <input type="search" id="search-bar" placeholder="Search...">
+      <button id="search-button">Search</button>
+    </div>
+    <div class="characters-container">
+    </div>
+  `;
+  document.body.appendChild(popup);
+
+  const closeButton = popup.querySelector('.close-button');
+  closeButton.addEventListener('click', () => {
+    popup.remove();
+  });
+
+  const searchButton = popup.querySelector('#search-button');
+  searchButton.addEventListener('click', async () => {
+    const searchBar = popup.querySelector('#search-bar');
+    const searchQuery = searchBar.value.trim().toLowerCase();
+    const charactersContainer = popup.querySelector('.characters-container');
+    charactersContainer.innerHTML = '';
+
+    const data = await getCurrentData();
+    const characters = data.filter(char => char.name.toLowerCase().includes(searchQuery));
+
+    characters.forEach(character => {
+      const characterCard = document.createElement('div');
+      characterCard.className = 'character-card';
+      characterCard.innerHTML = `
+        <h3>${character.name}</h3>
+      `;
+      characterCard.addEventListener('click', () => {
+        addCharacterFromJSON(character.name);
+        popup.remove();
+      });
+      charactersContainer.appendChild(characterCard);
+    });
+  });
+}
