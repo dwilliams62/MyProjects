@@ -166,12 +166,11 @@ export function rollAttack(character, attackIndex) {
   };
 }
 
-export async function addCharacterFromJSON(character, initiativeTracker) {
+export async function addCharacterFromJSON(character, initiativeTracker, initiativeValue) {
   try {
-    const initiativeInput = prompt("Enter initiative roll or type 'roll' to roll for you: ");
     let initiative;
-    if (!isNaN(parseInt(initiativeInput))) {
-      initiative = parseInt(initiativeInput);
+    if (initiativeValue !== undefined) {
+      initiative = initiativeValue;
     } else {
       const initiativeModifier = character.initiativeModifier;
       const roll = Math.floor(Math.random() * 20) + 1; // Roll a d20

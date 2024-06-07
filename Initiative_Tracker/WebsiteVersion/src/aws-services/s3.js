@@ -17,26 +17,33 @@ async function createS3ClientWithUserCredentials() {
   }
 }
 
-export async function getCurrentData() {
+export async function getCurrentData(path = null) {
   try {
     const s3Client = await createS3ClientWithUserCredentials();
     const username = await getCurrentUsername();
 
+    let key;
+    if (path) {
+      key = path;
+    } else {
+      key = `${username}/character.json`;
+    }
+
     const getObjectCommand = new GetObjectCommand({
       Bucket: 'custom-character-info',
-      Key: `${username}/character.json`,
+      Key: key,
     });
     const getObjectResponse = await s3Client.send(getObjectCommand);
     const currentData = await getObjectResponse.Body.transformToString();
 
-    if (currentData.trim() === '') { // Check if the currentData is empty
-      return []; // Return an empty array if it's empty
+    if (currentData.trim() === '') { 
+      return []; 
     } else {
       return JSON.parse(currentData);
     }
   } catch (error) {
     console.error(error);
-    return []; // Return an empty array if there's an error
+    return []; 
   }
 }
 
