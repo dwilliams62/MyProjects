@@ -17,7 +17,7 @@ async function createS3ClientWithUserCredentials() {
   }
 }
 
-export async function getCurrentData(path = null) {
+export async function getCurrentData(path = null, type = 'character') {
   try {
     const s3Client = await createS3ClientWithUserCredentials();
     const username = await getCurrentUsername();
@@ -26,7 +26,7 @@ export async function getCurrentData(path = null) {
     if (path) {
       key = path;
     } else {
-      key = `${username}/character.json`;
+      key = `${username}/${type}.json`;
     }
 
     const getObjectCommand = new GetObjectCommand({
@@ -47,16 +47,23 @@ export async function getCurrentData(path = null) {
   }
 }
 
-export async function writeDataToS3(jsonData) {
+export async function writeDataToS3(jsonData, path = null, type = 'character') {
   try {
     const s3Client = await createS3ClientWithUserCredentials();
     const username = await getCurrentUsername();
 
     const stringifiedJsonData = JSON.stringify(jsonData);
 
+    let key;
+    if (path) {
+      key = path;
+    } else {
+      key = `${username}/${type}.json`;
+    }
+
     const putObjectCommand = new PutObjectCommand({
       Bucket: 'custom-character-info',
-      Key: `${username}/character.json`,
+      Key: key,
       Body: stringifiedJsonData,
     });
 

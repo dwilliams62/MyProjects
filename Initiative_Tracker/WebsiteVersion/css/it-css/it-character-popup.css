@@ -5,7 +5,7 @@
 }
 
 .itc-popup-character-card {
-  background-color: #000;
+  background-color: #333;
   padding: 10px;
   margin-bottom: 10px;
   border: 1px solid #ccc;
@@ -21,6 +21,7 @@
 .itc-popup-character-name {
   font-weight: bold;
   font-size: 18px;
+  margin-right: 10px;
 }
 
 .itc-popup-character-hp {
@@ -41,11 +42,12 @@
 }
 
 .character-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-top: 10px;
+    display: none;
 }
+
+.itc-popup-character-card.selected .character-footer {
+    display: block;
+  }
 
 .itc-popup-character-initiative-modifier {
   font-size: 16px;
@@ -82,4 +84,34 @@
 
 .itc-popup-add-character-button:hover {
   background-color: #3e8e41;
+}
+
+.battle-button {
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.itc-popup-search-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.itc-popup-search-container input[type="search"] {
+  width: 200px;
+  padding: 10px;
+  font-size: 16px;
+  border: 1px solid #ccc;
+}
+
+.itc-popup-search-container button {
+  background-color: #4CAF50;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-left: 10px;
 }

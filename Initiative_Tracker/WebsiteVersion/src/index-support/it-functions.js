@@ -1,3 +1,8 @@
+import { getCurrentData, writeDataToS3 } from "../aws-services/s3";
+import InitiativeTracker from './initiativeTracker.js';
+import { populatePopup } from "./initiativeTracker.js";
+import { handleLoadBattleButtonClick } from "../index.js";
+
 export function processStatusEffects(character, timing) {
   let foundStatus = false;
 
@@ -190,4 +195,81 @@ export async function addCharacterFromJSON(character, initiativeTracker, initiat
   } catch (error) {
     console.error(error);
   }
+}
+
+export async function saveInitiativeTracker(initiativeTracker) {
+  const battleData = {
+    id: initiativeTracker.id,
+    characters: initiativeTracker.characters,
+    currentTurn: initiativeTracker.currentTurn,
+  };
+
+  // Get the current battles from S3
+  const currentBattles = await getCurrentData(null, 'battles');
+  if (currentBattles.length >= 3) {
+    console.error('You can only save up to 3 battles.');
+    return;
+  }
+
+  // Check if a battle with the same ID already exists
+  const existingBattleIndex = currentBattles.findIndex(battle => battle.id === initiativeTracker.id);
+  if (existingBattleIndex !== -1) {
+    // Update the existing battle
+    currentBattles[existingBattleIndex] = battleData;
+  } else {
+    // Add the new battle to the list
+    currentBattles.push(battleData);
+  }
+
+  // Save the updated list of battles to S3
+  await writeDataToS3(currentBattles, null, 'battles');
+}
+
+export async function createLoadBattlePopup() {
+  console.log('createLoadBattlePopup called');
+  // Get the current battles from S3
+  const currentBattles = await getCurrentData(null, 'battles');
+  console.log('currentBattles:', currentBattles);
+
+  // Create the popup content
+  const content = currentBattles.map(battle => {
+    console.log('creating button for battle:', battle);
+    const button = document.createElement('button');
+    button.textContent = `Load Battle ${battle.id}`;
+    button.addEventListener('click', () => handleLoadBattleButtonClick(battle.id));
+    button.className = 'battle-button';
+    return button.outerHTML;
+  }).join('');
+
+  console.log('content:', content);
+
+  // Populate the popup
+  populatePopup('Load Battle', content);
+}
+
+export async function loadInitiativeTracker(battleId) {
+  console.log('loadInitiativeTracker called with battleId:', battleId);
+  // Get the current battles from S3
+  const currentBattles = await getCurrentData(null, 'battles');
+  console.log('currentBattles in loadInitiativeTracker:', currentBattles);
+
+  // Find the battle with the matching ID
+  const battleToLoad = currentBattles.find(battle => battle.id === battleId);
+  console.log('battleToLoad:', battleToLoad);
+  if (!battleToLoad) {
+    console.error('No battle with the given ID found.');
+    return;
+  }
+
+  // Create a new InitiativeTracker instance with the loaded battle data
+  let initiativeTracker = new InitiativeTracker();
+  initiativeTracker.id = battleToLoad.id;
+  initiativeTracker.characters = battleToLoad.characters;
+  initiativeTracker.currentTurn = battleToLoad.currentTurn;
+  console.log('initiativeTracker:', initiativeTracker);
+
+  // Close the popup
+  document.getElementById('popup').style.display = 'none';
+
+  return initiativeTracker;
 }

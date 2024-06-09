@@ -1,7 +1,8 @@
 import InitiativeTracker from './index-support/initiativeTracker.js';
 import { addCharacterManual } from './index-support/initiativeTracker.js';
-import { populateCharacterPopup } from './index-support/it-html';
 import { collapseText, checkUserLogin } from './index-support/index-functions.js';
+import { populateCharacterPopup } from './index-support/it-html';
+import { saveInitiativeTracker, createLoadBattlePopup, loadInitiativeTracker } from './index-support/it-functions.js';
 import { getCurrentData } from './aws-services/s3.js';
 
 let initiativeTracker = new InitiativeTracker();
@@ -19,6 +20,16 @@ document.getElementById('loadCharacter').addEventListener('click', async () => {
   const characters = await getCurrentData();
   populateCharacterPopup(characters, initiativeTracker);
 });
+
+document.getElementById("saveBattle").addEventListener("click", function() {saveInitiativeTracker(initiativeTracker)});
+document.getElementById('loadBattle').addEventListener('click', async () => {
+  createLoadBattlePopup();
+});
+
+export async function handleLoadBattleButtonClick(battleId) {
+  initiativeTracker = await loadInitiativeTracker(battleId);
+  initiativeTracker.displayInitiativeList();
+}
 
 document.getElementById('collapseSidebar').addEventListener('click', function() {
     document.querySelector('.it-sidebar').classList.toggle('collapsed');

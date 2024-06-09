@@ -6,8 +6,9 @@ import { getCurrentData } from "../aws-services/s3.js";
 
 class InitiativeTracker {
     constructor() {
-        this.characters = [];
-        this.currentTurn = 0;
+      this.id = Math.floor(Math.random() * 1000000); // Generate a random 6-digit ID
+      this.characters = [];
+      this.currentTurn = 0;
     }
 
     addCharacter(character) {
@@ -336,7 +337,7 @@ export function addCharacterManual(initiativeTracker) {
 }
 
 // Function to populate the popup
-function populatePopup(title, content) {
+export function populatePopup(title, content) {
   const popup = document.getElementById('popup');
   const popupContent = document.getElementById('popupContent');
   const popupClose = document.getElementById('popupClose');

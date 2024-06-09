@@ -57,14 +57,17 @@ export function populateCharacterPopup(characters, initiativeTracker) {
   popup.style.display = 'block';
   popupContent.innerHTML = `
     <h2>Load Character</h2>
-    <div class="itc-popup-character-list-header">
-      <button id="viewYourCharactersButton">View Your Characters</button>
-      <button id="viewGlobalCharactersButton">View Global Characters</button>
+        <div class="itc-popup-character-list-header">
+        <button id="viewYourCharactersButton">View Your Characters</button>
+        | 
+        <button id="viewGlobalCharactersButton">View Global Characters</button>
     </div>
-    <button class="itc-popup-add-character-button">Add to Initiative</button>
+    </div>
+    <hr style="border-top: 1px solid black;">
     <div class="itc-popup-search-container">
       <input type="search" id="search-bar" placeholder="Search...">
       <button id="search-button">Search</button>
+      <button class="itc-popup-add-character-button" style="float: right;">Add selected to initiative</button>
     </div>
     <div class="itc-popup-character-list"></div>
   `;
@@ -118,20 +121,19 @@ function createCharacterCard(character) {
   characterCard.className = 'itc-popup-character-card';
   characterCard.innerHTML = `
     <div class="character-header">
-      <h3 class="itc-popup-character-name">${character.name}</h3>
-      <p class="itc-popup-character-hp">HP: ${character.maxHp}</p>
+    <h3 class="itc-popup-character-name">
+      <input type="checkbox" class="itc-popup-character-checkbox">
+      ${character.name}
+    </h3>
       <p class="itc-popup-character-ac">AC: ${character.ac}</p>
+      <p class="itc-popup-character-speed">Speed: ${character.speed}</p>
       <button class="itc-popup-view-attacks-button">View Attacks</button>
     </div>
     <div class="character-footer">
       <p class="itc-popup-character-initiative-modifier">Initiative Modifier: ${character.initiativeModifier}</p>
-      <input type="checkbox" class="itc-popup-character-checkbox">
-      <label>Add Character</label>
-      <div class="roll-initiative" style="display: none;">
-        <input type="checkbox" class="roll-initiative-checkbox">
-        <label>Roll Initiative</label>
-        <input type="number" class="roll-initiative-value" style="display: none;">
-      </div>
+      <label>Would you like to provide an initiative roll to use (modifier included)?</label>
+      <input type="checkbox" class="roll-initiative-checkbox">
+      <input type="number" class="roll-initiative-value" style="display: none;">
     </div>
   `;
 
@@ -154,12 +156,18 @@ function createCharacterCard(character) {
 }
 
 function toggleRollInitiative(characterCard) {
-  const rollInitiativeDiv = characterCard.querySelector('.roll-initiative');
+  const characterFooter = characterCard.querySelector('.character-footer');
   const characterCheckbox = characterCard.querySelector('.itc-popup-character-checkbox');
   if (characterCheckbox.checked) {
-    rollInitiativeDiv.style.display = 'inline-block';
+    characterFooter.style.display = 'block';
   } else {
-    rollInitiativeDiv.style.display = 'none';
+    characterFooter.style.display = 'none';
+  }
+
+  if (characterCheckbox.checked) {
+    characterCard.classList.add('selected');
+  } else {
+    characterCard.classList.remove('selected');
   }
 }
 
@@ -178,7 +186,7 @@ function addCharactersToInitiative(characters, initiativeTracker) {
   characterCards.forEach(card => {
     const characterCheckbox = card.querySelector('.itc-popup-character-checkbox');
     if (characterCheckbox.checked) {
-      const characterName = card.querySelector('h3').textContent;
+      const characterName = card.querySelector('h3').textContent.trim();
       const character = characters.find(char => char.name === characterName);
       const rollInitiativeCheckbox = card.querySelector('.roll-initiative-checkbox');
       const rollInitiativeValue = card.querySelector('.roll-initiative-value');
