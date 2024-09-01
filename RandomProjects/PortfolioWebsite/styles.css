@@ -1,0 +1,120 @@
+body {
+    background-image: url('background.jpg');
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center center;
+    background-color: rgba(255, 255, 255, 0.5);
+    background-blend-mode: overlay;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+.event {
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 2%;
+    background-color: rgba(255, 255, 255, 0.85);
+    box-shadow: 0 8px 12px 0 rgba(0,0,0,0.2);
+    border: none;
+}
+
+.bg-primary {
+    background: linear-gradient(to bottom, darkblue, pink);
+}
+
+.timeline {
+    position: relative;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.image-box {
+    width: 12%;
+    min-width: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #e4f6e2;
+    padding-bottom: 1%;
+}
+
+.image-box-inner {
+    width: 90%;
+    height: 80%;
+    padding: 10%;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.image-box-inner img {
+    width: 140%; /* Make the image fully responsive */
+    height: auto; /* Maintain aspect ratio */
+    max-width: 140%; /* Ensures it doesn't exceed the box */
+    object-fit: cover; /* Ensures the image covers the box without distorting */
+}
+
+/* Adjust image size for smaller screens */
+@media (max-width: 768px) {
+    .image-box-inner img {
+        max-width: 160%; /* Slightly increase the size for smaller screens */
+    }
+}
+
+/* Adjust image size for very small screens */
+@media (max-width: 480px) {
+    .image-box-inner img {
+        max-width: 180%; /* Ensure the image fits within the box on very small screens */
+    }
+}
+
+.text-box {
+    width: 88%;
+    padding: 3%;
+    background-color: #e4f6e2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.skill {
+    display: inline-block; /* Allows spans to behave like text, but with padding */
+    padding: 5px 10px; /* Adds padding inside the border */
+    border: 2px solid green; /* Green border around the word */
+    border-radius: 8px; /* Rounded corners */
+    margin-right: 5px; /* Adds space between the words */
+    font-size: 14px; /* Adjust font size as needed */
+}
+
+.event h5 {
+    border-bottom: 2px solid #ff93c2;
+    margin-bottom: 3%;
+    display: inline;
+    padding-bottom: 2px;
+    color: #495057;
+    width: auto;
+    font-family: 'Open Sans', sans-serif;
+}
+
+.event p {
+    color: #6c757d;
+}
+
+.website-description {
+    text-align: center;
+    margin-bottom: 20px;
+    font-style: italic;
+    color: #6c757d;
+}
+.website-description::before {
+    content: "";
+    display: block;
+    height: 60px;
+    margin-top: -60px;
+    visibility: hidden;
+}

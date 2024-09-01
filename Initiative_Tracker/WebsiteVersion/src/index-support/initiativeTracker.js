@@ -542,61 +542,156 @@ export default InitiativeTracker;
 // Returns: None
 // ---------------------------------------------------------------
 export function addCharacterManual(initiativeTracker) {
-  // Prompt the user for the character's name
-  let name = prompt("Enter character name: ");
-  
-  // Prompt the user for the character's initiative
-  let initiative = parseInt(prompt("Enter character initiative: "));
-  
-  // Prompt the user for the character's armor class
-  let ac =  parseInt(prompt("Enter character armor class: "));
-  
-  // Prompt the user for the character's current HP
-  let currentHP =  parseInt(prompt("Enter character current HP: "));
-  
-  // Prompt the user for the character's max HP
-  let maxHP = parseInt(prompt("Enter character max HP: "));
+  let characterData = {
+    name: '',
+    initiative: 0,
+    ac: 0,
+    currentHP: 0,
+    maxHP: 0,
+    attacks: []
+  };
 
-  // Prompt the user to indicate whether the character is a henchman
-  let isHenchman = prompt("Is this character a henchman? (yes/no): ").toLowerCase();
-
-  // Initialize the character's attack
-  let attack;
+  function addCharacter() {
+    const name = document.getElementById('character-name').value;
+    const initiative = parseInt(document.getElementById('character-initiative').value);
+    const ac = parseInt(document.getElementById('character-ac').value);
+    const currentHP = parseInt(document.getElementById('character-current-hp').value);
+    const maxHP = parseInt(document.getElementById('character-max-hp').value);
+    const attacks = getAttackData();
   
-  // Check if the character is a henchman
-  if (isHenchman === 'yes') {
-    // If so, prompt the user for the attack's name
-    let attackName = prompt("Enter attack name: ");
-    
-    // Prompt the user for the attack's to hit bonus
-    let attackToHitBonus = parseInt(prompt("Enter attack to hit bonus: "));
-    
-    // Prompt the user for the attack's damage
-    let attackDamage = prompt("Enter attack damage (in the form of 1d6+3): ");
-    
-    // Prompt the user for the attack's damage type
-    let attackDamageType = prompt("Enter attack damage type: ");
+    // Check if all required fields are entered
+    if (!name || !initiative || !ac || !currentHP || !maxHP) {
+      alert('Please enter all required fields.');
+      return;
+    }
   
-    // Create the attack object
-    attack = {
-      name: attackName,
-      toHitBonus: attackToHitBonus,
-      damage: attackDamage,
-      damageType: attackDamageType
-    };
+    // Check if AC is non-negative
+    if (ac < 0) {
+      alert('Armor Class cannot be negative.');
+      return;
+    }
+  
+    // Check if current HP and max HP are non-negative
+    if (currentHP < 0 || maxHP < 0) {
+      alert('Hit Points cannot be negative.');
+      return;
+    }
+  
+    // Add character to initiative tracker
+    initiativeTracker.addCharacter({
+      name,
+      initiative,
+      ac,
+      currentHP,
+      maxHP,
+      attacks
+    });
+    document.getElementById('popup').style.display = 'none';
+  }
+  
+  // Function to create attack fields
+  function createAttackFields() {
+    const attackContainer = document.getElementById('attack-container');
+    const attackFields = `
+      <div class="attack-fields">
+        <div>
+          <label for="attack-name">Name:</label>
+          <input type="text" id="attack-name">
+        </div>
+        <div>
+          <label for="attack-to-hit-bonus">To Hit Bonus:</label>
+          <input type="number" id="attack-to-hit-bonus">
+        </div>
+        <div>
+          <label for="attack-damage">Damage:</label>
+          <input type="text" id="attack-damage">
+        </div>
+        <div>
+          <label for="attack-damage-type">Damage Type:</label>
+          <input type="text" id="attack-damage-type">
+        </div>
+        <div>
+          <label for="attack-description">Description:</label>
+          <textarea id="attack-description"></textarea>
+        </div>
+      </div>
+      <hr style="margin-top: 10px; border: 1px solid #ccc;">
+    `;
+    attackContainer.insertAdjacentHTML('beforeend', attackFields);
+  }
+  
+  // Function to get attack data
+  function getAttackData() {
+    const attackFields = document.querySelectorAll('.attack-fields');
+    const attacks = [];
+    attackFields.forEach((field) => {
+      const attack = {
+        name: field.querySelector('#attack-name').value,
+        description: field.querySelector('#attack-description').value,
+        toHitBonus: parseInt(field.querySelector('#attack-to-hit-bonus').value),
+        damage: field.querySelector('#attack-damage').value,
+        damageType: field.querySelector('#attack-damage-type').value
+      };
+  
+      // Check if all required fields are entered for the attack
+      if (!attack.name || !attack.damage || !attack.damageType) {
+        alert('Please enter all required fields for the attack.');
+        return;
+      }
+  
+      attacks.push(attack);
+    });
+    return attacks;
+  }
+  
+  // Function to remove attack
+  function removeAttack() {
+    const attackFields = document.querySelectorAll('.attack-fields');
+    if (attackFields.length > 0) {
+      attackFields[attackFields.length - 1].remove();
+    }
   }
 
-  // Add the character to the initiative tracker
-  initiativeTracker.addCharacter({
-    name,
-    initiative,
-    ac,
-    currentHP,
-    maxHP,
-    statusConditions: [],
-    isHenchman,
-    attack
-  });
+  // Create popup content
+  const content = `
+    <div style="display: flex; justify-content: space-between;">
+      <label for="character-name">Name:</label>
+      <input type="text" id="character-name">
+      <label for="character-initiative">Initiative:</label>
+      <input type="number" id="character-initiative">
+      <label for="character-ac">Armor Class:</label>
+      <input type="number" id="character-ac">
+    </div>
+    <div style="display: flex; justify-content: space-between; margin-top: 10px;">
+      <label for="character-current-hp">Current HP:</label>
+      <input type="number" id="character-current-hp">
+      <label for="character-max-hp">Max HP:</label>
+      <input type="number" id="character-max-hp">
+    </div>
+    <hr style="margin-top: 20px;">
+    <h2>Character Attacks</h2>
+    <div style="display: flex; justify-content: space-between;">
+      <button id="add-attack-button">Add Attack</button>
+      <button id="remove-attack-button">Remove Attack</button>
+    </div>
+    <div id="attack-container" style="overflow-y: auto; max-height: 200px;"></div>
+    <button id="add-character-button" style="margin-top: 10px;">Add Character</button>
+  `;
+
+  // Populate popup
+  populatePopup('Add Character', content);
+
+  // Add event listener to add attack button
+  document.getElementById('add-attack-button').addEventListener('click', createAttackFields);
+
+  // Add event listener to remove attack button
+  document.getElementById('remove-attack-button').addEventListener('click', removeAttack);
+
+  // Add event listener to add character button
+  document.getElementById('add-character-button').addEventListener('click', addCharacter);
+
+  // Create default attack field
+  createAttackFields();
 }
 
 // ---------------------------------------------------------------

@@ -1,0 +1,19 @@
+.primary-color, .primary-background {
+    background-color: #34495e; /* Dark Blue */
+}
+
+.secondary-color {
+    background-color: #9b59b6; /* Purple */
+}
+
+.tertiary-color-1 {
+    background-color: #e67e73; /* Soft Red */
+}
+
+.quaternary-color {
+    background-color: #2ecc71; /* Green */
+}
+
+.quinary-color {
+    background-color: #f1c40f; /* Bright Orange */
+}

@@ -1,35 +1,46 @@
-import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib import cm
+import cbpro
 
-# Define a 2x2 matrix for demonstration
-A = np.array([[1, 2], [3, 5]])
+# Constants for authentication; replace with your actual keys
+API_KEY = 'YOUR_API_KEY'
+API_SECRET = 'YOUR_API_SECRET'
+API_PASSPHRASE = 'YOUR_API_PASSPHRASE'
 
-# Calculate eigenvalues and eigenvectors using NumPy
-w, v = np.linalg.eig(A)
+# Initialize authenticated client
+auth_client = cbpro.AuthenticatedClient(API_KEY, API_SECRET, API_PASSPHRASE)
 
-print("Eigenvalues:", w)
-print("Eigenvectors:", v)
+def get_crypto_holdings(auth_client):
+    """Retrieve crypto holdings, filtering out non-USD accounts."""
+    accounts = auth_client.get_accounts()
+    return {
+        account['currency']: float(account['balance'])
+        for account in accounts
+        if account['currency'] != 'USD' and float(account['balance']) > 0
+    }
 
-# Create a unit circle for visualization
-theta = np.linspace(0, 2*np.pi, 100)
-unit_circle = np.c_[np.cos(theta), np.sin(theta)]
+def get_exchange_rates(auth_client, crypto_holdings):
+    """Retrieve current exchange rates for the given crypto holdings."""
+    exchange_rates = {}
+    for currency in crypto_holdings.keys():
+        try:
+            ticker_info = auth_client.get_product_ticker(product_id=f'{currency}-USD')
+            exchange_rates[currency] = float(ticker_info['price'])
+        except Exception as e:
+            print(f"Error retrieving ticker for {currency}: {e}")
+            exchange_rates[currency] = None
+    return exchange_rates
 
-# Scale the eigenvectors to make them visible on the unit circle
-eigenvec_scaled = v * np.sqrt(np.abs(w))[:, np.newaxis]
+def calculate_net_usd_value(crypto_holdings, exchange_rates):
+    """Calculate the net USD value of crypto holdings."""
+    return sum(
+        amount * exchange_rates[currency]
+        for currency, amount in crypto_holdings.items() if currency in exchange_rates and exchange_rates[currency] is not None
+    )
 
-fig, ax = plt.subplots()
+def main():
+    crypto_holdings = get_crypto_holdings(auth_client)
+    exchange_rates = get_exchange_rates(auth_client, crypto_holdings)
+    net_usd_value = calculate_net_usd_value(crypto_holdings, exchange_rates)
+    print("Net USD value of crypto holdings:", net_usd_value)
 
-# Plot the eigenvalues
-ax.scatter(w.real, w.imag, c='r', marker='o', label='Eigenvalues')
-
-# Plot the eigenvectors
-ax.plot(unit_circle[:, 0], unit_circle[:, 1], 'k--', label='Unit circle')
-ax.quiver(0, 0, eigenvec_scaled[0, 0], eigenvec_scaled[0, 1], color='b', angles='xy', scale_units='xy', scale=1, label='Eigenvector 1')
-ax.quiver(0, 0, eigenvec_scaled[1, 0], eigenvec_scaled[1, 1], color='g', angles='xy', scale_units='xy', scale=1, label='Eigenvector 2')
-
-ax.legend()
-ax.set_xlabel('Real part')
-ax.set_ylabel('Imaginary part')
-ax.grid()
-plt.show()
+if __name__ == "__main__":
+    main()

@@ -1,0 +1,16 @@
+.site-title, .intro h2 {
+    color: white;
+}
+
+.info-box h2 {
+    color: white;
+    margin-top: 0;
+}
+
+.footer p {
+    color: white;
+}
+
+.cta-button:hover {
+    background-color: #d55c50; /* A darker shade for hover effect */
+}

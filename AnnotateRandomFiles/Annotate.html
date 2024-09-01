@@ -2,62 +2,59 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GardenCo</title>
-    <link rel="stylesheet" href="style.css">
+    <title>Tooltip Example</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+        .tooltip-container {
+            position: relative;
+            display: inline-block;
+        }
+        .tooltip {
+            width: 150px;
+            background-color: black;
+            color: #fff;
+            text-align: center;
+            border-radius: 5px;
+            padding: 10px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%; /* Position the tooltip above the button */
+            left: 50%;
+            margin-left: -75px; /* Center the tooltip */
+            opacity: 1;
+        }
+        .tooltip::after {
+            content: "";
+            position: absolute;
+            top: 100%; /* Arrow at the bottom of the tooltip */
+            left: 50%;
+            margin-left: -5px;
+            border-width: 5px;
+            border-style: solid;
+            border-color: black transparent transparent transparent;
+        }
+        .button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1 id="store-name">GardenCo</h1>
-    <button>Search</button>
-    <button>Login</button>
-    <!-- Add more buttons as needed -->
-</header>
-    <div class="container">
-      <aside>
-        <h3>Types of Plants:</h3>
-        <ul>
-            <li><a href="#" id="all">All</a></li>
-            <li><a href="#">Flowers</a></li>
-            <li><a href="#">Trees</a></li>
-            <li><a href="#">Vegetables</a></li>
-            <li><a href="#">Fruits</a></li>
-            <li><a href="#">Herbs</a></li>
-        </ul>
-    </aside>
-        <main>
-            <h2 id="sub-header">Available Plants:</h2>
-            <div class="cards">
-                <!-- This is where the plant cards will be generated -->
-            </div>
-            <div class="card" style="visibility: hidden; height:3px;"></div>
-            <div class="card" style="visibility: hidden; height:3px;"></div>
-            <div class="card" style="visibility: hidden; height:3px;"></div>
-        </main>
-        
-        <form id="add-plant-form">
-          <label for="name">Name:</label>
-          <input type="text" id="name" name="name"><br><br>
-          <label for="description">Description:</label>
-          <textarea id="description" name="description"></textarea><br><br>
-          <label for="price">Price:</label>
-          <input type="text" id="price" name="price"><br><br>
-          <label for="category">Category:</label>
-          <select id="category" name="category">
-              <option value="Flowers">Flowers</option>
-              <option value="Trees">Trees</option>
-              <option value="Vegetables">Vegetables</option>
-              <option value="Fruits">Fruits</option>
-              <option value="Herbs">Herbs</option>
-          </select><br><br>
-          <input type="submit" value="Add Plant">
-      </form>
+    <div class="tooltip-container">
+        <button class="button">Show Tooltip</button>
+        <div class="tooltip">This is a tooltip!</div>
     </div>
-    <footer>
-        <p id="copyright">&copy; Copywrite GardenCo</p>
-    </footer>
-
-    <script src="script.js"></script>
 </body>
 </html>
