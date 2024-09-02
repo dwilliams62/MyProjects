@@ -1,46 +1,44 @@
-import cbpro
+import tkinter as tk
+import random
 
-# Constants for authentication; replace with your actual keys
-API_KEY = 'YOUR_API_KEY'
-API_SECRET = 'YOUR_API_SECRET'
-API_PASSPHRASE = 'YOUR_API_PASSPHRASE'
+def roll_dice():
+    """Rolls the selected number of dice and displays the results."""
+    selected_die = die_var.get()
+    num_dice = int(num_dice_entry.get())
+    results = []
+    for _ in range(num_dice):
+        if selected_die == "D2":
+            result = random.randint(1, 2)
+        elif selected_die == "D4":
+            result = random.randint(1, 4)
+        # ... (similar logic for other dice types)
+        results.append(result)
+    total = sum(results)
+    results_text.set(f"Results: {results}\nTotal: {total}")  # Update results_text
 
-# Initialize authenticated client
-auth_client = cbpro.AuthenticatedClient(API_KEY, API_SECRET, API_PASSPHRASE)
+def clear_results():  # New function to clear results
+  results_text.set("")  # Set results_text to empty string
 
-def get_crypto_holdings(auth_client):
-    """Retrieve crypto holdings, filtering out non-USD accounts."""
-    accounts = auth_client.get_accounts()
-    return {
-        account['currency']: float(account['balance'])
-        for account in accounts
-        if account['currency'] != 'USD' and float(account['balance']) > 0
-    }
+root = tk.Tk()
+root.title("Dice Roller")
 
-def get_exchange_rates(auth_client, crypto_holdings):
-    """Retrieve current exchange rates for the given crypto holdings."""
-    exchange_rates = {}
-    for currency in crypto_holdings.keys():
-        try:
-            ticker_info = auth_client.get_product_ticker(product_id=f'{currency}-USD')
-            exchange_rates[currency] = float(ticker_info['price'])
-        except Exception as e:
-            print(f"Error retrieving ticker for {currency}: {e}")
-            exchange_rates[currency] = None
-    return exchange_rates
+die_var = tk.StringVar()
+die_var.set("D6")  # Default die type
 
-def calculate_net_usd_value(crypto_holdings, exchange_rates):
-    """Calculate the net USD value of crypto holdings."""
-    return sum(
-        amount * exchange_rates[currency]
-        for currency, amount in crypto_holdings.items() if currency in exchange_rates and exchange_rates[currency] is not None
-    )
+die_menu = tk.OptionMenu(
+    root, die_var, "D2", "D4", "D6", "D8", "D10", "D12", "D20"
+)
+die_menu.pack()
 
-def main():
-    crypto_holdings = get_crypto_holdings(auth_client)
-    exchange_rates = get_exchange_rates(auth_client, crypto_holdings)
-    net_usd_value = calculate_net_usd_value(crypto_holdings, exchange_rates)
-    print("Net USD value of crypto holdings:", net_usd_value)
+num_dice_entry = tk.Entry(root)
+num_dice_entry.pack()
 
-if __name__ == "__main__":
-    main()
+# Call clear_results before rolling dice on button click
+roll_button = tk.Button(root, text="Roll", command=lambda: [clear_results(), roll_dice()])
+roll_button.pack()
+
+results_text = tk.StringVar()
+results_label = tk.Label(root, textvariable=results_text)
+results_label.pack()
+
+root.mainloop()
